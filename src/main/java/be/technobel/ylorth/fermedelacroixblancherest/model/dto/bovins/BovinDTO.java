@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter @Setter
 public class BovinDTO {
 
-    private long id;
+    private Long id;
     private String numeroInscription;
     private char sexe;
     private LocalDate dateDeNaissance;
@@ -24,8 +24,8 @@ public class BovinDTO {
     private boolean neCesarienne;
     private Long raceId;
     private Long champId;
-    private Set<InjectionDTO> injectionsDTO = new LinkedHashSet<>();
-    private Set<ADTO> aDTO = new LinkedHashSet<>();
+    private Set<InjectionDTO> injectionsDTO;
+    private Set<ADTO> aDTO;
     private Long pereId;
     private Long mereId;
 }

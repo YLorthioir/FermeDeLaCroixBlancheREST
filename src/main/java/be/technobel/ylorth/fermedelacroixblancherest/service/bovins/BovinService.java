@@ -9,7 +9,8 @@ import java.util.Set;
 
 
 public interface BovinService {
-    BovinDTO getOne(Long id);
+    Set<BovinDTO> getAll();
+    BovinDTO getOne(String numeroInscription);
     Set<BovinDTO> getChildren(Long id);
     Set<BovinDTO> getParents(Long id);
     void createBovin(BovinInsertForm form);

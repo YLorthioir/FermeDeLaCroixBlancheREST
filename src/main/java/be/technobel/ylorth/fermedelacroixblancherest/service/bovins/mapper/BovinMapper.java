@@ -21,10 +21,10 @@ public class BovinMapper {
                 .numeroInscription(entity.getNumeroInscription())
                 .poidsNaissance(entity.getPoidsNaissance())
                 .sexe(entity.getSexe())
-                .champId(entity.getChamp().getId())
-                .mereId(entity.getMere().getId())
-                .pereId(entity.getPere().getId())
-                .raceId(entity.getRace().getId())
+                .champId(0L)
+                .mereId(0L)
+                .pereId(0L)
+                .raceId(0L)
                 .build();
 
     }
