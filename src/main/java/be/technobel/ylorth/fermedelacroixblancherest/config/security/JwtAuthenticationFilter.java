@@ -1,5 +1,5 @@
 package be.technobel.ylorth.fermedelacroixblancherest.config.security;
-
+/*
 import be.technobel.ylorth.fermedelacroixblancherest.utils.JwtProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -38,4 +38,4 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
 
     }
-}
+}*/
