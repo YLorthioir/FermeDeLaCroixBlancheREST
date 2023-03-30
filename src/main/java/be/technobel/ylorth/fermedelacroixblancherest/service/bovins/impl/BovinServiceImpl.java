@@ -17,10 +17,10 @@ import java.util.stream.Collectors;
 @Service
 public class BovinServiceImpl implements BovinService {
 
-    private final BovinRepository bovinRepository;
+    private final BovinRepository<Bovin, Number> bovinRepository;
     private final RaceRepository raceRepository;
 
-    public BovinServiceImpl(BovinRepository bovinRepository,
+    public BovinServiceImpl(BovinRepository<Bovin, Number> bovinRepository,
                             RaceRepository raceRepository) {
         this.bovinRepository = bovinRepository;
         this.raceRepository = raceRepository;

@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface BovinRepository extends JpaRepository<Bovin,Long> {
+public interface BovinRepository<B extends Bovin, L extends Number> extends JpaRepository<B,Long> {
 
-    Optional<Bovin> findByNumeroInscription(String numeroInscription);
+    Optional<B> findByNumeroInscription(String numeroInscription);
 }
