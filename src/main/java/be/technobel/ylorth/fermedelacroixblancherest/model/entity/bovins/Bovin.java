@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins;
 
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.champs.Champ;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.A;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injection;
@@ -58,5 +59,6 @@ public class Bovin {
 
     @OneToMany(mappedBy = "mere")
     private Set<Bovin> enfantsMere;
+
 
 }

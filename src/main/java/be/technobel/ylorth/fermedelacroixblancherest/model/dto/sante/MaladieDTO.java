@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante;
 
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Maladie;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,16 @@ public class MaladieDTO {
 
     private long id;
     private String nom;
-    private Set<ADTO> aDTO = new LinkedHashSet<>();
+
+    public static MaladieDTO toDTO (Maladie entity){
+
+        if(entity==null)
+            return null;
+
+        return MaladieDTO.builder()
+                .id(entity.getId())
+                .nom(entity.getNom())
+                .build();
+    }
 
 }

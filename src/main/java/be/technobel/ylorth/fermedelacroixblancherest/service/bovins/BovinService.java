@@ -6,6 +6,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInse
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinReproductionUpdateForm;
 
 import java.util.Set;
+import java.util.function.Supplier;
 
 
 public interface BovinService {
