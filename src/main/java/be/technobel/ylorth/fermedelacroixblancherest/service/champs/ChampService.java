@@ -6,7 +6,11 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.form.champs.ChampInse
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.champs.ChampUpdateForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.champs.CultureUpdateForm;
 
+import java.util.Set;
+
 public interface ChampService {
+
+    Set<ChampDTO> getAll();
     ChampDTO getChamp(Long id);
     CultureDTO getCulture(Long id);
     void insert(ChampInsertForm form);

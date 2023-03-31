@@ -1,18 +1,14 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.ChampDTO;
-import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.ADTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-@SuperBuilder
+@Builder
 @Getter @Setter
 public class BovinDTO {
 
@@ -35,11 +31,11 @@ public class BovinDTO {
 
         return BovinDTO.builder()
                 .id(entity.getId())
+                .numeroInscription(entity.getNumeroInscription())
                 .dateDeNaissance(entity.getDateDeNaissance())
                 .enCharge(entity.isEnCharge())
                 .neCesarienne(entity.isNeCesarienne())
                 .nom(entity.getNom())
-                .numeroInscription(entity.getNumeroInscription())
                 .poidsNaissance(entity.getPoidsNaissance())
                 .sexe(entity.getSexe())
                 .champ(ChampDTO.toDTO(entity.getChamp()))

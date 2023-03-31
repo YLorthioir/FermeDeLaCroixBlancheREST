@@ -22,11 +22,6 @@ public class ChampDTO {
     private double superficie;
     private LocalDate dateDerniereChaux;
 
-    private Set<Long> bovins = new LinkedHashSet<>();
-
-
-    private Set<Long> culturesDTO = new LinkedHashSet<>();
-
     public static ChampDTO toDTO (Champ entity){
         if (entity==null)
             return null;
@@ -36,12 +31,6 @@ public class ChampDTO {
                 .dateDerniereChaux(entity.getDateDerniereChaux())
                 .lieu(entity.getLieu())
                 .superficie(entity.getSuperficie())
-                .bovins(entity.getBovins().stream()
-                        .map(Bovin::getId)
-                        .collect(Collectors.toSet()))
-                .culturesDTO(entity.getCultures().stream()
-                        .map(Culture::getId)
-                        .collect(Collectors.toSet()))
                 .build();
     }
 

@@ -1,6 +1,5 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins;
 
-import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.champs.Champ;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.A;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injection;
@@ -14,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Getter @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Bovin {
 
     @Id

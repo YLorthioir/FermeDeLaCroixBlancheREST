@@ -2,11 +2,18 @@ package be.technobel.ylorth.fermedelacroixblancherest.service.bovins.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.InfosEngraissement;
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.InfosReproduction;
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.MelangeDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.BovinEngraissement;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.FemelleReproduction;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinEngraissementUpdateForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinReproductionUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.BovinEngraissementRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.BovinRepository;
+import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.FemelleReproductionRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.RaceRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
 import org.springframework.stereotype.Service;
@@ -17,13 +24,19 @@ import java.util.stream.Collectors;
 @Service
 public class BovinServiceImpl implements BovinService {
 
-    private final BovinRepository<Bovin, Number> bovinRepository;
+    private final BovinRepository bovinRepository;
+    private final FemelleReproductionRepository femelleReproductionRepository;
     private final RaceRepository raceRepository;
+    private final BovinEngraissementRepository bovinEngraissementRepository;
 
-    public BovinServiceImpl(BovinRepository<Bovin, Number> bovinRepository,
-                            RaceRepository raceRepository) {
+    public BovinServiceImpl(BovinRepository bovinRepository,
+                            RaceRepository raceRepository,
+                            FemelleReproductionRepository femelleReproductionRepository,
+                            BovinEngraissementRepository bovinEngraissementRepository) {
         this.bovinRepository = bovinRepository;
         this.raceRepository = raceRepository;
+        this.femelleReproductionRepository = femelleReproductionRepository;
+        this.bovinEngraissementRepository = bovinEngraissementRepository;
     }
 
     @Override
@@ -74,5 +87,39 @@ public class BovinServiceImpl implements BovinService {
     @Override
     public void updateBovinReproduction(Long id, BovinReproductionUpdateForm form) {
 
+    }
+
+    @Override
+    public InfosReproduction getInfosReproduction(Long id) {
+
+        if(femelleReproductionRepository.existsById(id)){
+
+            FemelleReproduction entity = femelleReproductionRepository.findById(id).get();
+
+            return InfosReproduction.builder()
+                    .perteGrossesse(entity.getPerteGrossesse())
+                    .derniereInsemination(entity.getDerniereInsemination())
+                    .build();
+        }
+
+        return null;
+    }
+
+    @Override
+    public InfosEngraissement getInfosEngraissement(Long id) {
+
+        if(bovinEngraissementRepository.existsById(id)){
+
+            BovinEngraissement entity = bovinEngraissementRepository.findById(id).get();
+
+            return InfosEngraissement.builder()
+                    .melange(MelangeDTO.toDTO(entity.getMelange()))
+                    .dateEngraissement(entity.getDateEngraissement())
+                    .poidsCarcasse(entity.getPoidsCarcasse())
+                    .poidsSurPattes(entity.getPoidsSurPattes())
+                    .build();
+        }
+
+        return null;
     }
 }

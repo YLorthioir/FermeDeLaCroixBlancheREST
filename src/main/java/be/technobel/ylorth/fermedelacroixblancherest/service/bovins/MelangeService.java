@@ -3,10 +3,10 @@ package be.technobel.ylorth.fermedelacroixblancherest.service.bovins;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.MelangeDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.MelangeForm;
 
-import java.util.List;
+import java.util.Set;
 
 public interface MelangeService {
-    List<MelangeDTO> getAll();
+    Set<MelangeDTO> getAll();
     void insert(MelangeForm form);
     void update(Long id, MelangeForm form);
 }
