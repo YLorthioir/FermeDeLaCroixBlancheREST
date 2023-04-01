@@ -39,8 +39,8 @@ public class BovinDTO {
                 .poidsNaissance(entity.getPoidsNaissance())
                 .sexe(entity.getSexe())
                 .champ(ChampDTO.toDTO(entity.getChamp()))
-                .mereNI(entity.getMere() == null? null : entity.getMere().getNumeroInscription())
-                .pereNI(entity.getPere() == null? null : entity.getPere().getNumeroInscription())
+                .mereNI(entity.getMereNI())
+                .pereNI(entity.getPereNI())
                 .race(RaceDTO.toDTO(entity.getRace()))
                 .build();
 

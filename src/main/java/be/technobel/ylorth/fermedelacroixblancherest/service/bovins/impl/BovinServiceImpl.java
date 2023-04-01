@@ -69,10 +69,6 @@ public class BovinServiceImpl implements BovinService {
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
         Bovin entity = BovinInsertForm.toEntity(form);
-        entity.setPere(bovinRepository.findByNumeroInscription(form.getPereNI())
-                .orElseThrow(() -> new NotFoundException("bovin not found")));
-        entity.setMere(bovinRepository.findByNumeroInscription(form.getMereNI())
-                .orElseThrow(() -> new NotFoundException("bovin not found")));
         entity.setRace(raceRepository.findById(form.getRaceId())
                 .orElseThrow(() -> new NotFoundException("race not found")));
 

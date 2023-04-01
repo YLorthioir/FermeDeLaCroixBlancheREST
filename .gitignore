@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 src/main/resources/application.properties
 src/main/java/be/technobel/ylorth/fermedelacroixblancherest/utils/DataInit.java
+src/main/java/be/technobel/ylorth/fermedelacroixblancherest/utils/DataInitTest.java
 src/main/java/be/technobel/ylorth/fermedelacroixblancherest/utils/JwtProvider.java
 
 ### STS ###

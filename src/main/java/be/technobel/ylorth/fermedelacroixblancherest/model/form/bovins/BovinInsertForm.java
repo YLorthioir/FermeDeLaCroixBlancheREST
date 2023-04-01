@@ -30,6 +30,8 @@ public class BovinInsertForm {
         entity.setDateDeNaissance(form.dateDeNaissance);
         entity.setPoidsNaissance(form.poidsNaissance);
         entity.setNeCesarienne(form.neCesarienne);
+        entity.setPereNI(form.pereNI);
+        entity.setMereNI(form.mereNI);
         entity.setEnCharge(true);
         return entity;
     }
