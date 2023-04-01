@@ -1,7 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.sante.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
-import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.A;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injection;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Vaccin;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementUpdateForm;
@@ -11,7 +10,6 @@ import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.ARepositor
 import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.InjectionRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.VaccinRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.service.sante.SanteService;
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -114,7 +112,7 @@ public class SanteServiceImpl implements SanteService {
 
     @Override
     public Set<ADTO> getAllA(Long idBovin) {
-        return aRepository.findAllByBovinsId(idBovin).stream()
+        return aRepository.findAllByBovinId(idBovin).stream()
                 .map(ADTO::toDTO)
                 .collect(Collectors.toSet());
     }

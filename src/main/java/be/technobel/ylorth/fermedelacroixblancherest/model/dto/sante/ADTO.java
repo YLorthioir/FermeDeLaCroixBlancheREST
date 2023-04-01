@@ -14,7 +14,7 @@ public class ADTO {
 
     private long id;
     private LocalDate anneeMaladie;
-    private BovinDTO bovinsDTO;
+    private BovinDTO bovinDTO;
     private MaladieDTO maladieDTO;
     private TraitementDTO traitementDTO;
 
@@ -26,7 +26,7 @@ public class ADTO {
         return ADTO.builder()
                 .id(entity.getId())
                 .anneeMaladie(entity.getAnneeMaladie())
-                .bovinsDTO(BovinDTO.toDTO(entity.getBovins()))
+                .bovinDTO(BovinDTO.toDTO(entity.getBovin()))
                 .maladieDTO(MaladieDTO.toDTO(entity.getMaladie()))
                 .traitementDTO(TraitementDTO.toDTO(entity.getTraitement()))
                 .build();

@@ -10,16 +10,19 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
-@Getter @Setter
 public class Champ {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "champ_id", nullable = false)
+    @Getter
     private long id;
     @Column(nullable = false, unique = true)
+    @Getter
     private String lieu;
+    @Getter
     private double superficie;
+    @Getter
     private LocalDate dateDerniereChaux;
 
     @OneToMany(mappedBy = "champ")
@@ -28,4 +31,37 @@ public class Champ {
     @OneToMany(mappedBy = "champ", orphanRemoval = true)
     private Set<Culture> cultures = new LinkedHashSet<>();
 
+    //Getters & Setters customs
+
+    //Getters
+
+    public Set<Bovin> getBovins() {
+        return Set.copyOf(bovins);
+    }
+
+    public Set<Culture> getCultures() {
+        return Set.copyOf(cultures);
+    }
+
+    //Setters
+
+
+    public void setLieu(String lieu) {
+        if(lieu == null || lieu.equals(""))
+            throw new IllegalArgumentException("Le nom du lieu est incorrecte");
+
+        this.lieu = lieu;
+    }
+
+    public void setSuperficie(double superficie) {
+        if(superficie<=0)
+            throw new IllegalArgumentException("La superficie ne peut pas être négative");
+        this.superficie = superficie;
+    }
+
+    public void setDateDerniereChaux(LocalDate dateDerniereChaux) {
+        if(dateDerniereChaux.isAfter(LocalDate.now()))
+            throw new IllegalArgumentException("La date de dernère chaux est incorrecte");
+        this.dateDerniereChaux = dateDerniereChaux;
+    }
 }
