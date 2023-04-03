@@ -31,7 +31,12 @@ public class Maladie {
     }
 
     // Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setNom(String nom) {
         if(nom == null || nom.equals(""))
             throw new IllegalArgumentException("Nom invalide");

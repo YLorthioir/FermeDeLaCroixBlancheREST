@@ -3,6 +3,7 @@ package be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DiscriminatorOptions;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -29,6 +30,12 @@ public class Race {
     }
 
     //Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
+
+        this.id = id;
+    }
 
     public void setNom(String nom) {
         if(nom == null || nom.equals(""))

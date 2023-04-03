@@ -30,7 +30,12 @@ public class TypeDeGrain {
     }
 
     //Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setNomGrain(String nomGrain) {
         if(nomGrain==null || nomGrain.equals(""))
             throw new IllegalArgumentException("Nom du grain incorrecte");

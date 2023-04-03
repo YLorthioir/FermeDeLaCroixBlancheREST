@@ -34,7 +34,12 @@ public class Traitement {
     }
 
     // Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setNomTraitement(String nomTraitement) {
         if(nomTraitement==null || nomTraitement.equals(""))
             throw new IllegalArgumentException("Nom invalide");

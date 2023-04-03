@@ -2,6 +2,7 @@ package be.technobel.ylorth.fermedelacroixblancherest.controller;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateForm;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.MelangeService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.RaceService;
@@ -50,12 +51,23 @@ public class BovinController {
         return melangeService.getAll();
     }
 
-    @GetMapping("/reproduction/{id:[0-9]+}")
-    public InfosReproduction getInfosReproductions(@PathVariable Long id){
+
+    @GetMapping("/enfants/{numeroInscription}")
+    public Set<BovinDTO> getChildren(@PathVariable String numeroInscription){
+        return bovinService.getChildren(numeroInscription);
+    }
+
+    @PutMapping("/{id:[0-9]+}")
+    public void update(@PathVariable Long id, @RequestBody @Valid BovinUpdateForm form){
+        bovinService.updateBovin(id, form);
+    }
+
+    @GetMapping("reproduction/{id:[0-9]+}")
+    public InfosReproduction getInfosReproduction(@PathVariable Long id){
         return bovinService.getInfosReproduction(id);
     }
 
-    @GetMapping("/engraissement/{id:[0-9]+}")
+    @GetMapping("engraissement/{id:[0-9]+}")
     public InfosEngraissement getInfosEngraissement(@PathVariable Long id){
         return bovinService.getInfosEngraissement(id);
     }

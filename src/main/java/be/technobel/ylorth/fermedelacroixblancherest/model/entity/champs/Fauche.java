@@ -54,7 +54,12 @@ public class Fauche {
     }
 
     //Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setAnnee(int annee) {
         if(annee > LocalDate.now().getYear())
             throw new IllegalArgumentException("Année incorrecte");

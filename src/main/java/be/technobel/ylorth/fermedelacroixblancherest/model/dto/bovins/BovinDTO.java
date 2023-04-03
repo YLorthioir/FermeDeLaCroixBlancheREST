@@ -24,6 +24,7 @@ public class BovinDTO {
     private ChampDTO champ;
     private String pereNI;
     private String mereNI;
+    private int nbCesarienne;
 
     public static BovinDTO toDTO(Bovin entity){
         if(entity==null)

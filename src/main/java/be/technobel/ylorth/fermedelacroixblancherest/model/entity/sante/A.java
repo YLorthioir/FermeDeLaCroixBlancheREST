@@ -36,7 +36,12 @@ public class A {
     //Getters & Setters customs
 
     // Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setAnneeMaladie(LocalDate anneeMaladie) {
         if(anneeMaladie.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Année maladie incorrecte");

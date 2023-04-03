@@ -6,6 +6,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injectio
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DiscriminatorOptions;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -16,12 +17,12 @@ import java.util.Set;
 public class Bovin {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bovin_id", nullable = false)
     @Getter
     private long id;
     @Getter
-    @Column(nullable = false, length = 14, unique = true)
+    @Column(nullable = false/*, length = 14*/, unique = true)
     private String numeroInscription;
     @Getter
     @Column(nullable = false)
@@ -30,13 +31,14 @@ public class Bovin {
     @Column(nullable = false)
     private LocalDate dateDeNaissance;
     @Getter
-    @Column(nullable = false)
+    @Column(nullable = true)
     private double poidsNaissance;
     @Getter @Setter
     private String nom;
     @Getter @Setter
     private boolean enCharge;
     @Getter @Setter
+    @Column(nullable = true)
     private boolean neCesarienne;
     @Getter
     @Column(length = 14)
@@ -74,12 +76,18 @@ public class Bovin {
 
     // Setter
 
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
+
+        this.id = id;
+    }
 
     public void setNumeroInscription(String numeroInscription) {
-        if(numeroInscription.length()==14)
-            this.numeroInscription = numeroInscription;
-        else
+        if(numeroInscription == null || numeroInscription.length()<10)
             throw new IllegalArgumentException("Numero d'inscription incorrecte");
+
+        this.numeroInscription = numeroInscription;
     }
 
     public void setSexe(char sexe) {
@@ -104,17 +112,17 @@ public class Bovin {
     }
 
     public void setPereNI(String pereNI) {
-        if(pereNI==null || pereNI.length()==14)
-            this.pereNI = pereNI;
-        else
-            throw new IllegalArgumentException("Numero d'inscription du père incorrecte");
+/*        if(pereNI.length()<10)
+            throw new IllegalArgumentException("Numero d'inscription du père incorrecte");*/
+
+        this.pereNI = pereNI;
     }
 
     public void setMereNI(String mereNI) {
-        if(mereNI==null || mereNI.length()==14)
-            this.mereNI = mereNI;
-        else
+        if(mereNI !=null && mereNI.length()!=0 && mereNI.length()<10)
             throw new IllegalArgumentException("Numero d'inscription de la mère incorrecte");
+
+        this.mereNI = mereNI;
     }
 
     public void setRace(Race race) {

@@ -19,7 +19,7 @@ public class FemelleReproduction extends Bovin{
 
 
     public void setDerniereInsemination(LocalDate derniereInsemination) {
-        if(derniereInsemination.isAfter(LocalDate.now()))
+        if(derniereInsemination!=null && derniereInsemination.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date de dernière insémination incorrecte");
 
         this.derniereInsemination = derniereInsemination;

@@ -31,7 +31,12 @@ public class Injection {
 
     // Getters & Setters customs
     // Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setDateInjection(LocalDate dateInjection) {
         if(dateInjection.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date incorrecte");

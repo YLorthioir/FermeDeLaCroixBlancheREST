@@ -28,7 +28,12 @@ public class Vaccin {
     // Getters & Setters customs
 
     // Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setNom(String nom) {
         if(nom==null || nom.equals(""))
             throw new IllegalArgumentException("Nom invalide");
@@ -44,7 +49,7 @@ public class Vaccin {
     }
 
     public void setDelai(int delai) {
-        if(delai <=0)
+        if(delai <0)
             throw new IllegalArgumentException("Délai invalide");
 
         this.delai = delai;

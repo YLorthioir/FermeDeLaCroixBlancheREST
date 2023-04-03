@@ -4,6 +4,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.DiscriminatorOptions;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -45,7 +46,12 @@ public class Champ {
 
     //Setters
 
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
     public void setLieu(String lieu) {
         if(lieu == null || lieu.equals(""))
             throw new IllegalArgumentException("Le nom du lieu est incorrecte");

@@ -45,7 +45,7 @@ public class BovinEngraissement extends Bovin{
     }
 
     public void setDateEngraissement(LocalDate dateEngraissement) {
-        if(dateEngraissement.isAfter(LocalDate.now()))
+        if(dateEngraissement!= null && dateEngraissement.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date d'engraissement incorrecte");
 
         this.dateEngraissement = dateEngraissement;

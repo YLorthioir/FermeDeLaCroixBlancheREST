@@ -32,7 +32,12 @@ public class Melange {
     }
 
     //Setters
+    public void setId(long id){
+        if(id <= 0)
+            throw new IllegalArgumentException("Id incorrecte");
 
+        this.id = id;
+    }
 
     public void setNomMelange(String nomMelange) {
         if(nomMelange==null || nomMelange.equals(""))
