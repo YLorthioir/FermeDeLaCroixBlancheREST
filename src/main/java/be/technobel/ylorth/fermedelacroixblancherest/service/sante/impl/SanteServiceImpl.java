@@ -4,8 +4,8 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injection;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Vaccin;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementUpdateForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinInsertForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm;
+import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.BovinRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.ARepository;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.InjectionRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.VaccinRepository;
@@ -23,20 +23,45 @@ public class SanteServiceImpl implements SanteService {
     private final InjectionRepository injectionRepository;
     private final VaccinRepository vaccinRepository;
     private final ARepository aRepository;
+    private final BovinRepository bovinRepository;
 
     public SanteServiceImpl(InjectionRepository injectionRepository,
                             VaccinRepository vaccinRepository,
-                            ARepository aRepository) {
+                            ARepository aRepository,
+                            BovinRepository bovinRepository) {
         this.injectionRepository = injectionRepository;
         this.vaccinRepository = vaccinRepository;
         this.aRepository = aRepository;
+        this.bovinRepository = bovinRepository;
     }
 
     @Override
-    public void insertInjection(Long idBovin, Long vaccin) {
+    public void insertInjection(Long idBovin, String nom) {
 
+        Set<Vaccination> carnet = getCarnetVaccination(idBovin).stream()
+                .filter(vaccination -> vaccination.getNom().equals(nom))
+                .collect(Collectors.toSet());
+
+        LocalDate derniereDose = LocalDate.MIN;
+
+        for (Vaccination vaccination : carnet) {
+            if(vaccination.getDateRappel().isAfter(derniereDose))
+                derniereDose=vaccination.getDateRappel();
+        }
+
+        if(vaccinRepository.findVaccinByNom(nom).isPresent() &&
+                vaccinRepository.findVaccinByNom(nom).get().isActif()&&
+                derniereDose.isBefore(LocalDate.now().plusDays(1)) &&
+                ((carnet.size() < vaccinRepository.findVaccinByNom(nom).get().getNbDose())||carnet.size()==0)){
+            Injection entity= new Injection();
+
+            entity.setVaccin(vaccinRepository.findVaccinByNom(nom).get());
+            entity.setBovin(bovinRepository.findById(idBovin).get());
+            entity.setDateInjection(LocalDate.now());
+
+            injectionRepository.save(entity);
+        }
     }
-
 
     @Override
     public Set<Vaccination> getCarnetVaccination(Long idBovin) {
@@ -71,23 +96,47 @@ public class SanteServiceImpl implements SanteService {
     }
 
     @Override
-    public VaccinDTO getVaccin(Long id) {
-        return null;
+    public VaccinDTO getVaccin(String nom) {
+        return VaccinDTO.toDTO(vaccinRepository.findVaccinByNom(nom).get());
     }
 
     @Override
-    public void insertVaccin(VaccinInsertForm form) {
+    public void insertVaccin(VaccinForm form) {
+        if(vaccinRepository.findVaccinByNom(form.getNom()).isEmpty()){
+            Vaccin entity = new Vaccin();
 
+            entity.setNom(form.getNom());
+            entity.setDosage(form.getDosage());
+            entity.setNbDose(form.getNbDose());
+            entity.setDelai(form.getDelai());
+            entity.setActif(true);
+
+            vaccinRepository.save(entity);
+        }
     }
 
     @Override
-    public void updateVaccin(Long id, VaccinUpdateForm form) {
+    public void updateVaccin(Long id, VaccinForm form) {
 
+        if(vaccinRepository.findVaccinByNom(form.getNom()).isPresent()){
+
+            Vaccin entity = vaccinRepository.findVaccinByNom(form.getNom()).get();
+
+            entity.setNom(form.getNom());
+            entity.setDosage(form.getDosage());
+            entity.setNbDose(form.getNbDose());
+            entity.setDelai(form.getDelai());
+            entity.setActif(form.isActif());
+
+            vaccinRepository.save(entity);
+        }
     }
 
     @Override
     public Set<VaccinDTO> getAllVaccin() {
-        return null;
+        return vaccinRepository.findAll().stream()
+                .map(VaccinDTO::toDTO)
+                .collect(Collectors.toSet());
     }
 
     @Override

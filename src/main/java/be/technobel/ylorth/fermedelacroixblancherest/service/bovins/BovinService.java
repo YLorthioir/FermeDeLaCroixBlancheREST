@@ -5,6 +5,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.InfosEngra
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.InfosReproduction;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateTypeForm;
 
 import java.util.Set;
 
@@ -16,5 +17,6 @@ public interface BovinService{
     void updateBovin(Long id,BovinUpdateForm form);
     InfosReproduction getInfosReproduction(Long id);
     InfosEngraissement getInfosEngraissement(Long id);
+    void updateType(Long id, BovinUpdateTypeForm form);
 
 }

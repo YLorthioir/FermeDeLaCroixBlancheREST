@@ -3,6 +3,7 @@ package be.technobel.ylorth.fermedelacroixblancherest.controller;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateTypeForm;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.MelangeService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.RaceService;
@@ -70,5 +71,10 @@ public class BovinController {
     @GetMapping("engraissement/{id:[0-9]+}")
     public InfosEngraissement getInfosEngraissement(@PathVariable Long id){
         return bovinService.getInfosEngraissement(id);
+    }
+
+    @PutMapping("type/{id:[0-9]+}")
+    public void updateType(@PathVariable Long id, @RequestBody @Valid BovinUpdateTypeForm form){
+        bovinService.updateType(id, form);
     }
 }

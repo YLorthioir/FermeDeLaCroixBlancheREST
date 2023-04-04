@@ -2,8 +2,10 @@ package be.technobel.ylorth.fermedelacroixblancherest.model.form.sante;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
-public class VaccinUpdateForm {
+@Data
+public class VaccinForm {
     @NotBlank
     private String nom;
     @Positive

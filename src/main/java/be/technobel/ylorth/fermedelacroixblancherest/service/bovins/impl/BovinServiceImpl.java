@@ -10,6 +10,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.BovinEn
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.FemelleReproduction;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateTypeForm;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.champs.ChampRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
@@ -97,6 +98,8 @@ public class BovinServiceImpl implements BovinService {
 
     @Override
     public void updateBovin(Long id,BovinUpdateForm form) {
+        if(form == null)
+            throw new IllegalArgumentException("le formulaire ne peut être null");
 
         if(femelleReproductionRepository.existsById(id)){
             FemelleReproduction entity = new FemelleReproduction();
@@ -134,8 +137,8 @@ public class BovinServiceImpl implements BovinService {
             entity.setChamp(champRepository.findById(form.getChampId()).get());
             entity.setDateEngraissement(form.getDateEngraissement());
             entity.setMelange(melangeRepository.findById(form.getMelangeId()).get());
-            entity.setPoidsCarcasse(form.getPoidsCarcasse());
             entity.setPoidsSurPattes(form.getPoidsSurPattes());
+            entity.setPoidsCarcasse(form.getPoidsCarcasse());
 
             bovinEngraissementRepository.save(entity);
 
@@ -202,5 +205,11 @@ public class BovinServiceImpl implements BovinService {
         }
 
         return null;
+    }
+
+    @Override
+    public void updateType(Long id, BovinUpdateTypeForm form) {
+       if("Bovin".equals(form.getFinalite())||"FemelleReproduction".equals(form.getFinalite())||"BovinEngraissement".equals(form.getFinalite()))
+           bovinRepository.changeType(id, form.getFinalite());
     }
 }

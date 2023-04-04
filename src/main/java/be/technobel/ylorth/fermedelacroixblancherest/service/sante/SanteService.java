@@ -5,17 +5,16 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.MaladieDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.VaccinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.Vaccination;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementUpdateForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinInsertForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm;
 
 import java.util.Set;
 
 public interface SanteService {
-    void insertInjection(Long idBovin, Long vaccin);
+    void insertInjection(Long idBovin, String nom);
     Set<Vaccination> getCarnetVaccination(Long idBovin);
-    VaccinDTO getVaccin(Long id);
-    void insertVaccin(VaccinInsertForm form);
-    void updateVaccin(Long id, VaccinUpdateForm form);
+    VaccinDTO getVaccin(String nom);
+    void insertVaccin(VaccinForm form);
+    void updateVaccin(Long id, VaccinForm form);
     Set<VaccinDTO> getAllVaccin();
     Set<MaladieDTO> getAllMaladie();
     void insertMaladie(String nom);
