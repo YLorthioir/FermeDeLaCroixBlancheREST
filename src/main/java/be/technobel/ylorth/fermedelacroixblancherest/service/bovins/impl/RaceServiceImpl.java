@@ -1,6 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.bovins.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.RaceDTO;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Race;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.RaceRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.RaceService;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,24 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     public void insert(String nom) {
+        if(!raceRepository.existsByNom(nom)){
+            Race entity = new Race();
+            entity.setNom(nom);
+            raceRepository.save(entity);
+        }
+    }
 
+    @Override
+    public void update(Long id, String nom) {
+        if(!raceRepository.existsByNom(nom)){
+            Race entity = raceRepository.findById(id).get();
+            entity.setNom(nom);
+            raceRepository.save(entity);
+        }
+    }
+
+    @Override
+    public RaceDTO getOne(Long id) {
+        return RaceDTO.toDTO(raceRepository.findById(id).get());
     }
 }

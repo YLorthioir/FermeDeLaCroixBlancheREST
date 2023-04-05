@@ -6,7 +6,6 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injectio
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.hibernate.annotations.DiscriminatorOptions;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -130,5 +129,22 @@ public class Bovin {
             throw new IllegalArgumentException("La race ne peut être nulle");
 
         this.race = race;
+    }
+
+    // Constructeurs
+
+    public Bovin(){
+    }
+
+    public Bovin(String numeroInscription, char sexe, LocalDate dateDeNaissance, double poidsNaissance, boolean enCharge, boolean neCesarienne, String pereNI, String mereNI, Race race) {
+        this.setNumeroInscription(numeroInscription);
+        this.setSexe(sexe);
+        this.setDateDeNaissance(dateDeNaissance);
+        this.setPoidsNaissance(poidsNaissance);
+        this.setEnCharge(enCharge);
+        this.setNeCesarienne(neCesarienne);
+        this.setPereNI(pereNI);
+        this.setMereNI(mereNI);
+        this.setRace(race);
     }
 }

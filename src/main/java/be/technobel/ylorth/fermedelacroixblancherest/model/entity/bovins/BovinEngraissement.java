@@ -50,4 +50,17 @@ public class BovinEngraissement extends Bovin{
 
         this.dateEngraissement = dateEngraissement;
     }
+
+    //Constructeurs
+
+    public BovinEngraissement(){}
+
+    public BovinEngraissement(String numeroInscription, char sexe, LocalDate dateDeNaissance, double poidsNaissance, boolean enCharge, boolean neCesarienne, String pereNI, String mereNI, Race race, double poidsSurPattes, double poidsCarcasse, LocalDate dateEngraissement, Melange melange, VenteBovin venteBovin) {
+        super(numeroInscription, sexe, dateDeNaissance, poidsNaissance, enCharge, neCesarienne, pereNI, mereNI, race);
+        setPoidsSurPattes(poidsSurPattes);
+        setPoidsCarcasse(poidsCarcasse);
+        setDateEngraissement(dateEngraissement);
+        setMelange(melange);
+        setVenteBovin(venteBovin);
+    }
 }

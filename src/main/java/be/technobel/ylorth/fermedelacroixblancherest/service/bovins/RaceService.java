@@ -7,4 +7,6 @@ import java.util.Set;
 public interface RaceService {
     Set<RaceDTO> getAll();
     void insert(String nom);
+    void update(Long id, String nom);
+    RaceDTO getOne(Long id);
 }

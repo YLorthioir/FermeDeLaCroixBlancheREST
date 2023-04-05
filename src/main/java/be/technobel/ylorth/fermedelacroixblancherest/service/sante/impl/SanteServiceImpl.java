@@ -2,13 +2,13 @@ package be.technobel.ylorth.fermedelacroixblancherest.service.sante.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injection;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Maladie;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Traitement;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Vaccin;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementUpdateForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.BovinRepository;
-import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.ARepository;
-import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.InjectionRepository;
-import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.VaccinRepository;
+import be.technobel.ylorth.fermedelacroixblancherest.repository.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.service.sante.SanteService;
 import org.springframework.stereotype.Service;
 
@@ -24,17 +24,24 @@ public class SanteServiceImpl implements SanteService {
     private final VaccinRepository vaccinRepository;
     private final ARepository aRepository;
     private final BovinRepository bovinRepository;
+    private final MaladieRepository maladieRepository;
+    private final TraitementRepository traitementRepository;
 
     public SanteServiceImpl(InjectionRepository injectionRepository,
                             VaccinRepository vaccinRepository,
                             ARepository aRepository,
-                            BovinRepository bovinRepository) {
+                            BovinRepository bovinRepository,
+                            MaladieRepository maladieRepository,
+                            TraitementRepository traitementRepository) {
         this.injectionRepository = injectionRepository;
         this.vaccinRepository = vaccinRepository;
         this.aRepository = aRepository;
         this.bovinRepository = bovinRepository;
+        this.maladieRepository = maladieRepository;
+        this.traitementRepository = traitementRepository;
     }
 
+    //Vaccin
     @Override
     public void insertInjection(Long idBovin, String nom) {
 
@@ -139,24 +146,36 @@ public class SanteServiceImpl implements SanteService {
                 .collect(Collectors.toSet());
     }
 
+    //Maladie
+
     @Override
     public Set<MaladieDTO> getAllMaladie() {
-        return null;
+        return maladieRepository.findAll().stream()
+                .map(MaladieDTO::toDTO)
+                .collect(Collectors.toSet());
     }
 
     @Override
     public void insertMaladie(String nom) {
-
+        if(!nom.equals("") && !maladieRepository.existsByNom(nom)){
+            Maladie entity = new Maladie();
+            entity.setNom(nom);
+            maladieRepository.save(entity);
+        }
+    }
+    @Override
+    public MaladieDTO getMaladie(Long id) {
+        return MaladieDTO.toDTO(maladieRepository.findById(id).get());
     }
 
     @Override
-    public void insertTraitement(String nom, Long idMaladie) {
-
-    }
-
-    @Override
-    public void updateTraitement(Long id, TraitementUpdateForm form) {
-
+    public void updateMaladie(Long id, String nom) {
+        if(!nom.equals("") && !maladieRepository.existsByNom(nom)){
+            Maladie entity = new Maladie();
+            entity.setNom(nom);
+            entity.setId(id);
+            maladieRepository.save(entity);
+        }
     }
 
     @Override
@@ -164,5 +183,39 @@ public class SanteServiceImpl implements SanteService {
         return aRepository.findAllByBovinId(idBovin).stream()
                 .map(ADTO::toDTO)
                 .collect(Collectors.toSet());
+    }
+
+    // Traitement
+
+    @Override
+    public void insertTraitement(TraitementForm form) {
+        if(form!=null){
+            Traitement entity = new Traitement();
+            entity.setNomTraitement(form.getNomTraitement());
+            entity.setActif(form.isActif());
+            traitementRepository.save(entity);
+        }
+    }
+
+    @Override
+    public void updateTraitement(Long id, TraitementForm form) {
+        if(form!=null){
+            Traitement entity = new Traitement();
+            entity.setNomTraitement(form.getNomTraitement());
+            entity.setActif(form.isActif());
+            entity.setId(id);
+            traitementRepository.save(entity);
+        }
+    }
+    @Override
+    public Set<TraitementDTO> getAllTraitement() {
+        return traitementRepository.findAll().stream()
+                .map(TraitementDTO::toDTO)
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public TraitementDTO getTraitement(Long id) {
+        return TraitementDTO.toDTO(traitementRepository.findById(id).get());
     }
 }

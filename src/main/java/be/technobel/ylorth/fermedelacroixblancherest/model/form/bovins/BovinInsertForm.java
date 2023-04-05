@@ -24,15 +24,7 @@ public class BovinInsertForm {
     private String mereNI;
 
     public static Bovin toEntity(BovinInsertForm form){
-        Bovin entity = new Bovin();
-        entity.setNumeroInscription(form.numeroInscription);
-        entity.setSexe(form.sexe.charAt(0));
-        entity.setDateDeNaissance(form.dateDeNaissance);
-        entity.setPoidsNaissance(form.poidsNaissance);
-        entity.setNeCesarienne(form.neCesarienne);
-        entity.setPereNI(form.pereNI);
-        entity.setMereNI(form.mereNI);
-        entity.setEnCharge(true);
+        Bovin entity = new Bovin(form.getNumeroInscription(), form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),true,form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),null);
         return entity;
     }
 

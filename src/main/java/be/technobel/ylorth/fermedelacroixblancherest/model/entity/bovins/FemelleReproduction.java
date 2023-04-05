@@ -15,6 +15,7 @@ public class FemelleReproduction extends Bovin{
     @Getter
     private int perteGrossesse;
 
+
     // Setters custom
 
 
@@ -30,5 +31,15 @@ public class FemelleReproduction extends Bovin{
             throw new IllegalArgumentException("Nombre de grossesses perdues ne peut être négatif");
 
         this.perteGrossesse = perteGrossesse;
+    }
+
+    //Constructeurs
+
+    public FemelleReproduction(){}
+
+    public FemelleReproduction(String numeroInscription, char sexe, LocalDate dateDeNaissance, double poidsNaissance, boolean enCharge, boolean neCesarienne, String pereNI, String mereNI, Race race, LocalDate derniereInsemination, int perteGrossesse) {
+        super(numeroInscription, sexe, dateDeNaissance, poidsNaissance, enCharge, neCesarienne, pereNI, mereNI, race);
+        setDerniereInsemination(derniereInsemination);
+        setPerteGrossesse(perteGrossesse);
     }
 }

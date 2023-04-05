@@ -4,6 +4,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateTypeForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.RaceForm;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.MelangeService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.RaceService;
@@ -45,6 +46,21 @@ public class BovinController {
     @GetMapping("/race/all")
     public Set<RaceDTO> getAllRace(){
         return raceService.getAll();
+    }
+
+    @PatchMapping("/race/{id:[0-9]+}")
+    public void update(@PathVariable Long id, @RequestBody RaceForm form){
+        raceService.update(id, form.getNom());
+    }
+
+    @PostMapping("/race/add")
+    public void update(@RequestBody String nom){
+        raceService.insert(nom);
+    }
+
+    @GetMapping("/race/{id:[0-9]+}")
+    public RaceDTO getOne(@PathVariable Long id){
+        return raceService.getOne(id);
     }
 
     @GetMapping("/melange/all")

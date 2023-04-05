@@ -26,6 +26,7 @@ public class TraitementDTO {
         return TraitementDTO.builder()
                 .id(entity.getId())
                 .nomTraitement(entity.getNomTraitement())
+                .actif(entity.isActif())
                 .build();
     }
 
