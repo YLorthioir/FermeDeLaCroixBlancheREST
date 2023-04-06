@@ -1,10 +1,9 @@
 package be.technobel.ylorth.fermedelacroixblancherest.controller;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.*;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinInsertForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpdateTypeForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.RaceForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.TraitementDTO;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.*;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.MelangeService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.RaceService;
@@ -63,12 +62,6 @@ public class BovinController {
         return raceService.getOne(id);
     }
 
-    @GetMapping("/melange/all")
-    public Set<MelangeDTO> getAllMelange(){
-        return melangeService.getAll();
-    }
-
-
     @GetMapping("/enfants/{numeroInscription}")
     public Set<BovinDTO> getChildren(@PathVariable String numeroInscription){
         return bovinService.getChildren(numeroInscription);
@@ -92,5 +85,27 @@ public class BovinController {
     @PutMapping("type/{id:[0-9]+}")
     public void updateType(@PathVariable Long id, @RequestBody @Valid BovinUpdateTypeForm form){
         bovinService.updateType(id, form);
+    }
+
+    //Melange
+
+    @GetMapping("/melange/all")
+    public Set<MelangeDTO> getAllMelange(){
+        return melangeService.getAll();
+    }
+
+    @GetMapping("/melange/{id:[0-9]+}")
+    public MelangeDTO getMelange(@PathVariable Long id){
+        return melangeService.getOne(id);
+    }
+
+    @PostMapping("/melange/add")
+    public void insertMelange(@RequestBody MelangeForm form){
+        melangeService.insert(form);
+    }
+
+    @PatchMapping("/melange/{id:[0-9]+}")
+    public void updateMelange(@PathVariable Long id, @RequestBody MelangeForm form){
+        melangeService.update(id, form);
     }
 }

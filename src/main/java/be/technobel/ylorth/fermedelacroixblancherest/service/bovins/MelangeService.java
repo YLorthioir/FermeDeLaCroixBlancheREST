@@ -7,6 +7,7 @@ import java.util.Set;
 
 public interface MelangeService {
     Set<MelangeDTO> getAll();
+    MelangeDTO getOne(Long id);
     void insert(MelangeForm form);
     void update(Long id, MelangeForm form);
 }

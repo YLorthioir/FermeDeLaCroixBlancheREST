@@ -1,6 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.bovins.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.MelangeDTO;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Melange;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.MelangeForm;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.MelangeRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.MelangeService;
@@ -25,13 +26,31 @@ public class MelangeServiceImpl implements MelangeService {
     }
 
     @Override
-    public void insert(MelangeForm form) {
+    public MelangeDTO getOne(Long id) {
+        return MelangeDTO.toDTO(melangeRepository.findById(id).get());
+    }
 
+    @Override
+    public void insert(MelangeForm form) {
+        if(form == null)
+            throw new IllegalArgumentException("form ne peut être null");
+
+        Melange entity =  new Melange();
+        entity.setNomMelange(form.getNomMelange());
+        entity.setDescription(form.getDescription());
+        melangeRepository.save(entity);
     }
 
     @Override
     public void update(Long id, MelangeForm form) {
+        if(form == null)
+            throw new IllegalArgumentException("form ne peut être null");
 
+        Melange entity =  new Melange();
+        entity.setNomMelange(form.getNomMelange());
+        entity.setDescription(form.getDescription());
+        entity.setId(id);
+        melangeRepository.save(entity);
     }
 
 }
