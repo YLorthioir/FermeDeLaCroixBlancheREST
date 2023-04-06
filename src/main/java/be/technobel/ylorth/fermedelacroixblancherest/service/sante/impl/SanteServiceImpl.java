@@ -78,7 +78,8 @@ public class SanteServiceImpl implements SanteService {
         Set<Injection> injections = injectionRepository.findAllByBovinId(idBovin);
         for (Vaccin v : vaccinRepository.findAll()) {
             Set<Injection> injectionsTriees = injections.stream()
-                    .filter(injection -> injection.getVaccin()==v).collect(Collectors.toSet());
+                    .filter(injection -> injection.getVaccin()==v)
+                    .collect(Collectors.toSet());
 
             Vaccination vaccination = new Vaccination();
             vaccination.setNom(v.getNom() + " (" + v.getDosage() + ")");

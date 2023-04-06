@@ -44,9 +44,9 @@ public class BovinServiceImpl implements BovinService {
     }
 
     @Override
-    public Set<BovinDTO> getAll(){
+    public Set<String> getAllNI(){
         return  bovinRepository.findAll().stream()
-                .map(BovinDTO::toDTO)
+                .map(Bovin::getNumeroInscription)
                 .collect(Collectors.toSet());
     }
 

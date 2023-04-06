@@ -29,8 +29,8 @@ public class BovinController {
     }
 
     @GetMapping("/all")
-    public Set<BovinDTO> getAll(){
-        return bovinService.getAll();
+    public Set<String> getAllNI(){
+        return bovinService.getAllNI();
     }
 
     @PostMapping("/add")

@@ -10,7 +10,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.BovinUpda
 import java.util.Set;
 
 public interface BovinService{
-    Set<BovinDTO> getAll();
+    Set<String> getAllNI();
     BovinDTO getOne(String numeroInscription);
     Set<BovinDTO> getChildren(String numeroInscription);
     void createBovin(BovinInsertForm form);
