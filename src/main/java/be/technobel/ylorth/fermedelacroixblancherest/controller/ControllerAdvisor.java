@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.controller;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.ErrorDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,6 +38,26 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDTO> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest req){
+
+        ErrorDTO errorDTO = ErrorDTO.builder()
+                .status( HttpStatus.BAD_REQUEST )
+                .message( ex.getMessage() )
+                .requestMadeAt( LocalDateTime.now() )
+                .URI( req.getRequestURI() )
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType( MediaType.APPLICATION_JSON );
+
+//        return new ResponseEntity<>(errorDTO, headers, HttpStatus.NOT_FOUND);
+        return ResponseEntity.status( HttpStatus.BAD_REQUEST )
+                .headers( headers )
+                .body( errorDTO );
+
+    }
+
+    @ExceptionHandler(AlreadyExistsException.class)
+    public ResponseEntity<ErrorDTO> handleAlreadyExistsException(AlreadyExistsException ex, HttpServletRequest req){
 
         ErrorDTO errorDTO = ErrorDTO.builder()
                 .status( HttpStatus.BAD_REQUEST )

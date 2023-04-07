@@ -92,8 +92,8 @@ public class SecurityConfig {
 
                     //Champ
 
+                    .requestMatchers(HttpMethod.OPTIONS).permitAll()
                     .requestMatchers(HttpMethod.GET,"/champ/all").authenticated()
-
 
 
 

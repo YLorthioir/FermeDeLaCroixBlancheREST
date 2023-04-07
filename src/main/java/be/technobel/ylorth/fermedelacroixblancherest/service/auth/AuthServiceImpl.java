@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.auth;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.AuthDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.User;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.auth.LoginForm;
@@ -33,6 +34,16 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void register(RegisterForm form) {
+        if(userRepository.existsByLogin(form.getLogin()))
+            throw new AlreadyExistsException("Le login existe déjà");
+
+        User entity = new User();
+        entity.setRole(form.getRole());
+        entity.setPassword(passwordEncoder.encode(form.getPassword()));
+        entity.setLogin(form.getLogin());
+        entity.setEnabled(true);
+        userRepository.save(entity);
+
     }
 
     @Override
@@ -50,11 +61,6 @@ public class AuthServiceImpl implements AuthService {
                 .login(user.getLogin())
                 .role(user.getRole())
                 .build();
-    }
-
-    @Override
-    public Long findByLogin(String login) {
-        return userRepository.findByLogin(login).get().getId();
     }
 
 }

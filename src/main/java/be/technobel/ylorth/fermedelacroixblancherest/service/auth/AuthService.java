@@ -7,6 +7,5 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.form.auth.RegisterFor
 public interface AuthService {
     void register(RegisterForm form);
     AuthDTO login(LoginForm form);
-    Long findByLogin(String login);
 
 }
