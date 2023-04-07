@@ -1,10 +1,10 @@
-package be.technobel.ylorth.fermedelacroixblancherest.service;
+package be.technobel.ylorth.fermedelacroixblancherest.service.auth;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.AuthDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.User;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.LoginForm;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.RegisterForm;
-import be.technobel.ylorth.fermedelacroixblancherest.repository.UserRepository;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.auth.LoginForm;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.auth.RegisterForm;
+import be.technobel.ylorth.fermedelacroixblancherest.repository.auth.UserRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.utils.JwtProvider;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

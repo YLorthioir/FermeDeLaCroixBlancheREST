@@ -26,22 +26,20 @@ public class SanteController {
     public Set<Vaccination> getCarnetVaccination(@PathVariable Long id){
         return santeService.getCarnetVaccination(id);
     }
-
-    @GetMapping("/vaccin/{nom}")
-    public VaccinDTO getVaccin(@PathVariable String nom){
-        return santeService.getVaccin(nom);
-    }
-
     @PostMapping("/vaccination/{id:[0-9]+}")
     public void vacciante(@PathVariable Long id, @RequestBody String nom){
         santeService.insertInjection(id,nom);
     }
-    @PostMapping("vaccin/")
+    @GetMapping("/vaccin/{nom}")
+    public VaccinDTO getVaccin(@PathVariable String nom){
+        return santeService.getVaccin(nom);
+    }
+    @PostMapping("vaccin/add")
     public void insertVaccin(@RequestBody VaccinForm form){
         santeService.insertVaccin(form);
     }
-    @PostMapping("vaccin/{id:[0-9]+}")
-    public void insertVaccin(@PathVariable Long id, @RequestBody VaccinForm form){
+    @PatchMapping("vaccin/{id:[0-9]+}")
+    public void updateVaccin(@PathVariable Long id, @RequestBody VaccinForm form){
         santeService.updateVaccin(id, form);
     }
     @GetMapping("vaccin/all")
@@ -82,17 +80,14 @@ public class SanteController {
     public Set<TraitementDTO>getAllTraitement(){
         return santeService.getAllTraitement();
     }
-
     @GetMapping("/traitement/{id:[0-9]+}")
     public TraitementDTO getTraitement(@PathVariable Long id){
         return santeService.getTraitement(id);
     }
-
     @PostMapping("/traitement/add")
     public void updateTraitement(@RequestBody TraitementForm form){
         santeService.insertTraitement(form);
     }
-
     @PatchMapping("/traitement/{id:[0-9]+}")
     public void updateMaladie(@PathVariable Long id, @RequestBody TraitementForm form){
         santeService.updateTraitement(id, form);

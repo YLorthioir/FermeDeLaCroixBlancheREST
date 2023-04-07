@@ -1,4 +1,4 @@
-package be.technobel.ylorth.fermedelacroixblancherest.repository;
+package be.technobel.ylorth.fermedelacroixblancherest.repository.auth;
 
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.User;

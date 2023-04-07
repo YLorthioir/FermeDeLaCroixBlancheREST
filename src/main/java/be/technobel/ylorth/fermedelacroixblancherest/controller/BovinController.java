@@ -1,9 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.controller;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.*;
-import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.TraitementDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.*;
-import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.BovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.MelangeService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.bovins.RaceService;
@@ -27,6 +25,8 @@ public class BovinController {
         this.melangeService = melangeService;
     }
 
+    //Bovins
+
     @GetMapping("/all")
     public Set<String> getAllNI(){
         return bovinService.getAllNI();
@@ -41,6 +41,33 @@ public class BovinController {
     public BovinDTO getOne(@PathVariable String numeroInscription){
         return bovinService.getOne(numeroInscription);
     }
+
+    @GetMapping("/enfants/{numeroInscription}")
+    public Set<BovinDTO> getChildren(@PathVariable String numeroInscription){
+        return bovinService.getChildren(numeroInscription);
+    }
+
+    @PutMapping("/{id:[0-9]+}")
+    public void update(@PathVariable Long id, @RequestBody @Valid BovinUpdateForm form){
+        bovinService.updateBovin(id, form);
+    }
+
+    @GetMapping("/reproduction/{id:[0-9]+}")
+    public InfosReproduction getInfosReproduction(@PathVariable Long id){
+        return bovinService.getInfosReproduction(id);
+    }
+
+    @GetMapping("/engraissement/{id:[0-9]+}")
+    public InfosEngraissement getInfosEngraissement(@PathVariable Long id){
+        return bovinService.getInfosEngraissement(id);
+    }
+
+    @PutMapping("/type/{id:[0-9]+}")
+    public void updateType(@PathVariable Long id, @RequestBody @Valid BovinUpdateTypeForm form){
+        bovinService.updateType(id, form);
+    }
+
+    //Race
 
     @GetMapping("/race/all")
     public Set<RaceDTO> getAllRace(){
@@ -62,30 +89,6 @@ public class BovinController {
         return raceService.getOne(id);
     }
 
-    @GetMapping("/enfants/{numeroInscription}")
-    public Set<BovinDTO> getChildren(@PathVariable String numeroInscription){
-        return bovinService.getChildren(numeroInscription);
-    }
-
-    @PutMapping("/{id:[0-9]+}")
-    public void update(@PathVariable Long id, @RequestBody @Valid BovinUpdateForm form){
-        bovinService.updateBovin(id, form);
-    }
-
-    @GetMapping("reproduction/{id:[0-9]+}")
-    public InfosReproduction getInfosReproduction(@PathVariable Long id){
-        return bovinService.getInfosReproduction(id);
-    }
-
-    @GetMapping("engraissement/{id:[0-9]+}")
-    public InfosEngraissement getInfosEngraissement(@PathVariable Long id){
-        return bovinService.getInfosEngraissement(id);
-    }
-
-    @PutMapping("type/{id:[0-9]+}")
-    public void updateType(@PathVariable Long id, @RequestBody @Valid BovinUpdateTypeForm form){
-        bovinService.updateType(id, form);
-    }
 
     //Melange
 

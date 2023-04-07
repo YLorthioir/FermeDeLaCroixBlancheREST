@@ -1,4 +1,4 @@
-package be.technobel.ylorth.fermedelacroixblancherest.model.form;
+package be.technobel.ylorth.fermedelacroixblancherest.model.form.auth;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
