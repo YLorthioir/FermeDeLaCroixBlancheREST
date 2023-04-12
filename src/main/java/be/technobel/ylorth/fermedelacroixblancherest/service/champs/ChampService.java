@@ -20,7 +20,8 @@ public interface ChampService {
     Set<CultureDTO> getHistorique(Long id);
     void insertCulture(CultureForm form);
     void insertGrain(String nom);
-    void deleteGrain(Long id);
+    void updateGrain(Long id, String nom);
     Set<TypeDeGrainDTO> getAllGrains();
+    TypeDeGrainDTO getOneGrain(Long id);
 
 }

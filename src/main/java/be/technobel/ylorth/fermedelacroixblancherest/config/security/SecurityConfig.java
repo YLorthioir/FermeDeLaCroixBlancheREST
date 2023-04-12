@@ -113,6 +113,9 @@ public class SecurityConfig {
                     //Grains
 
                     .requestMatchers(HttpMethod.GET,"/champ/grain/all").authenticated()
+                    .requestMatchers(HttpMethod.GET,"/champ/grain/{id:[0-9]+}").authenticated()
+                    .requestMatchers(HttpMethod.PATCH,"/champ/grain/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.POST,"/champ/grain/add").hasAnyRole("ADMIN","GERANT")
 
                     // Fauche
 

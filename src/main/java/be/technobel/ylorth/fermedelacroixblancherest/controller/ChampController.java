@@ -1,9 +1,11 @@
 package be.technobel.ylorth.fermedelacroixblancherest.controller;
 
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.RaceDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.ChampDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.CultureDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.FaucheDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.TypeDeGrainDTO;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.RaceForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.champs.*;
 import be.technobel.ylorth.fermedelacroixblancherest.service.champs.ChampService;
 import be.technobel.ylorth.fermedelacroixblancherest.service.champs.FaucheService;
@@ -63,6 +65,21 @@ public class ChampController {
     @GetMapping("/grain/all")
     public Set<TypeDeGrainDTO> getAllGrains(){
         return champService.getAllGrains();
+    }
+
+    @PatchMapping("/grain/{id:[0-9]+}")
+    public void update(@PathVariable Long id, @RequestBody TypeDeGrainForm form){
+        champService.updateGrain(id, form.getNom());
+    }
+
+    @PostMapping("/grain/add")
+    public void update(@RequestBody String nom){
+        champService.insertGrain(nom);
+    }
+
+    @GetMapping("/grain/{id:[0-9]+}")
+    public TypeDeGrainDTO getOneGrain(@PathVariable Long id){
+        return champService.getOneGrain(id);
     }
 
     //Fauche

@@ -71,6 +71,8 @@ public class BovinController {
     public Set<BovinDTO> getAllTaureaux(){
         return bovinService.getAllTaureaux();
     }
+
+
     //Race
 
     @GetMapping("/race/all")

@@ -15,7 +15,6 @@ import be.technobel.ylorth.fermedelacroixblancherest.repository.champs.TypeDeGra
 import be.technobel.ylorth.fermedelacroixblancherest.service.champs.ChampService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -116,8 +115,12 @@ public class ChampServiceImpl implements ChampService {
     // Grains
 
     @Override
-    public void deleteGrain(Long id) {
-        typeDeGrainsRepository.deleteById(id);
+    public void updateGrain(Long id, String nom) {
+        if(nom != null){
+            TypeDeGrain entity = typeDeGrainsRepository.findById(id).get();
+            entity.setNomGrain(nom);
+            typeDeGrainsRepository.save(entity);
+        }
     }
 
     @Override
@@ -132,5 +135,10 @@ public class ChampServiceImpl implements ChampService {
         return typeDeGrainsRepository.findAll().stream()
                 .map(TypeDeGrainDTO::toDTO)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public TypeDeGrainDTO getOneGrain(Long id) {
+        return TypeDeGrainDTO.toDTO(typeDeGrainsRepository.findById(id).get());
     }
 }
