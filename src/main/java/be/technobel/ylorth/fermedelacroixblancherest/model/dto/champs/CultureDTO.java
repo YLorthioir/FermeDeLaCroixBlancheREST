@@ -18,7 +18,7 @@ public class CultureDTO {
     private String analysePDF;
     private LocalDate dateEpandage;
     private double qttFumier;
-    private Long champId;
+    private ChampDTO champ;
     private Long faucheId;
     private TypeDeGrainDTO typeDeGrainDTO;
 
@@ -27,13 +27,14 @@ public class CultureDTO {
             return null;
 
         return CultureDTO.builder()
+                .id(entity.getId())
                 .analysePDF(entity.getAnalysePDF())
                 .dateDeFin(entity.getDateDeFin())
                 .dateEpandage(entity.getDateEpandage())
                 .dateMiseEnCulture(entity.getDateMiseEnCulture())
                 .estTemporaire(entity.isEstTemporaire())
                 .qttFumier(entity.getQttFumier())
-                .champId(entity.getChamp().getId())
+                .champ(ChampDTO.toDTO(entity.getChamp()))
                 .typeDeGrainDTO(TypeDeGrainDTO.toDTO(entity.getTypeDeGrain()))
                 .build();
     }

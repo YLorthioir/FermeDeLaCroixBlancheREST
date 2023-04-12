@@ -82,7 +82,7 @@ public class Fauche {
     }
 
     public void setFauche2(LocalDate fauche2) {
-        if(fauche2.isAfter(LocalDate.now()))
+        if(fauche2!=null && fauche2.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date fauche2 incorrecte");
 
         this.fauche2 = fauche2;
@@ -96,7 +96,7 @@ public class Fauche {
     }
 
     public void setFauche3(LocalDate fauche3) {
-        if(fauche3.isAfter(LocalDate.now()))
+        if(fauche3!=null && fauche3.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date fauche3 incorrecte");
 
         this.fauche3 = fauche3;
@@ -110,7 +110,7 @@ public class Fauche {
     }
 
     public void setFauche4(LocalDate fauche4) {
-        if(fauche4.isAfter(LocalDate.now()))
+        if(fauche4!=null && fauche4.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date fauche4 incorrecte");
 
         this.fauche4 = fauche4;

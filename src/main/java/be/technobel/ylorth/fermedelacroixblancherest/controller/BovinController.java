@@ -67,6 +67,10 @@ public class BovinController {
         bovinService.updateType(id, form);
     }
 
+    @GetMapping("/taureaux")
+    public Set<BovinDTO> getAllTaureaux(){
+        return bovinService.getAllTaureaux();
+    }
     //Race
 
     @GetMapping("/race/all")

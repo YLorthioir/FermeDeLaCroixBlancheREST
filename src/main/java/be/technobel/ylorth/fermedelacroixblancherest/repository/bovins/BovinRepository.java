@@ -17,6 +17,9 @@ public interface BovinRepository extends JpaRepository<Bovin,Long> {
     @Query("select b from Bovin b where b.pereNI= ?1")
     Set<Bovin> findAllEnfantsPere(String pere);
 
+    @Query("select b from Bovin b where b.sexe='M' and b.nom!=null ")
+    Set<Bovin> findAllTaureau();
+
     @Transactional
     @Modifying
     @Query(value="UPDATE public.bovin SET dtype = ?2 WHERE bovin_id =?1", nativeQuery = true)

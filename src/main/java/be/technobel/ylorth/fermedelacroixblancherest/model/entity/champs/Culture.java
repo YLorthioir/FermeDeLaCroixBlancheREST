@@ -58,14 +58,14 @@ public class Culture {
     }
 
     public void setDateDeFin(LocalDate dateDeFin) {
-        if(dateDeFin.isAfter(LocalDate.now()))
+        if(dateDeFin!= null && dateDeFin.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date de fin incorrecte");
 
         this.dateDeFin = dateDeFin;
     }
 
     public void setDateEpandage(LocalDate dateEpandage) {
-        if(dateEpandage.isAfter(LocalDate.now()))
+        if(dateEpandage!=null && dateEpandage.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date d'épandage incorrecte");
 
         this.dateEpandage = dateEpandage;

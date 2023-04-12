@@ -21,13 +21,12 @@ public class Bovin {
     @Getter
     private long id;
     @Getter
-    @Column(nullable = false/*, length = 14*/, unique = true)
+    @Column(nullable = false, length = 14, unique = true)
     private String numeroInscription;
     @Getter
     @Column(nullable = false)
     private char sexe;
     @Getter
-    @Column(nullable = false)
     private LocalDate dateDeNaissance;
     @Getter
     @Column(nullable = true)
@@ -146,5 +145,12 @@ public class Bovin {
         this.setPereNI(pereNI);
         this.setMereNI(mereNI);
         this.setRace(race);
+    }
+
+    public Bovin(String numeroInscription, Race race, String nom){
+        this.setNumeroInscription(numeroInscription);
+        this.setRace(race);
+        this.setNom(nom);
+        this.setSexe('M');
     }
 }

@@ -39,7 +39,7 @@ public class Race {
 
     public void setNom(String nom) {
         if(nom == null || nom.equals(""))
-            throw new IllegalArgumentException("Le nom de la race est incorrecte");
+            throw new IllegalArgumentException("Le lieu de la race est incorrecte");
 
         this.nom = nom;
     }

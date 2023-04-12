@@ -15,7 +15,6 @@ public class TypeDeGrainDTO {
 
     private long id;
     private String nomGrain;
-    private Set<Long> culturesId = new LinkedHashSet<>();
 
     public static TypeDeGrainDTO toDTO(TypeDeGrain entity){
         if(entity==null)
@@ -24,9 +23,6 @@ public class TypeDeGrainDTO {
         return TypeDeGrainDTO.builder()
                 .id(entity.getId())
                 .nomGrain(entity.getNomGrain())
-                .culturesId(entity.getCultures().stream()
-                        .map(c -> c.getId())
-                        .collect(Collectors.toSet()))
                 .build();
     }
 }

@@ -24,11 +24,8 @@ public class FaucheDTO {
     private double fauche3rendement;
     private LocalDate fauche4;
     private double fauche4rendement;
-    private long idCulture;
-
     private CultureDTO cultureDTO;
 
-    private Set<VenteFaucheDTO> venteFaucheDTO = new LinkedHashSet<>();
 
     public static FaucheDTO toDTO(Fauche entity){
 

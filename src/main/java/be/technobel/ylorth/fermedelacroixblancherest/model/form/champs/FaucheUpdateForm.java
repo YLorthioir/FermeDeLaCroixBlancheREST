@@ -2,23 +2,24 @@ package be.technobel.ylorth.fermedelacroixblancherest.model.form.champs;
 
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
 import java.time.LocalDate;
-
+@Data
 public class FaucheUpdateForm {
-    Long champId;
-    int annee;
+    private Long cultureId;
+    private int annee;
     @Past
-    LocalDate fauche1;
+    private LocalDate fauche1;
     @Positive
-    Integer fauche1Rendement;
+    private Integer fauche1Rendement;
     @Past
-    LocalDate fauche2;
-    Integer fauche2Rendement;
+    private LocalDate fauche2;
+    private Integer fauche2Rendement;
     @Past
-    LocalDate fauche3;
-    Integer fauche3Rendement;
+    private LocalDate fauche3;
+    private Integer fauche3Rendement;
     @Past
-    LocalDate fauche4;
-    Integer fauche4Rendement;
+    private LocalDate fauche4;
+    private Integer fauche4Rendement;
 }

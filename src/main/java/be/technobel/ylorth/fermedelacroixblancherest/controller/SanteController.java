@@ -1,6 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.controller;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.AForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.MaladieForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm;
@@ -52,6 +53,26 @@ public class SanteController {
     @GetMapping("/maladie/a/{id:[0-9]+}")
     public Set<ADTO>getAllA(@PathVariable Long id){
         return santeService.getAllA(id);
+    }
+
+    @GetMapping("/maladie/a/one/{id:[0-9]+}")
+    public ADTO getOneA(@PathVariable Long id){
+        return santeService.getOneA(id);
+    }
+
+    @PostMapping("/maladie/a/{id:[0-9]+}")
+    public void insertA(@PathVariable Long id, @RequestBody AForm form){
+        santeService.insertA(id, form);
+    }
+
+    @PatchMapping("/maladie/a/{id:[0-9]+}")
+    public void updateA(@PathVariable Long id, @RequestBody AForm form){
+        santeService.updateA(id,form);
+    }
+
+    @DeleteMapping("/maladie/a/{id:[0-9]+}")
+    public void deleteA(@PathVariable Long id){
+        santeService.deleteA(id);
     }
 
     @GetMapping("/maladie/all")

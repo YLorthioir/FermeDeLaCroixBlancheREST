@@ -41,7 +41,7 @@ public class Melange {
 
     public void setNomMelange(String nomMelange) {
         if(nomMelange==null || nomMelange.equals(""))
-            throw new IllegalArgumentException("Le nom du mélange est incorrecte");
+            throw new IllegalArgumentException("Le lieu du mélange est incorrecte");
 
         this.nomMelange = nomMelange;
     }

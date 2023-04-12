@@ -54,7 +54,7 @@ public class Champ {
     }
     public void setLieu(String lieu) {
         if(lieu == null || lieu.equals(""))
-            throw new IllegalArgumentException("Le nom du lieu est incorrecte");
+            throw new IllegalArgumentException("Le lieu du lieu est incorrecte");
 
         this.lieu = lieu;
     }
@@ -66,7 +66,7 @@ public class Champ {
     }
 
     public void setDateDerniereChaux(LocalDate dateDerniereChaux) {
-        if(dateDerniereChaux.isAfter(LocalDate.now()))
+        if(dateDerniereChaux!= null && dateDerniereChaux.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("La date de dernère chaux est incorrecte");
         this.dateDerniereChaux = dateDerniereChaux;
     }

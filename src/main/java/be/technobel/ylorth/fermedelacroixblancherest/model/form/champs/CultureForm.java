@@ -1,17 +1,16 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.form.champs;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-public class CultureUpdateForm {
-    @NotBlank
-    String nom;
-    @Positive
-    double superficie;
-    String uniteDeMesure;
+@Data
+public class CultureForm {
+    @NotNull
+    Long idChamp;
     boolean temporaire;
     @Past
     LocalDate dateMiseEnCulture;
@@ -22,6 +21,7 @@ public class CultureUpdateForm {
     @Positive
     int qttFumier;
     String referenceAnalyse;
+    @NotNull
     Long grainId;
 
 }

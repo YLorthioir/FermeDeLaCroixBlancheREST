@@ -179,4 +179,11 @@ public class BovinServiceImpl implements BovinService {
        if("Bovin".equals(form.getFinalite())||"FemelleReproduction".equals(form.getFinalite())||"BovinEngraissement".equals(form.getFinalite()))
            bovinRepository.changeType(id, form.getFinalite());
     }
+
+    @Override
+    public Set<BovinDTO> getAllTaureaux() {
+        return bovinRepository.findAllTaureau().stream()
+                .map(BovinDTO::toDTO)
+                .collect(Collectors.toSet());
+    }
 }

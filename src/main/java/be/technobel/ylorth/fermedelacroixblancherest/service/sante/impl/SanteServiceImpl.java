@@ -1,10 +1,8 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.sante.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
-import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Injection;
-import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Maladie;
-import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Traitement;
-import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Vaccin;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.*;
+import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.AForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.BovinRepository;
@@ -184,6 +182,51 @@ public class SanteServiceImpl implements SanteService {
         return aRepository.findAllByBovinId(idBovin).stream()
                 .map(ADTO::toDTO)
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public ADTO getOneA(Long aId) {
+        return ADTO.toDTO(aRepository.findById(aId).get());
+    }
+
+    @Override
+    public void insertA(Long idBovin, AForm form) {
+        if(form!=null){
+            A entity = new A();
+            entity.setBovins(bovinRepository.findById(idBovin).get());
+            if(form.getTraitement()==null)
+                entity.setTraitement(null);
+            else
+                entity.setTraitement(traitementRepository.findById(form.getTraitement()).get());
+            entity.setMaladie(maladieRepository.findById(form.getMaladie()).get());
+            entity.setAnneeMaladie(form.getAnnee());
+
+            aRepository.save(entity);
+
+        }
+
+    }
+
+    @Override
+    public void updateA(Long id, AForm form) {
+
+        if(form!=null){
+            A entity = aRepository.findById(id).get();
+            if(form.getTraitement()==null)
+                entity.setTraitement(null);
+            else
+                entity.setTraitement(traitementRepository.findById(form.getTraitement()).get());
+            entity.setMaladie(maladieRepository.findById(form.getMaladie()).get());
+            entity.setAnneeMaladie(form.getAnnee());
+
+            aRepository.save(entity);
+
+        }
+    }
+
+    @Override
+    public void deleteA(Long id) {
+        aRepository.deleteById(id);
     }
 
     // Traitement

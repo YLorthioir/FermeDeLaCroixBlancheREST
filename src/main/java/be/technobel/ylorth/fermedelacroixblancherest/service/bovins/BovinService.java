@@ -18,5 +18,6 @@ public interface BovinService{
     InfosReproduction getInfosReproduction(Long id);
     InfosEngraissement getInfosEngraissement(Long id);
     void updateType(Long id, BovinUpdateTypeForm form);
+    Set<BovinDTO> getAllTaureaux();
 
 }
