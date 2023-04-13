@@ -4,6 +4,8 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.BovinEngraissement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BovinEngraissementRepository extends JpaRepository<BovinEngraissement,Long> {
+import java.util.Optional;
 
+public interface BovinEngraissementRepository extends JpaRepository<BovinEngraissement,Long> {
+    Optional<BovinEngraissement> findByNumeroInscription(String numeroInscription);
 }

@@ -2,17 +2,19 @@ package be.technobel.ylorth.fermedelacroixblancherest.model.form.vente;
 
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class VenteFaucheForm {
-    Long faucheId;
+    private Long faucheId;
     @Positive
-    int qtt;
+    private int qtt;
     @Past
-    LocalDate date;
+    private LocalDate date;
     @Positive
-    int prixCoutant;
+    private int prixCoutant;
     @Positive
-    int prixRevente;
+    private int prixRevente;
 }

@@ -3,18 +3,20 @@ package be.technobel.ylorth.fermedelacroixblancherest.model.form.vente;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Positive;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class VenteBovinForm {
     @NotBlank
-    String numeroIdentification;
+    private String numeroIdentification;
     @Positive
-    int qtt;
+    private int qtt;
     @Past
-    LocalDate date;
+    private LocalDate date;
     @Positive
-    int prixCoutant;
+    private int prixCoutant;
     @Positive
-    int prixRevente;
+    private int prixRevente;
 }

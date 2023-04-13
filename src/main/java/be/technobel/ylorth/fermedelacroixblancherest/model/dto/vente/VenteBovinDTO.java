@@ -17,7 +17,7 @@ public class VenteBovinDTO {
     private double prixCoutant;
     private double prixRevente;
 
-    public VenteBovinDTO toDTO(VenteBovin entity){
+    public static VenteBovinDTO toDTO(VenteBovin entity){
 
         if(entity==null)
             return null;

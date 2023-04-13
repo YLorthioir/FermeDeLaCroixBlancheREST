@@ -20,7 +20,7 @@ public class VenteFaucheDTO {
 
     private FaucheDTO faucheDTO;
 
-    public VenteFaucheDTO toDTO(VenteFauche entity){
+    public static VenteFaucheDTO toDTO(VenteFauche entity){
 
         if(entity==null)
             return null;
