@@ -40,7 +40,7 @@ public class VenteController {
         venteBovinService.update(id, form);
     }
 
-    @PutMapping("/bovin/add")
+    @PostMapping("/bovin/add")
     public void addVenteBovin(@RequestBody VenteBovinForm form){
         venteBovinService.insert(form);
     }
@@ -67,7 +67,7 @@ public class VenteController {
         venteFaucheService.update(id, form);
     }
 
-    @PutMapping("/fauche/add")
+    @PostMapping("/fauche/add")
     public void addVenteFauche(@RequestBody VenteFaucheForm form){
         venteFaucheService.insert(form);
     }

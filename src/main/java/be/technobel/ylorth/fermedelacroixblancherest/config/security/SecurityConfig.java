@@ -132,7 +132,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET,"/vente/bovin/all").authenticated()
                     .requestMatchers(HttpMethod.GET,"/vente/bovin/{id:[0-9]+}").authenticated()
                     .requestMatchers(HttpMethod.PATCH,"/vente/bovin/update/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
-                    .requestMatchers(HttpMethod.PUT,"/vente/bovin/add").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.POST,"/vente/bovin/add").hasAnyRole("ADMIN","GERANT")
                     .requestMatchers(HttpMethod.DELETE,"/vente/bovin/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
 
                     // Vente fauche
@@ -140,7 +140,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET,"/vente/fauche/all").authenticated()
                     .requestMatchers(HttpMethod.GET,"/vente/fauche/{id:[0-9]+}").authenticated()
                     .requestMatchers(HttpMethod.PATCH,"/vente/fauche/update/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
-                    .requestMatchers(HttpMethod.PUT,"/vente/fauche/add").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.POST,"/vente/fauche/add").hasAnyRole("ADMIN","GERANT")
                     .requestMatchers(HttpMethod.DELETE,"/vente/fauche/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
 
 
