@@ -17,7 +17,6 @@ public class VenteFaucheDTO {
     private LocalDate dateDeVente;
     private double prixCoutant;
     private double prixRevente;
-
     private FaucheDTO faucheDTO;
 
     public static VenteFaucheDTO toDTO(VenteFauche entity){
