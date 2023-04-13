@@ -32,7 +32,10 @@ public class VenteBovinServiceImpl implements VenteBovinService {
 
     @Override
     public VenteBovinDTO getOne(Long id) {
-        return VenteBovinDTO.toDTO(venteBovinRepository.findById(id).get());
+        if(venteBovinRepository.existsById(id))
+            return VenteBovinDTO.toDTO(venteBovinRepository.findById(id).get());
+        else
+            return null;
     }
 
     @Override
