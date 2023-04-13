@@ -110,8 +110,8 @@ public class Bovin {
     }
 
     public void setPereNI(String pereNI) {
-/*        if(pereNI.length()<10)
-            throw new IllegalArgumentException("Numero d'inscription du père incorrecte");*/
+        if(pereNI.length()<10)
+            throw new IllegalArgumentException("Numero d'inscription du père incorrecte");
 
         this.pereNI = pereNI;
     }
