@@ -52,6 +52,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET,"/bovin/engraissement/{id:[0-9]+}").authenticated()
                     .requestMatchers(HttpMethod.GET,"/bovin/type/{id:[0-9]+}").authenticated()
                     .requestMatchers(HttpMethod.GET,"/bovin/taureaux").authenticated()
+                    .requestMatchers(HttpMethod.GET,"/bovin/exists/{numeroInscription}").authenticated()
 
                     //Race
 

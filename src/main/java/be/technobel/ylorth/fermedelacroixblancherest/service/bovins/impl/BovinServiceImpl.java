@@ -186,4 +186,5 @@ public class BovinServiceImpl implements BovinService {
                 .map(BovinDTO::toDTO)
                 .collect(Collectors.toSet());
     }
+
 }
