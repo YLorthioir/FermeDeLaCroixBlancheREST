@@ -44,6 +44,10 @@ public class Bovin {
     @Getter
     @Column(length = 14)
     private String mereNI;
+    @Getter
+    private LocalDate dateAbattage;
+    @Getter
+    private String raisonAbattage;
 
     @ManyToOne
     @JoinColumn(name = "race_id")
@@ -130,7 +134,18 @@ public class Bovin {
         this.race = race;
     }
 
-    // Constructeurs
+    public void setDateAbattage(LocalDate dateAbattage) {
+        if(dateAbattage.isAfter(LocalDate.now()))
+            throw new IllegalArgumentException("Date d'abattage incorrecte");
+
+        this.dateAbattage = dateAbattage;
+    }
+
+    public void setRaisonAbattage(String raisonAbattage) {
+        this.raisonAbattage = raisonAbattage;
+    }
+
+// Constructeurs
 
     public Bovin(){
     }

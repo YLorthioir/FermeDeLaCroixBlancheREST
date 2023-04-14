@@ -105,6 +105,8 @@ public class BovinServiceImpl implements BovinService {
             FemelleReproduction entity = new FemelleReproduction(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getDerniereInsemination(),form.getPerteGrossesse());
             entity.setNom(form.getNom());
             entity.setId(id);
+            entity.setDateAbattage(form.getDateAbattage());
+            entity.setRaisonAbattage(form.getRaisonAbattage());
             entity.setChamp(champRepository.findById(form.getChampId()).get());
 
             femelleReproductionRepository.save(entity);
@@ -114,6 +116,8 @@ public class BovinServiceImpl implements BovinService {
             BovinEngraissement entity = new BovinEngraissement(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getPoidsSurPattes(),form.getPoidsCarcasse(),form.getDateEngraissement(),melangeRepository.findById(form.getMelangeId()).get(),null);
             entity.setNom(form.getNom());
             entity.setId(id);
+            entity.setDateAbattage(form.getDateAbattage());
+            entity.setRaisonAbattage(form.getRaisonAbattage());
             entity.setChamp(champRepository.findById(form.getChampId()).get());
 
             bovinEngraissementRepository.save(entity);
@@ -124,6 +128,8 @@ public class BovinServiceImpl implements BovinService {
         Bovin entity = new Bovin(form.getNumeroInscription(), form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get());
         entity.setNom(form.getNom());
         entity.setId(id);
+        entity.setDateAbattage(form.getDateAbattage());
+        entity.setRaisonAbattage(form.getRaisonAbattage());
         entity.setChamp(champRepository.findById(form.getChampId()).get());
 
         bovinRepository.save(entity);

@@ -25,6 +25,8 @@ public class BovinDTO {
     private String pereNI;
     private String mereNI;
     private int nbCesarienne;
+    private LocalDate dateAbattage;
+    private String raisonAbattage;
 
     public static BovinDTO toDTO(Bovin entity){
         if(entity==null)
@@ -43,6 +45,8 @@ public class BovinDTO {
                 .mereNI(entity.getMereNI())
                 .pereNI(entity.getPereNI())
                 .race(RaceDTO.toDTO(entity.getRace()))
+                .raisonAbattage(entity.getRaisonAbattage())
+                .dateAbattage(entity.getDateAbattage())
                 .build();
 
     }
