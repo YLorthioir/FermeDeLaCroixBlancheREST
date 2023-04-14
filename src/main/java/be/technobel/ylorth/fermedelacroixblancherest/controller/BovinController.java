@@ -72,6 +72,11 @@ public class BovinController {
         return bovinService.getAllTaureaux();
     }
 
+    @GetMapping("/bovinEngraissement")
+    public Set<String> getAllBovinsEngraissement(){
+        return bovinService.getAllEngraissement();
+    }
+
     //Race
 
     @GetMapping("/race/all")

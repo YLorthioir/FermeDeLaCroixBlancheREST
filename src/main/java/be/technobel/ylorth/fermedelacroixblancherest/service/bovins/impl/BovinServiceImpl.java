@@ -193,4 +193,10 @@ public class BovinServiceImpl implements BovinService {
                 .collect(Collectors.toSet());
     }
 
+    @Override
+    public Set<String> getAllEngraissement() {
+        return bovinEngraissementRepository.findAll().stream()
+                .map(BovinEngraissement::getNumeroInscription)
+                .collect(Collectors.toSet());
+    }
 }
