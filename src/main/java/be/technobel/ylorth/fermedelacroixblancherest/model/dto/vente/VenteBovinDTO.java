@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.dto.vente;
 
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.vente.VenteBovin;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +17,9 @@ public class VenteBovinDTO {
     private LocalDate dateDeVente;
     private double prixCoutant;
     private double prixRevente;
+    private String bovin;
 
-    public VenteBovinDTO toDTO(VenteBovin entity){
+    public static VenteBovinDTO toDTO(VenteBovin entity){
 
         if(entity==null)
             return null;
@@ -28,6 +30,7 @@ public class VenteBovinDTO {
                 .prixCoutant(entity.getPrixCoutant())
                 .prixRevente(entity.getPrixRevente())
                 .quantite(entity.getQuantite())
+                .bovin(entity.getBovinEngraissement().getNumeroInscription())
                 .build();
     }
 

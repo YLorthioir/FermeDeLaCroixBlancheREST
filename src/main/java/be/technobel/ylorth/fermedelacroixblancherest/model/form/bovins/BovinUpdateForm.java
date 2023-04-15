@@ -26,6 +26,8 @@ public class BovinUpdateForm {
     private String mereNI;
     private Long champId;
     private boolean enCharge;
+    private LocalDate dateAbattage;
+    private String raisonAbattage;
 
     //Reproduction
     @PastOrPresent

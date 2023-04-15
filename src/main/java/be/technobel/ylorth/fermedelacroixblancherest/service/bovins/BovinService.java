@@ -19,5 +19,6 @@ public interface BovinService{
     InfosEngraissement getInfosEngraissement(Long id);
     void updateType(Long id, BovinUpdateTypeForm form);
     Set<BovinDTO> getAllTaureaux();
+    Set<String> getAllEngraissement();
 
 }
