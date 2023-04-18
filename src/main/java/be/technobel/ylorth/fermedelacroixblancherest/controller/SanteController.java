@@ -8,6 +8,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm
 import be.technobel.ylorth.fermedelacroixblancherest.service.sante.SanteService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -47,6 +48,13 @@ public class SanteController {
     public Set<VaccinDTO> getAllVaccin(){
         return santeService.getAllVaccin();
     }
+
+    @GetMapping("vaccination/liste/{id:[0-9]+}")
+    public List<String> toVaccinate(@PathVariable Long id){
+        return santeService.toVaccinate(id);
+    }
+
+
 
     //Maladie
 

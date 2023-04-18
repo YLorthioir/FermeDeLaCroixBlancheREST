@@ -5,6 +5,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.AForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.VaccinForm;
 
+import java.util.List;
 import java.util.Set;
 
 public interface SanteService {
@@ -27,6 +28,5 @@ public interface SanteService {
     void updateTraitement(Long id, TraitementForm form);
     Set<TraitementDTO> getAllTraitement();
     TraitementDTO getTraitement(Long id);
-
-
+    List<String> toVaccinate(Long id);
 }

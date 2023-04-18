@@ -77,6 +77,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST,"/sante/vaccin/add").hasAnyRole("ADMIN","GERANT")
                     .requestMatchers(HttpMethod.GET,"/sante/vaccin/all").authenticated()
                     .requestMatchers(HttpMethod.GET,"/sante/vaccin/{nom}").authenticated()
+                    .requestMatchers(HttpMethod.GET,"/sante/vaccination/liste/{id:[0-9]+}").authenticated()
 
                     //Maladie
 

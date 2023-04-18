@@ -14,8 +14,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.service.sante.SanteService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -150,9 +149,11 @@ public class SanteServiceImpl implements SanteService {
                 .collect(Collectors.toSet());
     }
 
-    public Set<BovinDTO> toVaccinate(Vaccin vaccin){
+    public List<String> toVaccinate(Long id){
 
-        Set<BovinDTO> toVaccinate = new HashSet();
+        Vaccin vaccin = vaccinRepository.findById(id).get();
+
+        List<String> toVaccinate = new ArrayList();
 
         Set<Bovin> bovins = bovinRepository.findAll().stream()
                 .filter(Bovin::isEnCharge)
@@ -160,23 +161,17 @@ public class SanteServiceImpl implements SanteService {
 
         for (Bovin bovin : bovins) {
 
-            Set<Vaccination> carnet = getCarnetVaccination(bovin.getId()).stream()
+            Vaccination carnet = getCarnetVaccination(bovin.getId()).stream()
                     .filter(vaccination -> vaccination.getNom().startsWith(vaccin.getNom()))
-                    .collect(Collectors.toSet());
-
-            LocalDate dernierRappel = LocalDate.MIN;
-
-            for (Vaccination vaccination : carnet) {
-                if(vaccination.getDateRappel().isAfter(dernierRappel))
-                    dernierRappel=vaccination.getDateRappel();
-            }
+                    .findFirst().get();
 
 
-            if (carnet.size()<vaccin.getNbDose() && !dernierRappel.isAfter(LocalDate.now()))
-                toVaccinate.add(BovinDTO.toDTO(bovin));
+            if (carnet.getDateRappel()==null || !carnet.getDateRappel().isAfter(LocalDate.now()))
+                toVaccinate.add(bovin.getNumeroInscription());
 
         }
 
+        Collections.sort(toVaccinate);
         return toVaccinate;
     }
 
