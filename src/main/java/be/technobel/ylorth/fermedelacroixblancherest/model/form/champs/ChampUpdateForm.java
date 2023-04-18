@@ -13,7 +13,6 @@ public class ChampUpdateForm {
     String lieu;
     @Positive
     double superficie;
-    String uniteDeMesure;
     @Past
     LocalDate dateDerniereChaux;
 }
