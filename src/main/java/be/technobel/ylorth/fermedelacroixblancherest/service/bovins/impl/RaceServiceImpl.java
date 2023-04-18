@@ -38,11 +38,12 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     public void update(Long id, String nom) {
-        if(!raceRepository.existsByNom(nom)){
-            Race entity = raceRepository.findById(id).get();
-            entity.setNom(nom);
-            raceRepository.save(entity);
-        }
+        if(raceRepository.existsByNom(nom)&& raceRepository.findByNom(nom).get().getId()!=id)
+            throw new AlreadyExistsException("Race déjà existante");
+
+        Race entity = raceRepository.findById(id).get();
+        entity.setNom(nom);
+        raceRepository.save(entity);
     }
 
     @Override

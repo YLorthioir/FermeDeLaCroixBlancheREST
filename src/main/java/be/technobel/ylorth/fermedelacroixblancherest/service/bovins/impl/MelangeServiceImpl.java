@@ -50,6 +50,9 @@ public class MelangeServiceImpl implements MelangeService {
         if(form == null)
             throw new IllegalArgumentException("form ne peut être null");
 
+        if(melangeRepository.existsMelangeByNomMelange(form.getNomMelange())&& melangeRepository.findByNomMelange(form.getNomMelange()).get().getId()!=id)
+            throw new AlreadyExistsException("Mélange déjà existant");
+
         Melange entity =  new Melange();
         entity.setNomMelange(form.getNomMelange());
         entity.setDescription(form.getDescription());

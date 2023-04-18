@@ -112,6 +112,9 @@ public class BovinServiceImpl implements BovinService {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
+        if(bovinRepository.existsByNumeroInscription(form.getNumeroInscription())&& bovinRepository.findByNumeroInscription(form.getNumeroInscription()).get().getId()!=id)
+            throw new AlreadyExistsException("Bovin déjà existant");
+
         if(femelleReproductionRepository.existsById(id)){
             FemelleReproduction entity = new FemelleReproduction(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getDerniereInsemination(),form.getPerteGrossesse());
             entity.setNom(form.getNom());

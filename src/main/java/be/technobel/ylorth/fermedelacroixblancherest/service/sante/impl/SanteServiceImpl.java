@@ -126,18 +126,19 @@ public class SanteServiceImpl implements SanteService {
     @Override
     public void updateVaccin(Long id, VaccinForm form) {
 
-        if(vaccinRepository.findVaccinByNom(form.getNom()).isPresent()){
+        if(vaccinRepository.existsByNom(form.getNom())&& vaccinRepository.findVaccinByNom(form.getNom()).get().getId()!=id)
+            throw new AlreadyExistsException("Vaccin déjà existant");
 
-            Vaccin entity = vaccinRepository.findVaccinByNom(form.getNom()).get();
+        Vaccin entity = vaccinRepository.findVaccinByNom(form.getNom()).get();
 
-            entity.setNom(form.getNom());
-            entity.setDosage(form.getDosage());
-            entity.setNbDose(form.getNbDose());
-            entity.setDelai(form.getDelai());
-            entity.setActif(form.isActif());
+        entity.setNom(form.getNom());
+        entity.setDosage(form.getDosage());
+        entity.setNbDose(form.getNbDose());
+        entity.setDelai(form.getDelai());
+        entity.setActif(form.isActif());
 
-            vaccinRepository.save(entity);
-        }
+        vaccinRepository.save(entity);
+
     }
 
     @Override
@@ -172,13 +173,18 @@ public class SanteServiceImpl implements SanteService {
 
     @Override
     public void updateMaladie(Long id, String nom) {
-        if(!nom.equals("") && !maladieRepository.existsByNom(nom)){
+        if(maladieRepository.existsByNom(nom) && maladieRepository.findByNom(nom).get().getId()!=id)
+            throw new AlreadyExistsException("Maladie déjà existante");
+
+        if(!nom.equals("")){
             Maladie entity = new Maladie();
             entity.setNom(nom);
             entity.setId(id);
             maladieRepository.save(entity);
         }
     }
+
+    // A
 
     @Override
     public Set<ADTO> getAllA(Long idBovin) {
@@ -249,6 +255,9 @@ public class SanteServiceImpl implements SanteService {
 
     @Override
     public void updateTraitement(Long id, TraitementForm form) {
+        if(traitementRepository.existsByNomTraitement(form.getNomTraitement())&& traitementRepository.findByNomTraitement(form.getNomTraitement()).get().getId()!=id)
+            throw new AlreadyExistsException("Traitement déjà existant");
+
         if(form!=null){
             Traitement entity = new Traitement();
             entity.setNomTraitement(form.getNomTraitement());
