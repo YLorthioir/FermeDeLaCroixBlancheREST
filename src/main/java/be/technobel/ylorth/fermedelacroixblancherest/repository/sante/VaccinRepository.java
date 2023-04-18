@@ -8,4 +8,6 @@ import java.util.Optional;
 public interface VaccinRepository extends JpaRepository<Vaccin,Long> {
 
     Optional<Vaccin> findVaccinByNom(String nom);
+
+    boolean existsByNom(String nom);
 }

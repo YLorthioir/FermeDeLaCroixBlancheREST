@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.sante.impl;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.AForm;
@@ -108,17 +109,18 @@ public class SanteServiceImpl implements SanteService {
 
     @Override
     public void insertVaccin(VaccinForm form) {
-        if(vaccinRepository.findVaccinByNom(form.getNom()).isEmpty()){
-            Vaccin entity = new Vaccin();
+        if(vaccinRepository.existsByNom(form.getNom()))
+            throw new AlreadyExistsException("Vaccin existe déjà");
 
-            entity.setNom(form.getNom());
-            entity.setDosage(form.getDosage());
-            entity.setNbDose(form.getNbDose());
-            entity.setDelai(form.getDelai());
-            entity.setActif(true);
+        Vaccin entity = new Vaccin();
 
-            vaccinRepository.save(entity);
-        }
+        entity.setNom(form.getNom());
+        entity.setDosage(form.getDosage());
+        entity.setNbDose(form.getNbDose());
+        entity.setDelai(form.getDelai());
+        entity.setActif(true);
+
+        vaccinRepository.save(entity);
     }
 
     @Override
@@ -156,11 +158,12 @@ public class SanteServiceImpl implements SanteService {
 
     @Override
     public void insertMaladie(String nom) {
-        if(!nom.equals("") && !maladieRepository.existsByNom(nom)){
-            Maladie entity = new Maladie();
-            entity.setNom(nom);
-            maladieRepository.save(entity);
-        }
+        if(maladieRepository.existsByNom(nom))
+            throw new AlreadyExistsException("Maladie existe déjà");
+
+        Maladie entity = new Maladie();
+        entity.setNom(nom);
+        maladieRepository.save(entity);
     }
     @Override
     public MaladieDTO getMaladie(Long id) {
@@ -233,6 +236,9 @@ public class SanteServiceImpl implements SanteService {
 
     @Override
     public void insertTraitement(TraitementForm form) {
+        if(traitementRepository.existsByNomTraitement(form.getNomTraitement()))
+            throw new AlreadyExistsException("Traitement existe déjà");
+
         if(form!=null){
             Traitement entity = new Traitement();
             entity.setNomTraitement(form.getNomTraitement());

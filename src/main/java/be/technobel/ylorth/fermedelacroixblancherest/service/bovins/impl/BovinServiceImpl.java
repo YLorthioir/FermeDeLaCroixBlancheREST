@@ -90,7 +90,7 @@ public class BovinServiceImpl implements BovinService {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        if(bovinRepository.existsBovinByNumeroInscription(form.getNumeroInscription()))
+        if(bovinRepository.existsByNumeroInscription(form.getNumeroInscription()))
             throw new AlreadyExistsException("Le numéro d'identification du Bovin existe déjà");
 
         Bovin entity = new Bovin();

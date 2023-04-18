@@ -4,5 +4,5 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.Traiteme
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TraitementRepository extends JpaRepository<Traitement,Long> {
-
+    boolean existsByNomTraitement(String nom);
 }

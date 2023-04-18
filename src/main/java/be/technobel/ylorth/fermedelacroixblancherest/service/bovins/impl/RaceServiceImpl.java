@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.bovins.impl;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.RaceDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Race;
 import be.technobel.ylorth.fermedelacroixblancherest.repository.bovins.RaceRepository;
@@ -27,11 +28,12 @@ public class RaceServiceImpl implements RaceService {
 
     @Override
     public void insert(String nom) {
-        if(!raceRepository.existsByNom(nom)){
-            Race entity = new Race();
-            entity.setNom(nom);
-            raceRepository.save(entity);
-        }
+        if(raceRepository.existsByNom(nom))
+            throw new AlreadyExistsException("Race existe déjà");
+
+        Race entity = new Race();
+        entity.setNom(nom);
+        raceRepository.save(entity);
     }
 
     @Override

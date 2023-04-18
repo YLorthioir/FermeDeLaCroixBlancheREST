@@ -48,7 +48,7 @@ public class ChampServiceImpl implements ChampService {
     }
     @Override
     public void insertChamp(ChampInsertForm form) {
-        if(champRepository.existsChampByLieu(form.getLieu()))
+        if(champRepository.existsByLieu(form.getLieu()))
             throw new AlreadyExistsException("Champ déjà existant");
 
         if(form!=null){
@@ -129,6 +129,9 @@ public class ChampServiceImpl implements ChampService {
 
     @Override
     public void insertGrain(String nom) {
+        if(typeDeGrainsRepository.existsByNomGrain(nom))
+            throw new AlreadyExistsException("Le grain existe déjà");
+
         TypeDeGrain entity = new TypeDeGrain();
         entity.setNomGrain(nom);
         typeDeGrainsRepository.save(entity);

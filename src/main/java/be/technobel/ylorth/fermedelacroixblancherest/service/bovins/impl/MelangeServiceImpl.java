@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.bovins.impl;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.MelangeDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Melange;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins.MelangeForm;
@@ -34,6 +35,9 @@ public class MelangeServiceImpl implements MelangeService {
     public void insert(MelangeForm form) {
         if(form == null)
             throw new IllegalArgumentException("form ne peut être null");
+
+        if(melangeRepository.existsMelangeByNomMelange(form.getNomMelange()))
+            throw new AlreadyExistsException("Mélange existe déjà");
 
         Melange entity =  new Melange();
         entity.setNomMelange(form.getNomMelange());

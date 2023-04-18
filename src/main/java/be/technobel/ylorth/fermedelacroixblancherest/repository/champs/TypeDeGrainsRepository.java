@@ -4,5 +4,5 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.champs.TypeDeG
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TypeDeGrainsRepository extends JpaRepository<TypeDeGrain,Long> {
-
+    boolean existsByNomGrain(String nom);
 }

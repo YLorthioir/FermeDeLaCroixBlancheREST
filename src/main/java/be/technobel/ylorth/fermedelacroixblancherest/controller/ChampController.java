@@ -73,7 +73,8 @@ public class ChampController {
     }
 
     @PostMapping("/grain/add")
-    public void update(@RequestBody String nom){
+    public void insertGrains(@RequestBody String nom){
+        System.out.println(nom);
         champService.insertGrain(nom);
     }
 
