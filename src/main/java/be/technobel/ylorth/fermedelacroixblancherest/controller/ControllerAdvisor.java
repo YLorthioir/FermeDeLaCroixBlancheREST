@@ -50,7 +50,6 @@ public class ControllerAdvisor {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
 
-//        return new ResponseEntity<>(errorDTO, headers, HttpStatus.NOT_FOUND);
         return ResponseEntity.status( HttpStatus.BAD_REQUEST )
                 .headers( headers )
                 .body( errorDTO );
@@ -70,7 +69,6 @@ public class ControllerAdvisor {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
 
-//        return new ResponseEntity<>(errorDTO, headers, HttpStatus.NOT_FOUND);
         return ResponseEntity.status( HttpStatus.BAD_REQUEST )
                 .headers( headers )
                 .body( errorDTO );
@@ -90,7 +88,6 @@ public class ControllerAdvisor {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
 
-//        return new ResponseEntity<>(errorDTO, headers, HttpStatus.NOT_FOUND);
         return ResponseEntity.status( HttpStatus.BAD_REQUEST )
                 .headers( headers )
                 .body( errorDTO );

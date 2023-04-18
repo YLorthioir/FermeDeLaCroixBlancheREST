@@ -1,6 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.repository.bovins;
 
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
+import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,8 @@ public interface BovinRepository extends JpaRepository<Bovin,Long> {
 
     @Query("select b from Bovin b where b.sexe='M' and b.nom!=null ")
     Set<Bovin> findAllTaureau();
+
+    boolean existsBovinByNumeroInscription(String numeroInscription);
 
     @Transactional
     @Modifying

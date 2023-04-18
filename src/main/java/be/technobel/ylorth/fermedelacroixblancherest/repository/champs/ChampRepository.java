@@ -4,5 +4,5 @@ import be.technobel.ylorth.fermedelacroixblancherest.model.entity.champs.Champ;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ChampRepository extends JpaRepository<Champ,Long> {
-
+    boolean existsChampByLieu(String lieu);
 }

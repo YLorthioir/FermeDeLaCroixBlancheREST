@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.bovins.impl;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.InfosEngraissement;
@@ -88,6 +89,9 @@ public class BovinServiceImpl implements BovinService {
     public void createBovin(BovinInsertForm form) {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
+
+        if(bovinRepository.existsBovinByNumeroInscription(form.getNumeroInscription()))
+            throw new AlreadyExistsException("Le numéro d'identification du Bovin existe déjà");
 
         Bovin entity = new Bovin();
         entity.setNumeroInscription(form.getNumeroInscription());

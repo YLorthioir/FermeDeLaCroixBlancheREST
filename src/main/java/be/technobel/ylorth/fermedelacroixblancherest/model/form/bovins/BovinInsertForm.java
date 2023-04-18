@@ -1,10 +1,8 @@
 package be.technobel.ylorth.fermedelacroixblancherest.model.form.bovins;
 
-import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
-import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,7 +12,7 @@ public class BovinInsertForm {
     @NotBlank
     private String numeroInscription;
     private String sexe;
-    @Past
+    @PastOrPresent
     private LocalDate dateDeNaissance;
     @Positive
     private double poidsNaissance;

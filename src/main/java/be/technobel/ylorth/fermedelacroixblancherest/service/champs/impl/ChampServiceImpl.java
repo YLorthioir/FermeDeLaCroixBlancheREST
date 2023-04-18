@@ -1,5 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.champs.impl;
 
+import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.ChampDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.CultureDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.champs.TypeDeGrainDTO;
@@ -47,6 +48,9 @@ public class ChampServiceImpl implements ChampService {
     }
     @Override
     public void insertChamp(ChampInsertForm form) {
+        if(champRepository.existsChampByLieu(form.getLieu()))
+            throw new AlreadyExistsException("Champ déjà existant");
+
         if(form!=null){
             Champ entity = new Champ();
             entity.setLieu(form.getLieu());
