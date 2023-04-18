@@ -20,7 +20,7 @@ public class VenteBovin {
     private double prixCoutant;
     private double prixRevente;
 
-    @OneToOne(orphanRemoval = true)
+    @OneToOne()
     @JoinColumn(name = "bovin_id")
     private BovinEngraissement bovinEngraissement;
 

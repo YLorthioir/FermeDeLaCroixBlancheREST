@@ -18,7 +18,7 @@ public class BovinUpdateForm {
     private String nom;
     @PastOrPresent
     private LocalDate dateDeNaissance;
-    @Positive
+    @PositiveOrZero
     private double poidsNaissance;
     private boolean neCesarienne;
     private Long raceId;

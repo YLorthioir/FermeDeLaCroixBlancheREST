@@ -89,7 +89,14 @@ public class BovinServiceImpl implements BovinService {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        Bovin entity = BovinInsertForm.toEntity(form);
+        Bovin entity = new Bovin();
+        entity.setNumeroInscription(form.getNumeroInscription());
+        entity.setPereNI(form.getPereNI());
+        entity.setMereNI(form.getMereNI());
+        entity.setNeCesarienne(form.isNeCesarienne());
+        entity.setDateDeNaissance(form.getDateDeNaissance());
+        entity.setPoidsNaissance(form.getPoidsNaissance());
+        entity.setSexe(form.getSexe().charAt(0));
         entity.setRace(raceRepository.findById(form.getRaceId())
                 .orElseThrow(() -> new NotFoundException("race not found")));
 
@@ -105,7 +112,7 @@ public class BovinServiceImpl implements BovinService {
             FemelleReproduction entity = new FemelleReproduction(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getDerniereInsemination(),form.getPerteGrossesse());
             entity.setNom(form.getNom());
             entity.setId(id);
-            entity.setDateAbattage(form.getDateAbattage());
+            entity.setDateAbattage(form.getDateAbattage()==null?null:form.getDateAbattage());
             entity.setRaisonAbattage(form.getRaisonAbattage());
             entity.setChamp(champRepository.findById(form.getChampId()).get());
 
@@ -116,7 +123,7 @@ public class BovinServiceImpl implements BovinService {
             BovinEngraissement entity = new BovinEngraissement(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getPoidsSurPattes(),form.getPoidsCarcasse(),form.getDateEngraissement(),melangeRepository.findById(form.getMelangeId()).get(),null);
             entity.setNom(form.getNom());
             entity.setId(id);
-            entity.setDateAbattage(form.getDateAbattage());
+            entity.setDateAbattage(form.getDateAbattage()==null?null:form.getDateAbattage());
             entity.setRaisonAbattage(form.getRaisonAbattage());
             entity.setChamp(champRepository.findById(form.getChampId()).get());
 
@@ -128,9 +135,9 @@ public class BovinServiceImpl implements BovinService {
         Bovin entity = new Bovin(form.getNumeroInscription(), form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get());
         entity.setNom(form.getNom());
         entity.setId(id);
-        entity.setDateAbattage(form.getDateAbattage());
+        entity.setDateAbattage(form.getDateAbattage()==null?null:form.getDateAbattage());
         entity.setRaisonAbattage(form.getRaisonAbattage());
-        entity.setChamp(champRepository.findById(form.getChampId()).get());
+        entity.setChamp(form.getChampId()==null?null:champRepository.findById(form.getChampId()).get());
 
         bovinRepository.save(entity);
         }

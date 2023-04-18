@@ -114,7 +114,7 @@ public class Bovin {
     }
 
     public void setPereNI(String pereNI) {
-        if(pereNI.length()<10)
+        if(pereNI !=null && pereNI.length()<10)
             throw new IllegalArgumentException("Numero d'inscription du père incorrecte");
 
         this.pereNI = pereNI;
@@ -135,7 +135,7 @@ public class Bovin {
     }
 
     public void setDateAbattage(LocalDate dateAbattage) {
-        if(dateAbattage.isAfter(LocalDate.now()))
+        if(dateAbattage!= null && dateAbattage.isAfter(LocalDate.now()))
             throw new IllegalArgumentException("Date d'abattage incorrecte");
 
         this.dateAbattage = dateAbattage;

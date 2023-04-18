@@ -23,9 +23,4 @@ public class BovinInsertForm {
     private String pereNI;
     private String mereNI;
 
-    public static Bovin toEntity(BovinInsertForm form){
-        Bovin entity = new Bovin(form.getNumeroInscription(), form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),true,form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),null);
-        return entity;
-    }
-
 }
