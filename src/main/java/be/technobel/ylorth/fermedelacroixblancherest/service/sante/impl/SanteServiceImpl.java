@@ -1,7 +1,9 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.sante.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
+import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
+import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.AForm;
 import be.technobel.ylorth.fermedelacroixblancherest.model.form.sante.TraitementForm;
@@ -146,6 +148,36 @@ public class SanteServiceImpl implements SanteService {
         return vaccinRepository.findAll().stream()
                 .map(VaccinDTO::toDTO)
                 .collect(Collectors.toSet());
+    }
+
+    public Set<BovinDTO> toVaccinate(Vaccin vaccin){
+
+        Set<BovinDTO> toVaccinate = new HashSet();
+
+        Set<Bovin> bovins = bovinRepository.findAll().stream()
+                .filter(Bovin::isEnCharge)
+                .collect(Collectors.toSet());
+
+        for (Bovin bovin : bovins) {
+
+            Set<Vaccination> carnet = getCarnetVaccination(bovin.getId()).stream()
+                    .filter(vaccination -> vaccination.getNom().startsWith(vaccin.getNom()))
+                    .collect(Collectors.toSet());
+
+            LocalDate dernierRappel = LocalDate.MIN;
+
+            for (Vaccination vaccination : carnet) {
+                if(vaccination.getDateRappel().isAfter(dernierRappel))
+                    dernierRappel=vaccination.getDateRappel();
+            }
+
+
+            if (carnet.size()<vaccin.getNbDose() && !dernierRappel.isAfter(LocalDate.now()))
+                toVaccinate.add(BovinDTO.toDTO(bovin));
+
+        }
+
+        return toVaccinate;
     }
 
     //Maladie
