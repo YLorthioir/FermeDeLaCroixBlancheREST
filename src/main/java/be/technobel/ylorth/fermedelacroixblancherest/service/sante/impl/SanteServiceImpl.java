@@ -1,7 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.service.sante.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.model.dto.bovins.BovinDTO;
 import be.technobel.ylorth.fermedelacroixblancherest.model.dto.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.bovins.Bovin;
 import be.technobel.ylorth.fermedelacroixblancherest.model.entity.sante.*;
