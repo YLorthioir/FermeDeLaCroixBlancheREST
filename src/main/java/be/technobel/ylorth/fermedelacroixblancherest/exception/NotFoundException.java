@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class NotFoundException extends RuntimeException{
 
-    private final Object innerData;
-    public NotFoundException(Object innerData){
+    private final String message;
+    public NotFoundException(String message){
         super("Not found");
-        this.innerData = innerData;
+        this.message = message;
     }
 }

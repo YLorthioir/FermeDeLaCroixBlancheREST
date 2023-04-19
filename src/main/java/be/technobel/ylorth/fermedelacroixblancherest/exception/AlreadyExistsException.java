@@ -5,9 +5,9 @@ import lombok.Getter;
 @Getter
 public class AlreadyExistsException extends RuntimeException{
 
-    private final Object innerData;
-    public AlreadyExistsException(Object innerData){
+    private final String message;
+    public AlreadyExistsException(String message){
         super("Already exists");
-        this.innerData = innerData;
+        this.message = message;
     }
 }
