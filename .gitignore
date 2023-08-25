@@ -4,9 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 src/main/resources/application.properties
-src/main/java/be/technobel/ylorth/fermedelacroixblancherest/utils/DataInit.java
-src/main/java/be/technobel/ylorth/fermedelacroixblancherest/utils/DataInitTest.java
-src/main/java/be/technobel/ylorth/fermedelacroixblancherest/utils/JwtProvider.java
+src/main/java/be/technobel/ylorth/fermedelacroixblancherest/dal/utils/DataInit.java
+src/main/java/be/technobel/ylorth/fermedelacroixblancherest/dal/utils/DataInitTest.java
+src/main/java/be/technobel/ylorth/fermedelacroixblancherest/dal/utils/JwtProvider.java
 Dockerfile
 
 ### STS ###
