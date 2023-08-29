@@ -11,7 +11,7 @@ public class FaucheUpdateForm {
     private int annee;
     @Past
     private LocalDate fauche1;
-    @Positive
+    @Positive(message = "Doit être positif")
     private Integer fauche1Rendement;
     @Past
     private LocalDate fauche2;

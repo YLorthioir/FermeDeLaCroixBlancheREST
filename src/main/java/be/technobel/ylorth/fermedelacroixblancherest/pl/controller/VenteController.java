@@ -6,6 +6,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.vente.VenteBovinF
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.vente.VenteFaucheForm;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.vente.VenteBovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.vente.VenteFaucheService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,12 +39,12 @@ public class VenteController {
     }
 
     @PatchMapping("/bovin/update/{id:[0-9]+}")
-    public void updateVenteBovin(@PathVariable Long id, @RequestBody VenteBovinForm form){
+    public void updateVenteBovin(@PathVariable Long id, @RequestBody @Valid VenteBovinForm form){
         venteBovinService.update(id, form);
     }
 
     @PostMapping("/bovin/add")
-    public void addVenteBovin(@RequestBody VenteBovinForm form){
+    public void addVenteBovin(@RequestBody @Valid VenteBovinForm form){
         venteBovinService.insert(form);
     }
 
@@ -65,12 +66,12 @@ public class VenteController {
     }
 
     @PatchMapping("/fauche/update/{id:[0-9]+}")
-    public void updateVenteFauche(@PathVariable Long id, @RequestBody VenteFaucheForm form){
+    public void updateVenteFauche(@PathVariable Long id, @RequestBody @Valid VenteFaucheForm form){
         venteFaucheService.update(id, form);
     }
 
     @PostMapping("/fauche/add")
-    public void addVenteFauche(@RequestBody VenteFaucheForm form){
+    public void addVenteFauche(@RequestBody @Valid VenteFaucheForm form){
         venteFaucheService.insert(form);
     }
 

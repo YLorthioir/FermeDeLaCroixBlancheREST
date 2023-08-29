@@ -86,7 +86,7 @@ public class BovinController {
     }
 
     @PatchMapping("/race/{id:[0-9]+}")
-    public void update(@PathVariable Long id, @RequestBody RaceForm form){
+    public void update(@PathVariable Long id, @RequestBody @Valid RaceForm form){
         raceService.update(id, form.getNom());
     }
 
@@ -114,12 +114,12 @@ public class BovinController {
     }
 
     @PostMapping("/melange/add")
-    public void insertMelange(@RequestBody MelangeForm form){
+    public void insertMelange(@RequestBody @Valid MelangeForm form){
         melangeService.insert(form);
     }
 
     @PatchMapping("/melange/{id:[0-9]+}")
-    public void updateMelange(@PathVariable Long id, @RequestBody MelangeForm form){
+    public void updateMelange(@PathVariable Long id, @RequestBody @Valid MelangeForm form){
         melangeService.update(id, form);
     }
 }

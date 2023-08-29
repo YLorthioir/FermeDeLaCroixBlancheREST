@@ -12,6 +12,6 @@ public class FaucheInsertForm {
     private int annee;
     @Past
     private LocalDate fauche;
-    @Positive
+    @Positive(message = "Doit être positif")
     private Integer faucheRendement;
 }

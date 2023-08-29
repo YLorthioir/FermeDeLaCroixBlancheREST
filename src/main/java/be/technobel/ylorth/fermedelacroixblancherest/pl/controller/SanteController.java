@@ -7,6 +7,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.MaladieForm
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.VaccinForm;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.sante.SanteService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,11 +41,11 @@ public class SanteController {
         return ResponseEntity.ok(Vaccin.fromBLL(santeService.getVaccin(nom)));
     }
     @PostMapping("vaccin/add")
-    public void insertVaccin(@RequestBody VaccinForm form){
+    public void insertVaccin(@RequestBody @Valid VaccinForm form){
         santeService.insertVaccin(form);
     }
     @PatchMapping("vaccin/{id:[0-9]+}")
-    public void updateVaccin(@PathVariable Long id, @RequestBody VaccinForm form){
+    public void updateVaccin(@PathVariable Long id, @RequestBody @Valid VaccinForm form){
         santeService.updateVaccin(id, form);
     }
     @GetMapping("vaccin/all")
@@ -72,12 +73,12 @@ public class SanteController {
     }
 
     @PostMapping("/maladie/a/{id:[0-9]+}")
-    public void insertA(@PathVariable Long id, @RequestBody AForm form){
+    public void insertA(@PathVariable Long id, @RequestBody @Valid AForm form){
         santeService.insertA(id, form);
     }
 
     @PatchMapping("/maladie/a/{id:[0-9]+}")
-    public void updateA(@PathVariable Long id, @RequestBody AForm form){
+    public void updateA(@PathVariable Long id, @RequestBody @Valid AForm form){
         santeService.updateA(id,form);
     }
 
@@ -102,7 +103,7 @@ public class SanteController {
     }
 
     @PatchMapping("/maladie/{id:[0-9]+}")
-    public void updateMaladie(@PathVariable Long id, @RequestBody MaladieForm form){
+    public void updateMaladie(@PathVariable Long id, @RequestBody @Valid MaladieForm form){
         santeService.updateMaladie(id, form.getNom());
     }
 
@@ -117,11 +118,11 @@ public class SanteController {
         return ResponseEntity.ok(Traitement.fromBLL(santeService.getTraitement(id)));
     }
     @PostMapping("/traitement/add")
-    public void updateTraitement(@RequestBody TraitementForm form){
+    public void updateTraitement(@RequestBody @Valid TraitementForm form){
         santeService.insertTraitement(form);
     }
     @PatchMapping("/traitement/{id:[0-9]+}")
-    public void updateMaladie(@PathVariable Long id, @RequestBody TraitementForm form){
+    public void updateMaladie(@PathVariable Long id, @RequestBody @Valid TraitementForm form){
         santeService.updateTraitement(id, form);
     }
 }

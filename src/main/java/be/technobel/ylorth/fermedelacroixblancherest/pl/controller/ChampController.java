@@ -3,6 +3,7 @@ package be.technobel.ylorth.fermedelacroixblancherest.pl.controller;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.*;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.ChampService;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.FaucheService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,12 +33,12 @@ public class ChampController {
     public ResponseEntity<Champ> getOne(@PathVariable Long id){return ResponseEntity.ok(Champ.fromBLL(champService.getChamp(id)));}
 
     @PostMapping("/add")
-    public void insertChamp(@RequestBody ChampInsertForm form){
+    public void insertChamp(@RequestBody @Valid ChampInsertForm form){
         champService.insertChamp(form);
     }
 
     @PatchMapping("/update/{id:[0-9]+}")
-    public void updateChamp(@PathVariable Long id, @RequestBody ChampUpdateForm form){
+    public void updateChamp(@PathVariable Long id, @RequestBody @Valid ChampUpdateForm form){
         champService.updateChamp(id,form);
     }
 
@@ -52,10 +53,10 @@ public class ChampController {
     public ResponseEntity<Culture> getOneCulture(@PathVariable Long id){return ResponseEntity.ok(Culture.fromBLL(champService.getCulture(id)));}
 
     @PostMapping("/culture/add")
-    public void insertCulture(@RequestBody CultureForm form){champService.insertCulture(form);}
+    public void insertCulture(@RequestBody @Valid CultureForm form){champService.insertCulture(form);}
 
     @PatchMapping("/culture/update/{id:[0-9]+}")
-    public void insertCulture(@PathVariable Long id, @RequestBody CultureForm form){champService.updateCulture(id, form);}
+    public void insertCulture(@PathVariable Long id, @RequestBody @Valid CultureForm form){champService.updateCulture(id, form);}
 
     //Grain
     @GetMapping("/grain/all")
@@ -64,12 +65,12 @@ public class ChampController {
     }
 
     @PatchMapping("/grain/{id:[0-9]+}")
-    public void update(@PathVariable Long id, @RequestBody TypeDeGrainForm form){
+    public void update(@PathVariable Long id, @RequestBody @Valid TypeDeGrainForm form){
         champService.updateGrain(id, form.getNom());
     }
 
     @PostMapping("/grain/add")
-    public void insertGrains(@RequestBody String nom){
+    public void insertGrains(@RequestBody @Valid String nom){
         System.out.println(nom);
         champService.insertGrain(nom);
     }
@@ -82,9 +83,9 @@ public class ChampController {
     //Fauche
 
     @PostMapping("/fauche/add")
-    public void insertFauche(@RequestBody FaucheInsertForm form){faucheService.insert(form);}
+    public void insertFauche(@RequestBody @Valid FaucheInsertForm form){faucheService.insert(form);}
     @PatchMapping("/fauche/{id:[0-9]+}")
-    public void updateFauche(@PathVariable Long id, @RequestBody FaucheUpdateForm form){faucheService.update(id, form);}
+    public void updateFauche(@PathVariable Long id, @RequestBody @Valid FaucheUpdateForm form){faucheService.update(id, form);}
     @GetMapping("/fauche/allChamp/{nomChamp}")
     public ResponseEntity<Set<Fauche>> getAllFaucheChamp(@PathVariable String nomChamp){
         return  ResponseEntity.ok(faucheService.getAll(nomChamp).stream().map(Fauche::fromBLL).collect(Collectors.toSet()));

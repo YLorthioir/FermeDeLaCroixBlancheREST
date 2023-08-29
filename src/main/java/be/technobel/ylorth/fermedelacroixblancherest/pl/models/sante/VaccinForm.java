@@ -8,9 +8,9 @@ import lombok.Data;
 public class VaccinForm {
     @NotBlank
     private String nom;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int nbDose;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int delai;
     @NotBlank
     private String dosage;

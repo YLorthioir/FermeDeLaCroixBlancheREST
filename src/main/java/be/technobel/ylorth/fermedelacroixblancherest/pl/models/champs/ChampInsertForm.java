@@ -8,7 +8,8 @@ import lombok.Data;
 public class ChampInsertForm {
     @NotBlank
     String lieu;
-    @Positive
+    @Positive(message = "Doit être positif")
     double superficie;
+    @NotBlank
     String uniteDeMesure;
 }

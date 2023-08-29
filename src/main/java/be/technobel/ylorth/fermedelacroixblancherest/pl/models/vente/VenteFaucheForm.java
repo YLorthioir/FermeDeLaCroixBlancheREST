@@ -9,12 +9,12 @@ import java.time.LocalDate;
 @Data
 public class VenteFaucheForm {
     private Long faucheId;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int qtt;
     @Past
     private LocalDate date;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int prixCoutant;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int prixRevente;
 }

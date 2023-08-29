@@ -11,12 +11,12 @@ import java.time.LocalDate;
 public class VenteBovinForm {
     @NotBlank
     private String numeroIdentification;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int qtt;
     @Past
     private LocalDate date;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int prixCoutant;
-    @Positive
+    @Positive(message = "Doit être positif")
     private int prixRevente;
 }

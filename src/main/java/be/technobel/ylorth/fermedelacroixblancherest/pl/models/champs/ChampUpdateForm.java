@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class ChampUpdateForm {
     @NotBlank
     String lieu;
-    @Positive
+    @Positive(message = "Doit être positif")
     double superficie;
     @Past
     LocalDate dateDerniereChaux;

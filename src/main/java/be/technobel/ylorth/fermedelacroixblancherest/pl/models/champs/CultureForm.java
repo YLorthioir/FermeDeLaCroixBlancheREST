@@ -18,7 +18,7 @@ public class CultureForm {
     LocalDate dateDeFin;
     @Past
     LocalDate dateDernierEpandage;
-    @Positive
+    @Positive(message = "Doit être positif")
     int qttFumier;
     String referenceAnalyse;
     @NotNull
