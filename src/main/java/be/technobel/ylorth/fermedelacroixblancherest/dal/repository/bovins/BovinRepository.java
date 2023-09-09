@@ -12,12 +12,12 @@ import java.util.Set;
 public interface BovinRepository extends JpaRepository<BovinEntity,Long> {
 
     Optional<BovinEntity> findByNumeroInscription(String numeroInscription);
-    @Query("select b from BovinEntity b where b.mereNI= ?1")
+    @Query("select b from Bovin b where b.mereNI= ?1")
     Set<BovinEntity> findAllEnfantsMere(String mere);
-    @Query("select b from BovinEntity b where b.pereNI= ?1")
+    @Query("select b from Bovin b where b.pereNI= ?1")
     Set<BovinEntity> findAllEnfantsPere(String pere);
 
-    @Query("select b from BovinEntity b where b.sexe='M' and b.nom!=null ")
+    @Query("select b from Bovin b where b.sexe='M' and b.nom!=null ")
     Set<BovinEntity> findAllTaureau();
 
     boolean existsByNumeroInscription(String numeroInscription);

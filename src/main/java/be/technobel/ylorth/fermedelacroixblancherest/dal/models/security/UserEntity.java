@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "\"user\"")
+@Table(name = "\"User\"")
 @Getter @Setter
 public class UserEntity implements UserDetails {
     @Id

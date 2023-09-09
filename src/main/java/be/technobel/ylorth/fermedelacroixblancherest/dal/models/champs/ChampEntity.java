@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Champ")
 public class ChampEntity {
 
     @Id

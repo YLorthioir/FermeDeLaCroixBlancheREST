@@ -11,7 +11,7 @@ import java.time.LocalDate;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Bovin")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class BovinEntity {
 

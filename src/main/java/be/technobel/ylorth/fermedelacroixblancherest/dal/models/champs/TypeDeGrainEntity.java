@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Grain")
 public class TypeDeGrainEntity {
 
     @Id

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "Injection")
 public class InjectionEntity {
 
     @Id

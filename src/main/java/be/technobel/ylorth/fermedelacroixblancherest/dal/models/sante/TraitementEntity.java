@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Traitement")
 public class TraitementEntity {
 
     @Id

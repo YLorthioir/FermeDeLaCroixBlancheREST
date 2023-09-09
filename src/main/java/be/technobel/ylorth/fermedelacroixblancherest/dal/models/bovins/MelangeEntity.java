@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Entity
+@Entity(name = "Melange")
 public class MelangeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

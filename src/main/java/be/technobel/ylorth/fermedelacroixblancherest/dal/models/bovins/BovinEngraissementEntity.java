@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "BovinEngraissement")
 @PrimaryKeyJoinColumn(name = "id")
 public class BovinEngraissementEntity extends BovinEntity {
     @Getter
