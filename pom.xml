@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>be.technobel.ylorth</groupId>
 	<artifactId>FermeDeLaCroixBlancheREST</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>FermeDeLaCroixBlancheREST</name>
 	<description>FermeDeLaCroixBlancheREST</description>
 	<properties>
