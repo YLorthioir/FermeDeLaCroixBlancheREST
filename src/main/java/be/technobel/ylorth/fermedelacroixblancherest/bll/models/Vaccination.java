@@ -10,4 +10,5 @@ public class Vaccination {
     private int doseAdministrees;
     private int doseMax;
     private LocalDate dateRappel;
+    private boolean isActif;
 }

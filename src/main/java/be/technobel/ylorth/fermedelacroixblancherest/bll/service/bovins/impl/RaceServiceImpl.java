@@ -1,8 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.RaceService;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.Race;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.RaceEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.RaceRepository;
 import org.springframework.stereotype.Service;

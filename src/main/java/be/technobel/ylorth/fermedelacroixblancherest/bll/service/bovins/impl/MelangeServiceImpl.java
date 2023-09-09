@@ -1,7 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.impl;
 
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.Melange;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.MelangeEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.MelangeForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.MelangeRepository;

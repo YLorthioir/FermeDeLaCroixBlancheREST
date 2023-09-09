@@ -1,10 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.ChampService;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.Champ;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.Culture;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.TypeDeGrain;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.ChampEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.CultureEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.TypeDeGrainEntity;

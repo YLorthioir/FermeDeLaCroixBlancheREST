@@ -1,6 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.auth;
 
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.AuthResponse;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.security.UserEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.LoginForm;

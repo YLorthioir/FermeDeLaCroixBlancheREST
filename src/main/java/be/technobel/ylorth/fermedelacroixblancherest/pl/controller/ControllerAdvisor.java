@@ -1,8 +1,8 @@
 package be.technobel.ylorth.fermedelacroixblancherest.pl.controller;
 
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.FaucheInsertException;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.NotFoundException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.FaucheInsertException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.Error;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpHeaders;
@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -110,11 +109,13 @@ public class ControllerAdvisor {
             errorMap.put(field,message);
         });
 
-        String errorsList = "";
+        String errorsList = "{";
 
         for (Map.Entry<String, String> stringStringEntry : errorMap.entrySet()) {
-            errorsList += stringStringEntry.getKey() + " - " + stringStringEntry.getValue() + " \n ";
+            errorsList += stringStringEntry.getKey() + " - " + stringStringEntry.getValue() + ", ";
         }
+
+        errorsList = errorsList.substring(0,errorsList.length()-2) + "}";
 
         Error errorDTO = Error.builder()
                 .status( HttpStatus.BAD_REQUEST)

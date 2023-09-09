@@ -2,8 +2,8 @@ package be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.BovinService;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.*;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.NotFoundException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.Bovin;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.InfosEngraissement;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.InfosReproduction;
@@ -44,6 +44,11 @@ public class BovinServiceImpl implements BovinService {
         this.melangeRepository = melangeRepository;
     }
 
+    /**
+     * Récupère un Set de tous les objets Bovin
+     *
+     * @return un Set de Bovin
+     */
     @Override
     public Set<String> getAllNI(){
         return  bovinRepository.findAll().stream()
@@ -51,6 +56,13 @@ public class BovinServiceImpl implements BovinService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Récupère un objet Bovin en fonction du numéro d'inscription fourni.
+     *
+     * @param numeroInscription Le numéro d'inscription du bovin à récupérer.
+     * @return L'objet Bovin correspondant au numéro d'inscription spécifié.
+     * @throws NotFoundException Si aucun bovin n'est trouvé avec le numéro d'inscription donné.
+     */
     @Override
     public Bovin getOne(String numeroInscription) {
         Bovin bovin = bovinRepository.findByNumeroInscription(numeroInscription)

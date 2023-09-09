@@ -1,7 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.impl;
 
-import be.technobel.ylorth.fermedelacroixblancherest.exception.FaucheInsertException;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.Fauche;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.FaucheInsertException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.CultureEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.FaucheEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.FaucheInsertForm;

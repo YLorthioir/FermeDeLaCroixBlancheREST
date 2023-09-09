@@ -1,4 +1,4 @@
-package be.technobel.ylorth.fermedelacroixblancherest.exception;
+package be.technobel.ylorth.fermedelacroixblancherest.dal.exception;
 
 import lombok.Getter;
 

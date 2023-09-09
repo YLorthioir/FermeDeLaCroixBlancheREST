@@ -4,8 +4,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.bll.models.Vaccination;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.sante.SanteService;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.sante.*;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.sante.*;
-import be.technobel.ylorth.fermedelacroixblancherest.exception.AlreadyExistsException;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.*;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.AForm;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.TraitementForm;
@@ -85,6 +84,7 @@ public class SanteServiceImpl implements SanteService {
             vaccination.setNom(v.getNom() + " (" + v.getDosage() + ")");
             vaccination.setDoseMax(v.getNbDose());
             vaccination.setDoseAdministrees(injectionsTriees.size());
+            vaccination.setActif(v.isActif());
 
             LocalDate dateDernierVaccin = LocalDate.MIN;
 
