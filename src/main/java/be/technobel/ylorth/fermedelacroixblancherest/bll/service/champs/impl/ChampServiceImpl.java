@@ -2,6 +2,7 @@ package be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.ChampService;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.ChampEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.CultureEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.TypeDeGrainEntity;
@@ -33,15 +34,45 @@ public class ChampServiceImpl implements ChampService {
 
     // Champ
 
+    /**
+     * Récupère l'ensemble des enregistrements de champs présents dans le référentiel.
+     *
+     * Cette méthode interroge le référentiel des champs pour obtenir tous les enregistrements de champs,
+     * puis les retourne dans un ensemble (Set) de ChampEntity.
+     *
+     * @return Un ensemble (Set) de ChampEntity représentant tous les enregistrements de champs enregistrés.
+     */
     @Override
     public Set<ChampEntity> getAll() {
         return champRepository.findAll().stream()
                 .collect(Collectors.toSet());
     }
+
+    /**
+     * Récupère un enregistrement de champ spécifié par son ID depuis le référentiel.
+     *
+     * Cette méthode prend l'ID d'un enregistrement de champ en entrée, recherche cet enregistrement dans le référentiel des champs,
+     * puis le retourne s'il est trouvé. Si l'enregistrement de champ n'est pas trouvé, elle lève une exception NotFoundException.
+     *
+     * @param id L'ID de l'enregistrement de champ à récupérer.
+     * @return L'enregistrement de champ (ChampEntity) correspondant à l'ID spécifié.
+     * @throws NotFoundException Si l'enregistrement de champ n'est pas trouvé dans le référentiel.
+     */
     @Override
     public ChampEntity getChamp(Long id) {
-        return champRepository.findById(id).get();
+        return champRepository.findById(id).orElseThrow(()-> new NotFoundException("Champ not found"));
     }
+
+    /**
+     * Insère un nouvel enregistrement de champ dans le référentiel en utilisant les informations fournies dans le formulaire.
+     *
+     * Cette méthode prend un formulaire (ChampInsertForm) en entrée, vérifie que le formulaire n'est pas null, et vérifie également
+     * que le lieu du champ n'existe pas déjà dans le référentiel. Si le lieu du champ n'existe pas, elle crée un nouvel enregistrement
+     * de champ en utilisant les informations fournies dans le formulaire.
+     *
+     * @param form Le formulaire contenant les informations pour créer un nouvel enregistrement de champ.
+     * @throws AlreadyExistsException Si le lieu du champ spécifié existe déjà dans le référentiel.
+     */
     @Override
     public void insertChamp(ChampInsertForm form) {
         if(champRepository.existsByLieu(form.getLieu()))
@@ -56,10 +87,21 @@ public class ChampServiceImpl implements ChampService {
 
     }
 
+    /**
+     * Met à jour les informations d'un enregistrement de champ spécifié par son ID en utilisant les données fournies dans le formulaire.
+     *
+     * Cette méthode prend l'ID d'un enregistrement de champ en entrée, ainsi qu'un formulaire (`ChampUpdateForm`) contenant les nouvelles informations
+     * pour le champ. Elle vérifie que le formulaire n'est pas null, recherche l'enregistrement de champ correspondant dans le référentiel des champs,
+     * puis met à jour ses informations en conséquence.
+     *
+     * @param id L'ID de l'enregistrement de champ à mettre à jour.
+     * @param form Le formulaire contenant les nouvelles informations pour le champ.
+     * @throws NotFoundException Si l'enregistrement de champ n'est pas trouvé dans le référentiel.
+     */
     @Override
     public void updateChamp(Long id, ChampUpdateForm form) {
         if(form!=null){
-            ChampEntity entity = champRepository.findById(id).get();
+            ChampEntity entity = champRepository.findById(id).orElseThrow(()-> new NotFoundException("Champ not found"));
             entity.setLieu(form.getLieu());
             entity.setSuperficie(form.getSuperficie());
             entity.setDateDerniereChaux(form.getDateDerniereChaux());
@@ -69,14 +111,23 @@ public class ChampServiceImpl implements ChampService {
 
     // Culture
 
+    /**
+     * Insère un nouvel enregistrement de culture dans le référentiel en utilisant les informations fournies dans le formulaire.
+     *
+     * Cette méthode prend un formulaire (`CultureForm`) en entrée, vérifie que le formulaire n'est pas null, puis crée un nouvel
+     * enregistrement de culture en utilisant les informations fournies dans le formulaire.
+     *
+     * @param form Le formulaire contenant les informations pour créer un nouvel enregistrement de culture.
+     * @throws NotFoundException Si le champ ou le type de grain spécifié dans le formulaire n'est pas trouvé dans le référentiel.
+     */
     @Override
     public void insertCulture(CultureForm form){
         if(form!=null){
             CultureEntity entity = new CultureEntity();
-            entity.setChamp(champRepository.findById(form.getIdChamp()).get());
+            entity.setChamp(champRepository.findById(form.getIdChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
             entity.setDateMiseEnCulture(form.getDateMiseEnCulture());
             entity.setEstTemporaire(form.isTemporaire());
-            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.getGrainId()).get());
+            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.getGrainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
             entity.setDateDeFin(form.getDateDeFin()!=null?form.getDateDeFin():null);
             entity.setDateEpandage(form.getDateDernierEpandage()!=null?form.getDateDernierEpandage():null);
             entity.setQttFumier(form.getQttFumier());
@@ -85,18 +136,41 @@ public class ChampServiceImpl implements ChampService {
             entity= cultureRepository.save(entity);
         }
     }
+
+    /**
+     * Récupère un enregistrement de culture spécifié par son ID depuis le référentiel.
+     *
+     * Cette méthode prend l'ID d'un enregistrement de culture en entrée, recherche cet enregistrement dans le référentiel des cultures,
+     * puis le retourne s'il est trouvé. Si l'enregistrement de culture n'est pas trouvé, elle lève une exception NotFoundException.
+     *
+     * @param id L'ID de l'enregistrement de culture à récupérer.
+     * @return L'enregistrement de culture (CultureEntity) correspondant à l'ID spécifié.
+     * @throws NotFoundException Si l'enregistrement de culture n'est pas trouvé dans le référentiel.
+     */
     @Override
     public CultureEntity getCulture(Long id) {
-        return cultureRepository.findById(id).get();
+        return cultureRepository.findById(id).orElseThrow(()-> new NotFoundException("Culture not found"));
     }
+
+    /**
+     * Met à jour les informations d'un enregistrement de culture spécifié par son ID en utilisant les données fournies dans le formulaire.
+     *
+     * Cette méthode prend l'ID d'un enregistrement de culture en entrée, ainsi qu'un formulaire (`CultureForm`) contenant les nouvelles informations
+     * pour la culture. Elle vérifie que le formulaire n'est pas null, recherche l'enregistrement de culture correspondant dans le référentiel des cultures,
+     * puis met à jour ses informations en conséquence.
+     *
+     * @param id L'ID de l'enregistrement de culture à mettre à jour.
+     * @param form Le formulaire contenant les nouvelles informations pour la culture.
+     * @throws NotFoundException Si l'enregistrement de culture, le champ ou le type de grain spécifié dans le formulaire n'est pas trouvé dans le référentiel.
+     */
     @Override
     public void updateCulture(Long id, CultureForm form) {
         if(form!=null){
-            CultureEntity entity = cultureRepository.findById(id).get();
-            entity.setChamp(champRepository.findById(form.getIdChamp()).get());
+            CultureEntity entity = cultureRepository.findById(id).orElseThrow(()-> new NotFoundException("Culture not found"));
+            entity.setChamp(champRepository.findById(form.getIdChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
             entity.setDateMiseEnCulture(form.getDateMiseEnCulture());
             entity.setEstTemporaire(form.isTemporaire());
-            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.getGrainId()).get());
+            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.getGrainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
             entity.setDateDeFin(form.getDateDeFin()!=null?form.getDateDeFin():null);
             entity.setDateEpandage(form.getDateDernierEpandage()!=null?form.getDateDernierEpandage():null);
             entity.setQttFumier(form.getQttFumier());
@@ -105,6 +179,16 @@ public class ChampServiceImpl implements ChampService {
             entity= cultureRepository.save(entity);
         }
     }
+
+    /**
+     * Récupère l'historique des enregistrements de culture associés à un champ spécifié par son ID.
+     *
+     * Cette méthode prend l'ID d'un champ en entrée, interroge le référentiel des cultures pour obtenir tous les enregistrements de culture
+     * associés à ce champ, puis les retourne dans un ensemble (Set) de CultureEntity.
+     *
+     * @param id L'ID du champ pour lequel l'historique des cultures doit être récupéré.
+     * @return Un ensemble (Set) de CultureEntity représentant l'historique des enregistrements de culture associés au champ spécifié.
+     */
     @Override
     public Set<CultureEntity> getHistorique(Long id) {
         return cultureRepository.findAllByChamp(id).stream()
@@ -113,15 +197,34 @@ public class ChampServiceImpl implements ChampService {
 
     // Grains
 
+    /**
+     * Met à jour le nom d'un type de grain spécifié par son ID en utilisant le nouveau nom fourni.
+     *
+     * Cette méthode prend l'ID d'un type de grain en entrée, ainsi qu'un nouveau nom pour le type de grain. Elle vérifie que le nouveau nom
+     * n'est pas null, recherche le type de grain correspondant dans le référentiel des types de grains, puis met à jour son nom en conséquence.
+     *
+     * @param id L'ID du type de grain à mettre à jour.
+     * @param nom Le nouveau nom pour le type de grain.
+     * @throws NotFoundException Si le type de grain n'est pas trouvé dans le référentiel.
+     */
     @Override
     public void updateGrain(Long id, String nom) {
         if(nom != null){
-            TypeDeGrainEntity entity = typeDeGrainsRepository.findById(id).get();
+            TypeDeGrainEntity entity = typeDeGrainsRepository.findById(id).orElseThrow(()-> new NotFoundException("Grain not found"));
             entity.setNomGrain(nom);
             typeDeGrainsRepository.save(entity);
         }
     }
 
+    /**
+     * Insère un nouveau type de grain dans le référentiel en utilisant le nom de grain fourni.
+     *
+     * Cette méthode prend le nom d'un nouveau type de grain en entrée, vérifie que le type de grain avec ce nom n'existe pas déjà
+     * dans le référentiel, puis crée un nouveau type de grain en utilisant le nom spécifié.
+     *
+     * @param nom Le nom du nouveau type de grain à insérer.
+     * @throws AlreadyExistsException Si un type de grain avec le même nom existe déjà dans le référentiel.
+     */
     @Override
     public void insertGrain(String nom) {
         if(typeDeGrainsRepository.existsByNomGrain(nom))
@@ -132,14 +235,32 @@ public class ChampServiceImpl implements ChampService {
         typeDeGrainsRepository.save(entity);
     }
 
+    /**
+     * Récupère tous les types de grains présents dans le référentiel.
+     *
+     * Cette méthode interroge le référentiel des types de grains pour obtenir tous les types de grains enregistrés,
+     * puis les retourne dans un ensemble (Set) de TypeDeGrainEntity.
+     *
+     * @return Un ensemble (Set) de TypeDeGrainEntity représentant tous les types de grains enregistrés.
+     */
     @Override
     public Set<TypeDeGrainEntity> getAllGrains() {
         return typeDeGrainsRepository.findAll().stream()
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * Récupère un type de grain spécifié par son ID depuis le référentiel.
+     *
+     * Cette méthode prend l'ID d'un type de grain en entrée, recherche ce type de grain dans le référentiel des types de grains,
+     * puis le retourne s'il est trouvé. Si le type de grain n'est pas trouvé, elle lève une exception NotFoundException.
+     *
+     * @param id L'ID du type de grain à récupérer.
+     * @return Le type de grain (TypeDeGrainEntity) correspondant à l'ID spécifié.
+     * @throws NotFoundException Si le type de grain n'est pas trouvé dans le référentiel.
+     */
     @Override
     public TypeDeGrainEntity getOneGrain(Long id) {
-        return typeDeGrainsRepository.findById(id).get();
+        return typeDeGrainsRepository.findById(id).orElseThrow(()-> new NotFoundException("Grain not found"));
     }
 }
