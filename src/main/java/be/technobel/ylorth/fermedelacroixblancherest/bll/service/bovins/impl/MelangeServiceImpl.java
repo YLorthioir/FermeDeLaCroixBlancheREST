@@ -65,12 +65,12 @@ public class MelangeServiceImpl implements MelangeService {
         if(form == null)
             throw new IllegalArgumentException("form ne peut être null");
 
-        if(melangeRepository.existsMelangeByNomMelange(form.getNomMelange()))
+        if(melangeRepository.existsMelangeByNomMelange(form.nomMelange()))
             throw new AlreadyExistsException("Mélange existe déjà");
 
         MelangeEntity entity =  new MelangeEntity();
-        entity.setNomMelange(form.getNomMelange());
-        entity.setDescription(form.getDescription());
+        entity.setNomMelange(form.nomMelange());
+        entity.setDescription(form.description());
         melangeRepository.save(entity);
     }
 
@@ -92,12 +92,12 @@ public class MelangeServiceImpl implements MelangeService {
         if(form == null)
             throw new IllegalArgumentException("form ne peut être null");
 
-        if(melangeRepository.existsMelangeByNomMelange(form.getNomMelange())&& melangeRepository.findByNomMelange(form.getNomMelange()).get().getId()!=id)
+        if(melangeRepository.existsMelangeByNomMelange(form.nomMelange())&& melangeRepository.findByNomMelange(form.nomMelange()).get().getId()!=id)
             throw new AlreadyExistsException("Mélange déjà existant");
 
         MelangeEntity entity =  new MelangeEntity();
-        entity.setNomMelange(form.getNomMelange());
-        entity.setDescription(form.getDescription());
+        entity.setNomMelange(form.nomMelange());
+        entity.setDescription(form.description());
         entity.setId(id);
         melangeRepository.save(entity);
     }

@@ -4,17 +4,12 @@ import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.BovinSer
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.Bovin;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.InfosEngraissement;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.InfosReproduction;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.Melange;
+import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEngraissementEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.FemelleReproductionEntity;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.BovinInsertForm;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.BovinUpdateForm;
-import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.BovinUpdateTypeForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.ChampRepository;
+import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.Champ;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -75,9 +70,21 @@ public class BovinServiceImpl implements BovinService {
                 nbCesarienne++;
         }
 
-        bovin.setNbCesarienne(nbCesarienne);
-
-        return bovin;
+        return new Bovin(bovin.id(),
+                bovin.numeroInscription(),
+                bovin.sexe(),
+                bovin.dateDeNaissance(),
+                bovin.poidsNaissance(),
+                bovin.nom(),
+                bovin.enCharge(),
+                bovin.neCesarienne(),
+                bovin.race(),
+                bovin.champ(),
+                bovin.pereNI(),
+                bovin.mereNI(),
+                nbCesarienne,
+                bovin.dateAbattage(),
+                bovin.raisonAbattage());
     }
 
     /**
@@ -122,18 +129,18 @@ public class BovinServiceImpl implements BovinService {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        if(bovinRepository.existsByNumeroInscription(form.getNumeroInscription()))
+        if(bovinRepository.existsByNumeroInscription(form.numeroInscription()))
             throw new AlreadyExistsException("Le numéro d'identification du BovinEntity existe déjà");
 
         BovinEntity entity = new BovinEntity();
-        entity.setNumeroInscription(form.getNumeroInscription());
-        entity.setPereNI(form.getPereNI());
-        entity.setMereNI(form.getMereNI());
-        entity.setNeCesarienne(form.isNeCesarienne());
-        entity.setDateDeNaissance(form.getDateDeNaissance());
-        entity.setPoidsNaissance(form.getPoidsNaissance());
-        entity.setSexe(form.getSexe().charAt(0));
-        entity.setRace(raceRepository.findById(form.getRaceId())
+        entity.setNumeroInscription(form.numeroInscription());
+        entity.setPereNI(form.pereNI());
+        entity.setMereNI(form.mereNI());
+        entity.setNeCesarienne(form.neCesarienne());
+        entity.setDateDeNaissance(form.dateDeNaissance());
+        entity.setPoidsNaissance(form.poidsNaissance());
+        entity.setSexe(form.sexe().charAt(0));
+        entity.setRace(raceRepository.findById(form.raceId())
                 .orElseThrow(() -> new NotFoundException("race not found")));
 
         entity = bovinRepository.save(entity);
@@ -158,39 +165,39 @@ public class BovinServiceImpl implements BovinService {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        if(bovinRepository.existsByNumeroInscription(form.getNumeroInscription())&& bovinRepository.findByNumeroInscription(form.getNumeroInscription()).get().getId()!=id)
+        if(bovinRepository.existsByNumeroInscription(form.numeroInscription())&& bovinRepository.findByNumeroInscription(form.numeroInscription()).get().getId()!=id)
             throw new AlreadyExistsException("BovinEntity déjà existant");
 
         if(femelleReproductionRepository.existsById(id)){
-            FemelleReproductionEntity entity = new FemelleReproductionEntity(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getDerniereInsemination(),form.getPerteGrossesse());
-            entity.setNom(form.getNom());
+            FemelleReproductionEntity entity = new FemelleReproductionEntity(form.numeroInscription(),form.sexe().charAt(0),form.dateDeNaissance(),form.poidsNaissance(),form.enCharge(),form.neCesarienne(),form.pereNI(),form.mereNI(),raceRepository.findById(form.raceId()).get(),form.derniereInsemination(),form.perteGrossesse());
+            entity.setNom(form.nom());
             entity.setId(id);
-            entity.setDateAbattage(form.getDateAbattage()==null?null:form.getDateAbattage());
-            entity.setRaisonAbattage(form.getRaisonAbattage());
-            entity.setChamp(champRepository.findById(form.getChampId()).get());
+            entity.setDateAbattage(form.dateAbattage()==null?null:form.dateAbattage());
+            entity.setRaisonAbattage(form.raisonAbattage());
+            entity.setChamp(champRepository.findById(form.champId()).get());
 
             femelleReproductionRepository.save(entity);
 
         } else if(bovinEngraissementRepository.existsById(id)){
 
-            BovinEngraissementEntity entity = new BovinEngraissementEntity(form.getNumeroInscription(),form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get(),form.getPoidsSurPattes(),form.getPoidsCarcasse(),form.getDateEngraissement(),melangeRepository.findById(form.getMelangeId()).get(),null);
-            entity.setNom(form.getNom());
+            BovinEngraissementEntity entity = new BovinEngraissementEntity(form.numeroInscription(),form.sexe().charAt(0),form.dateDeNaissance(),form.poidsNaissance(),form.enCharge(),form.neCesarienne(),form.pereNI(),form.mereNI(),raceRepository.findById(form.raceId()).get(),form.poidsSurPattes(),form.poidsCarcasse(),form.dateEngraissement(),melangeRepository.findById(form.melangeId()).get(),null);
+            entity.setNom(form.nom());
             entity.setId(id);
-            entity.setDateAbattage(form.getDateAbattage()==null?null:form.getDateAbattage());
-            entity.setRaisonAbattage(form.getRaisonAbattage());
-            entity.setChamp(champRepository.findById(form.getChampId()).get());
+            entity.setDateAbattage(form.dateAbattage()==null?null:form.dateAbattage());
+            entity.setRaisonAbattage(form.raisonAbattage());
+            entity.setChamp(champRepository.findById(form.champId()).get());
 
             bovinEngraissementRepository.save(entity);
 
 
         } else {
 
-        BovinEntity entity = new BovinEntity(form.getNumeroInscription(), form.getSexe().charAt(0),form.getDateDeNaissance(),form.getPoidsNaissance(),form.isEnCharge(),form.isNeCesarienne(),form.getPereNI(),form.getMereNI(),raceRepository.findById(form.getRaceId()).get());
-        entity.setNom(form.getNom());
+        BovinEntity entity = new BovinEntity(form.numeroInscription(),form.sexe().charAt(0),form.dateDeNaissance(),form.poidsNaissance(),form.enCharge(),form.neCesarienne(),form.pereNI(),form.mereNI(),raceRepository.findById(form.raceId()).get());
+        entity.setNom(form.nom());
         entity.setId(id);
-        entity.setDateAbattage(form.getDateAbattage()==null?null:form.getDateAbattage());
-        entity.setRaisonAbattage(form.getRaisonAbattage());
-        entity.setChamp(form.getChampId()==null?null:champRepository.findById(form.getChampId()).get());
+        entity.setDateAbattage(form.dateAbattage()==null?null:form.dateAbattage());
+        entity.setRaisonAbattage(form.raisonAbattage());
+        entity.setChamp(form.champId()==null?null:champRepository.findById(form.champId()).get());
 
         bovinRepository.save(entity);
         }
@@ -222,11 +229,7 @@ public class BovinServiceImpl implements BovinService {
 
             }
 
-            return InfosReproduction.builder()
-                    .perteGrossesse(entity.getPerteGrossesse())
-                    .derniereInsemination(entity.getDerniereInsemination())
-                    .nbCesarienne(nbCesariennes)
-                    .build();
+            return new InfosReproduction(entity.getDerniereInsemination(),entity.getPerteGrossesse(), nbCesariennes);
         }
 
         return null;
@@ -249,12 +252,7 @@ public class BovinServiceImpl implements BovinService {
 
             BovinEngraissementEntity entity = bovinEngraissementRepository.findById(id).get();
 
-            return InfosEngraissement.builder()
-                    .melange(Melange.fromBLL(entity.getMelange()))
-                    .dateEngraissement(entity.getDateEngraissement())
-                    .poidsCarcasse(entity.getPoidsCarcasse())
-                    .poidsSurPattes(entity.getPoidsSurPattes())
-                    .build();
+            return new InfosEngraissement(entity.getPoidsSurPattes(), entity.getPoidsCarcasse(), entity.getDateEngraissement(),Melange.fromBLL(entity.getMelange()));
         }
 
         return null;
@@ -272,8 +270,8 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public void updateType(Long id, BovinUpdateTypeForm form) {
-       if("BovinEntity".equals(form.getFinalite())||"FemelleReproduction".equals(form.getFinalite())||"BovinEntityEngraissement".equals(form.getFinalite()))
-           bovinRepository.changeType(id, form.getFinalite());
+       if("BovinEntity".equals(form.finalite())||"FemelleReproduction".equals(form.finalite())||"BovinEntityEngraissement".equals(form.finalite()))
+           bovinRepository.changeType(id, form.finalite());
     }
 
     /**

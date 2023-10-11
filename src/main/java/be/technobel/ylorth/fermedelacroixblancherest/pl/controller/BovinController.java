@@ -87,7 +87,7 @@ public class BovinController {
 
     @PatchMapping("/race/{id:[0-9]+}")
     public void update(@PathVariable Long id, @RequestBody @Valid RaceForm form){
-        raceService.update(id, form.getNom());
+        raceService.update(id, form.nom());
     }
 
     @PostMapping("/race/add")

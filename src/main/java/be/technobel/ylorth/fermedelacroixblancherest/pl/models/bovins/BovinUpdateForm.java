@@ -4,41 +4,33 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.utils.validation.constra
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.PositiveOrZero;
-import lombok.Data;
 
 import java.time.LocalDate;
 
-@Data
 @ConfirmPoids
-public class BovinUpdateForm {
-    @NotBlank
-    private String numeroInscription;
-    private String sexe;
-    private String nom;
-    @PastOrPresent
-    private LocalDate dateDeNaissance;
-    @PositiveOrZero
-    private double poidsNaissance;
-    private boolean neCesarienne;
-    private Long raceId;
-    private String pereNI;
-    private String mereNI;
-    private Long champId;
-    private boolean enCharge;
-    private LocalDate dateAbattage;
-    private String raisonAbattage;
+public record BovinUpdateForm (
+    @NotBlank String numeroInscription,
+    String sexe,
+    String nom,
+    @PastOrPresent LocalDate dateDeNaissance,
+    @PositiveOrZero double poidsNaissance,
+    boolean neCesarienne,
+    Long raceId,
+    String pereNI,
+    String mereNI,
+    Long champId,
+    boolean enCharge,
+    LocalDate dateAbattage,
+    String raisonAbattage,
 
     //Reproduction
-    @PastOrPresent
-    private LocalDate derniereInsemination;
-    @PositiveOrZero
-    private int perteGrossesse;
+    @PastOrPresent LocalDate derniereInsemination,
+    @PositiveOrZero int perteGrossesse,
 
     //Engraissement
-    private double poidsSurPattes;
-    private double poidsCarcasse;
-    @PastOrPresent
-    private LocalDate dateEngraissement;
-    private Long melangeId;
-
+    double poidsSurPattes,
+    double poidsCarcasse,
+    @PastOrPresent LocalDate dateEngraissement,
+    Long melangeId
+    ){
 }

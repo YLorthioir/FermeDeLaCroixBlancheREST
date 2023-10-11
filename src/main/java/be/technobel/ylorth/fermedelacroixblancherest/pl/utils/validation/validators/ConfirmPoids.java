@@ -9,8 +9,8 @@ public class ConfirmPoids implements ConstraintValidator<be.technobel.ylorth.fer
 
     @Override
     public boolean isValid(BovinUpdateForm value, ConstraintValidatorContext context) {
-        if(value.getPoidsSurPattes()!=0 && value.getPoidsCarcasse()!=0)
-            return (value.getPoidsSurPattes() > value.getPoidsCarcasse() && value.getPoidsCarcasse() > value.getPoidsNaissance());
+        if(value.poidsSurPattes()!=0 && value.poidsCarcasse()!=0)
+            return (value.poidsSurPattes() > value.poidsCarcasse() && value.poidsCarcasse() > value.poidsNaissance());
         else
             return true;
     }

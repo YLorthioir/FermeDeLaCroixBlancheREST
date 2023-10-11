@@ -24,12 +24,11 @@ public class ControllerAdvisor {
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Error> handleResourceNotFound(NotFoundException ex, HttpServletRequest req){
 
-        Error errorDTO = Error.builder()
-                .status( HttpStatus.NOT_FOUND )
-                .message( ex.getMessage() )
-                .requestMadeAt( LocalDateTime.now() )
-                .URI( req.getRequestURI() )
-                .build();
+        Error errorDTO = new Error(
+                ex.getMessage(),
+                HttpStatus.NOT_FOUND,
+                LocalDateTime.now(),
+                req.getRequestURI());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
@@ -44,12 +43,11 @@ public class ControllerAdvisor {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Error> handleIllegalArgumentException(IllegalArgumentException ex, HttpServletRequest req){
 
-        Error errorDTO = Error.builder()
-                .status( HttpStatus.BAD_REQUEST )
-                .message( ex.getMessage() )
-                .requestMadeAt( LocalDateTime.now() )
-                .URI( req.getRequestURI() )
-                .build();
+        Error errorDTO = new Error(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                LocalDateTime.now(),
+                req.getRequestURI());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
@@ -63,12 +61,11 @@ public class ControllerAdvisor {
     @ExceptionHandler(AlreadyExistsException.class)
     public ResponseEntity<Error> handleAlreadyExistsException(AlreadyExistsException ex, HttpServletRequest req){
 
-        Error errorDTO = Error.builder()
-                .status( HttpStatus.BAD_REQUEST )
-                .message( ex.getMessage() )
-                .requestMadeAt( LocalDateTime.now() )
-                .URI( req.getRequestURI() )
-                .build();
+        Error errorDTO = new Error(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                LocalDateTime.now(),
+                req.getRequestURI());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
@@ -82,12 +79,11 @@ public class ControllerAdvisor {
     @ExceptionHandler(FaucheInsertException.class)
     public ResponseEntity<Error> handleFaucheInsertException(FaucheInsertException ex, HttpServletRequest req){
 
-        Error errorDTO = Error.builder()
-                .status( HttpStatus.BAD_REQUEST )
-                .message( ex.getMessage() )
-                .requestMadeAt( LocalDateTime.now() )
-                .URI( req.getRequestURI() )
-                .build();
+        Error errorDTO = new Error(
+                ex.getMessage(),
+                HttpStatus.BAD_REQUEST,
+                LocalDateTime.now(),
+                req.getRequestURI());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
@@ -117,12 +113,11 @@ public class ControllerAdvisor {
 
         errorsList = errorsList.substring(0,errorsList.length()-2) + "}";
 
-        Error errorDTO = Error.builder()
-                .status( HttpStatus.BAD_REQUEST)
-                .message( errorsList )
-                .requestMadeAt(LocalDateTime.now())
-                .URI(req.getRequestURI() )
-                .build();
+        Error errorDTO = new Error(
+                errorsList,
+                HttpStatus.BAD_REQUEST,
+                LocalDateTime.now(),
+                req.getRequestURI());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
