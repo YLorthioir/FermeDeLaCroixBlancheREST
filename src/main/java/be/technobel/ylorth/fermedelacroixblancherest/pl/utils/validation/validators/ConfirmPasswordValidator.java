@@ -9,7 +9,7 @@ public class ConfirmPasswordValidator implements ConstraintValidator<ConfirmPass
 
     @Override
     public boolean isValid(RegisterForm value, ConstraintValidatorContext context) {
-        return value.getPassword().equals(value.getConfirmPassword());
+        return value.password().equals(value.confirmPassword());
     }
 
 

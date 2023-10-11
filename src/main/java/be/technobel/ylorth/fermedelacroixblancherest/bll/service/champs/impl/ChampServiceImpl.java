@@ -75,13 +75,13 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void insertChamp(ChampInsertForm form) {
-        if(champRepository.existsByLieu(form.getLieu()))
+        if(champRepository.existsByLieu(form.lieu()))
             throw new AlreadyExistsException("Champ déjà existant");
 
         if(form!=null){
             ChampEntity entity = new ChampEntity();
-            entity.setLieu(form.getLieu());
-            entity.setSuperficie(form.getSuperficie());
+            entity.setLieu(form.lieu());
+            entity.setSuperficie(form.superficie());
             champRepository.save(entity);
         }
 
@@ -102,9 +102,9 @@ public class ChampServiceImpl implements ChampService {
     public void updateChamp(Long id, ChampUpdateForm form) {
         if(form!=null){
             ChampEntity entity = champRepository.findById(id).orElseThrow(()-> new NotFoundException("Champ not found"));
-            entity.setLieu(form.getLieu());
-            entity.setSuperficie(form.getSuperficie());
-            entity.setDateDerniereChaux(form.getDateDerniereChaux());
+            entity.setLieu(form.lieu());
+            entity.setSuperficie(form.superficie());
+            entity.setDateDerniereChaux(form.dateDerniereChaux());
             champRepository.save(entity);
         }
     }
@@ -124,14 +124,14 @@ public class ChampServiceImpl implements ChampService {
     public void insertCulture(CultureForm form){
         if(form!=null){
             CultureEntity entity = new CultureEntity();
-            entity.setChamp(champRepository.findById(form.getIdChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
-            entity.setDateMiseEnCulture(form.getDateMiseEnCulture());
-            entity.setEstTemporaire(form.isTemporaire());
-            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.getGrainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
-            entity.setDateDeFin(form.getDateDeFin()!=null?form.getDateDeFin():null);
-            entity.setDateEpandage(form.getDateDernierEpandage()!=null?form.getDateDernierEpandage():null);
-            entity.setQttFumier(form.getQttFumier());
-            entity.setAnalysePDF(form.getReferenceAnalyse());
+            entity.setChamp(champRepository.findById(form.idChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
+            entity.setDateMiseEnCulture(form.dateMiseEnCulture());
+            entity.setEstTemporaire(form.temporaire());
+            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.grainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
+            entity.setDateDeFin(form.dateDeFin()!=null?form.dateDeFin():null);
+            entity.setDateEpandage(form.dateDernierEpandage()!=null?form.dateDernierEpandage():null);
+            entity.setQttFumier(form.qttFumier());
+            entity.setAnalysePDF(form.referenceAnalyse());
 
             entity= cultureRepository.save(entity);
         }
@@ -167,14 +167,14 @@ public class ChampServiceImpl implements ChampService {
     public void updateCulture(Long id, CultureForm form) {
         if(form!=null){
             CultureEntity entity = cultureRepository.findById(id).orElseThrow(()-> new NotFoundException("Culture not found"));
-            entity.setChamp(champRepository.findById(form.getIdChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
-            entity.setDateMiseEnCulture(form.getDateMiseEnCulture());
-            entity.setEstTemporaire(form.isTemporaire());
-            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.getGrainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
-            entity.setDateDeFin(form.getDateDeFin()!=null?form.getDateDeFin():null);
-            entity.setDateEpandage(form.getDateDernierEpandage()!=null?form.getDateDernierEpandage():null);
-            entity.setQttFumier(form.getQttFumier());
-            entity.setAnalysePDF(form.getReferenceAnalyse());
+            entity.setChamp(champRepository.findById(form.idChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
+            entity.setDateMiseEnCulture(form.dateMiseEnCulture());
+            entity.setEstTemporaire(form.temporaire());
+            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.grainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
+            entity.setDateDeFin(form.dateDeFin()!=null?form.dateDeFin():null);
+            entity.setDateEpandage(form.dateDernierEpandage()!=null?form.dateDernierEpandage():null);
+            entity.setQttFumier(form.qttFumier());
+            entity.setAnalysePDF(form.referenceAnalyse());
 
             entity= cultureRepository.save(entity);
         }

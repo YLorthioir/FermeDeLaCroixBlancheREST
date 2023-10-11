@@ -104,7 +104,7 @@ public class SanteController {
 
     @PatchMapping("/maladie/{id:[0-9]+}")
     public void updateMaladie(@PathVariable Long id, @RequestBody @Valid MaladieForm form){
-        santeService.updateMaladie(id, form.getNom());
+        santeService.updateMaladie(id, form.nom());
     }
 
     //Traitement

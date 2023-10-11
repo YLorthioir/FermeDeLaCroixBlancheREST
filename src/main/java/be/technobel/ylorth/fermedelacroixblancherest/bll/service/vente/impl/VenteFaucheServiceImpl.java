@@ -63,11 +63,11 @@ public class VenteFaucheServiceImpl implements VenteFaucheService {
     public void insert(VenteFaucheForm form) {
         if(form!=null){
             VenteFaucheEntity entity = new VenteFaucheEntity();
-            entity.setFauche(faucheRepository.findById(form.getFaucheId()).orElseThrow(()-> new NotFoundException("Fauche not found")));
-            entity.setQuantite(form.getQtt());
-            entity.setDateDeVente(form.getDate());
-            entity.setPrixCoutant(form.getPrixCoutant());
-            entity.setPrixRevente(form.getPrixRevente());
+            entity.setFauche(faucheRepository.findById(form.faucheId()).orElseThrow(()-> new NotFoundException("Fauche not found")));
+            entity.setQuantite(form.qtt());
+            entity.setDateDeVente(form.date());
+            entity.setPrixCoutant(form.prixCoutant());
+            entity.setPrixRevente(form.prixRevente());
             venteFaucheRepository.save(entity);
         }
 
@@ -86,11 +86,11 @@ public class VenteFaucheServiceImpl implements VenteFaucheService {
     public void update(Long id, VenteFaucheForm form) {
         if(form!=null){
             VenteFaucheEntity entity = venteFaucheRepository.findById(id).orElseThrow(()-> new NotFoundException("VenteFauche not found"));
-            entity.setFauche(faucheRepository.findById(form.getFaucheId()).orElseThrow(()-> new NotFoundException("Fauche not found")));
-            entity.setQuantite(form.getQtt());
-            entity.setDateDeVente(form.getDate());
-            entity.setPrixCoutant(form.getPrixCoutant());
-            entity.setPrixRevente(form.getPrixRevente());
+            entity.setFauche(faucheRepository.findById(form.faucheId()).orElseThrow(()-> new NotFoundException("Fauche not found")));
+            entity.setQuantite(form.qtt());
+            entity.setDateDeVente(form.date());
+            entity.setPrixCoutant(form.prixCoutant());
+            entity.setPrixRevente(form.prixRevente());
             venteFaucheRepository.save(entity);
         }
     }

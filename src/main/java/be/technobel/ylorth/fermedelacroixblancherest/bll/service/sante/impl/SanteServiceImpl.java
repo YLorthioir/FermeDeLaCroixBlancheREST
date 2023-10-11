@@ -157,15 +157,15 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void insertVaccin(VaccinForm form) {
-        if(vaccinRepository.existsByNom(form.getNom()))
+        if(vaccinRepository.existsByNom(form.nom()))
             throw new AlreadyExistsException("Vaccin existe déjà");
 
         VaccinEntity entity = new VaccinEntity();
 
-        entity.setNom(form.getNom());
-        entity.setDosage(form.getDosage());
-        entity.setNbDose(form.getNbDose());
-        entity.setDelai(form.getDelai());
+        entity.setNom(form.nom());
+        entity.setDosage(form.dosage());
+        entity.setNbDose(form.nbDose());
+        entity.setDelai(form.delai());
         entity.setActif(true);
 
         vaccinRepository.save(entity);
@@ -186,16 +186,16 @@ public class SanteServiceImpl implements SanteService {
     @Override
     public void updateVaccin(Long id, VaccinForm form) {
 
-        if(vaccinRepository.existsByNom(form.getNom())&& vaccinRepository.findVaccinByNom(form.getNom()).orElseThrow(()->new NotFoundException("Vaccin not found")).getId()!=id)
+        if(vaccinRepository.existsByNom(form.nom())&& vaccinRepository.findVaccinByNom(form.nom()).orElseThrow(()->new NotFoundException("Vaccin not found")).getId()!=id)
             throw new AlreadyExistsException("Vaccin déjà existant");
 
-        VaccinEntity entity = vaccinRepository.findVaccinByNom(form.getNom()).orElseThrow(()->new NotFoundException("Vaccin not found"));
+        VaccinEntity entity = vaccinRepository.findVaccinByNom(form.nom()).orElseThrow(()->new NotFoundException("Vaccin not found"));
 
-        entity.setNom(form.getNom());
-        entity.setDosage(form.getDosage());
-        entity.setNbDose(form.getNbDose());
-        entity.setDelai(form.getDelai());
-        entity.setActif(form.isActif());
+        entity.setNom(form.nom());
+        entity.setDosage(form.dosage());
+        entity.setNbDose(form.nbDose());
+        entity.setDelai(form.delai());
+        entity.setActif(form.actif());
 
         vaccinRepository.save(entity);
 
@@ -377,12 +377,12 @@ public class SanteServiceImpl implements SanteService {
         if(form!=null){
             AEntity entity = new AEntity();
             entity.setBovins(bovinRepository.findById(idBovin).orElseThrow(()->new NotFoundException("Bovin not found")));
-            if(form.getTraitement()==null)
+            if(form.traitement()==null)
                 entity.setTraitement(null);
             else
-                entity.setTraitement(traitementRepository.findById(form.getTraitement()).orElseThrow(()->new NotFoundException("Traitement not found")));
-            entity.setMaladie(maladieRepository.findById(form.getMaladie()).orElseThrow(()->new NotFoundException("Maladie not found")));
-            entity.setAnneeMaladie(form.getAnnee());
+                entity.setTraitement(traitementRepository.findById(form.traitement()).orElseThrow(()->new NotFoundException("Traitement not found")));
+            entity.setMaladie(maladieRepository.findById(form.maladie()).orElseThrow(()->new NotFoundException("Maladie not found")));
+            entity.setAnneeMaladie(form.annee());
 
             aRepository.save(entity);
 
@@ -404,12 +404,12 @@ public class SanteServiceImpl implements SanteService {
 
         if(form!=null){
             AEntity entity = aRepository.findById(id).orElseThrow(()->new NotFoundException("A not found"));
-            if(form.getTraitement()==null)
+            if(form.traitement()==null)
                 entity.setTraitement(null);
             else
-                entity.setTraitement(traitementRepository.findById(form.getTraitement()).orElseThrow(()->new NotFoundException("Traitement not found")));
-            entity.setMaladie(maladieRepository.findById(form.getMaladie()).orElseThrow(()->new NotFoundException("Maladie not found")));
-            entity.setAnneeMaladie(form.getAnnee());
+                entity.setTraitement(traitementRepository.findById(form.traitement()).orElseThrow(()->new NotFoundException("Traitement not found")));
+            entity.setMaladie(maladieRepository.findById(form.maladie()).orElseThrow(()->new NotFoundException("Maladie not found")));
+            entity.setAnneeMaladie(form.annee());
 
             aRepository.save(entity);
 
@@ -441,13 +441,13 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void insertTraitement(TraitementForm form) {
-        if(traitementRepository.existsByNomTraitement(form.getNomTraitement()))
+        if(traitementRepository.existsByNomTraitement(form.nomTraitement()))
             throw new AlreadyExistsException("Traitement existe déjà");
 
         if(form!=null){
             TraitementEntity entity = new TraitementEntity();
-            entity.setNomTraitement(form.getNomTraitement());
-            entity.setActif(form.isActif());
+            entity.setNomTraitement(form.nomTraitement());
+            entity.setActif(form.actif());
             traitementRepository.save(entity);
         }
     }
@@ -464,13 +464,13 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void updateTraitement(Long id, TraitementForm form) {
-        if(traitementRepository.existsByNomTraitement(form.getNomTraitement())&& traitementRepository.findByNomTraitement(form.getNomTraitement()).orElseThrow(()->new NotFoundException("Traitement not found")).getId()!=id)
+        if(traitementRepository.existsByNomTraitement(form.nomTraitement())&& traitementRepository.findByNomTraitement(form.nomTraitement()).orElseThrow(()->new NotFoundException("Traitement not found")).getId()!=id)
             throw new AlreadyExistsException("Traitement déjà existant");
 
         if(form!=null){
             TraitementEntity entity = new TraitementEntity();
-            entity.setNomTraitement(form.getNomTraitement());
-            entity.setActif(form.isActif());
+            entity.setNomTraitement(form.nomTraitement());
+            entity.setActif(form.actif());
             entity.setId(id);
             traitementRepository.save(entity);
         }

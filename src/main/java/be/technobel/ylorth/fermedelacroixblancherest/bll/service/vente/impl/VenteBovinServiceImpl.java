@@ -67,11 +67,11 @@ public class VenteBovinServiceImpl implements VenteBovinService {
         if(form!= null){
             VenteBovinEntity entity = new VenteBovinEntity();
 
-            entity.setBovinEngraissement(bovinEngraissementRepository.findByNumeroInscription(form.getNumeroIdentification()).get());
-            entity.setDateDeVente(form.getDate());
-            entity.setQuantite(form.getQtt());
-            entity.setPrixRevente(form.getPrixRevente());
-            entity.setPrixCoutant(form.getPrixCoutant());
+            entity.setBovinEngraissement(bovinEngraissementRepository.findByNumeroInscription(form.numeroIdentification()).get());
+            entity.setDateDeVente(form.date());
+            entity.setQuantite(form.qtt());
+            entity.setPrixRevente(form.prixRevente());
+            entity.setPrixCoutant(form.prixCoutant());
             venteBovinRepository.save(entity);
         }
 
@@ -91,11 +91,11 @@ public class VenteBovinServiceImpl implements VenteBovinService {
         if(form!= null){
             VenteBovinEntity entity = venteBovinRepository.findById(id).orElseThrow(()-> new NotFoundException("VenteBovin not found"));
 
-            entity.setBovinEngraissement(bovinEngraissementRepository.findByNumeroInscription(form.getNumeroIdentification()).orElseThrow(()-> new NotFoundException("Bovin not found")));
-            entity.setDateDeVente(form.getDate());
-            entity.setQuantite(form.getQtt());
-            entity.setPrixRevente(form.getPrixRevente());
-            entity.setPrixCoutant(form.getPrixCoutant());
+            entity.setBovinEngraissement(bovinEngraissementRepository.findByNumeroInscription(form.numeroIdentification()).orElseThrow(()-> new NotFoundException("Bovin not found")));
+            entity.setDateDeVente(form.date());
+            entity.setQuantite(form.qtt());
+            entity.setPrixRevente(form.prixRevente());
+            entity.setPrixCoutant(form.prixCoutant());
             venteBovinRepository.save(entity);
         }
     }

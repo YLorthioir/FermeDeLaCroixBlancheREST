@@ -41,13 +41,13 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public void register(RegisterForm form) {
-        if(userRepository.existsByLogin(form.getLogin()))
+        if(userRepository.existsByLogin(form.login()))
             throw new AlreadyExistsException("Le login existe déjà");
 
         UserEntity entity = new UserEntity();
         entity.setRole(form.getRole());
-        entity.setPassword(passwordEncoder.encode(form.getPassword()));
-        entity.setLogin(form.getLogin());
+        entity.setPassword(passwordEncoder.encode(form.password()));
+        entity.setLogin(form.login());
         entity.setEnabled(true);
         userRepository.save(entity);
 
@@ -64,18 +64,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public AuthResponse login(LoginForm form) {
         System.out.println("Service:"+ form);
-        authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(form.getLogin(),form.getPassword()) );
+        authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(form.login(),form.password()) );
 
-        UserEntity user = userRepository.findByLogin(form.getLogin() )
+        UserEntity user = userRepository.findByLogin(form.login() )
                 .orElseThrow();
 
         String token = jwtProvider.generateToken(user.getUsername(), user.getRole() );
 
-        return AuthResponse.builder()
-                .token(token)
-                .login(user.getLogin())
-                .role(user.getRole())
-                .build();
+        return new AuthResponse(
+                token,
+                user.getLogin(),
+                user.getRole());
     }
 
 }

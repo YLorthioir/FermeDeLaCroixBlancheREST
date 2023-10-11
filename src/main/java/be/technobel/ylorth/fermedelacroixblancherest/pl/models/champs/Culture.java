@@ -1,42 +1,38 @@
 package be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs;
 
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.champs.CultureEntity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Builder
-@Getter @Setter
-public class Culture {
+public record Culture (
 
-    private long id;
-    private boolean estTemporaire;
-    private LocalDate dateMiseEnCulture;
-    private LocalDate dateDeFin;
-    private String analysePDF;
-    private LocalDate dateEpandage;
-    private double qttFumier;
-    private Champ champ;
-    private Long faucheId;
-    private TypeDeGrain typeDeGrain;
+    long id,
+    boolean estTemporaire,
+    LocalDate dateMiseEnCulture,
+    LocalDate dateDeFin,
+    String analysePDF,
+    LocalDate dateEpandage,
+    double qttFumier,
+    Champ champ,
+    Long faucheId,
+    TypeDeGrain typeDeGrain
 
+){
     public static Culture fromBLL(CultureEntity entity){
         if(entity==null)
             return null;
 
-        return Culture.builder()
-                .id(entity.getId())
-                .analysePDF(entity.getAnalysePDF())
-                .dateDeFin(entity.getDateDeFin())
-                .dateEpandage(entity.getDateEpandage())
-                .dateMiseEnCulture(entity.getDateMiseEnCulture())
-                .estTemporaire(entity.isEstTemporaire())
-                .qttFumier(entity.getQttFumier())
-                .champ(Champ.fromBLL(entity.getChamp()))
-                .typeDeGrain(TypeDeGrain.fromBLL(entity.getTypeDeGrain()))
-                .build();
+        return new Culture(
+                entity.getId(),
+                entity.isEstTemporaire(),
+                entity.getDateMiseEnCulture(),
+                entity.getDateDeFin(),
+                entity.getAnalysePDF(),
+                entity.getDateEpandage(),
+                entity.getQttFumier(),
+                Champ.fromBLL(entity.getChamp()),
+                null,
+                TypeDeGrain.fromBLL(entity.getTypeDeGrain()));
     }
 
 }
