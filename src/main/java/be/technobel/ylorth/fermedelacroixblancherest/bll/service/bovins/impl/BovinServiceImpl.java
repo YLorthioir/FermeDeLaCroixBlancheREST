@@ -1,6 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.BovinService;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.RaceEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.*;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
@@ -10,6 +11,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEngr
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.FemelleReproductionEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.ChampRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.Champ;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -60,7 +62,10 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public Bovin getOne(String numeroInscription) {
-        Bovin bovin = bovinRepository.findByNumeroInscription(numeroInscription)
+
+        Specification<BovinEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numeroInscription"),numeroInscription)));
+
+        Bovin bovin = bovinRepository.findOne(spec)
                 .map(Bovin::fromBLL)
                 .orElseThrow(() -> new NotFoundException("bovin not found"));
 
@@ -100,15 +105,20 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public Set<BovinEntity> getChildren(String numeroInscription) {
-        if(bovinRepository.findByNumeroInscription(numeroInscription).orElseThrow(()-> new NotFoundException("BovinEntity not found")).getSexe()=='F')
-            return bovinRepository.findAllEnfantsMere(numeroInscription).stream()
-                    .collect(Collectors.toSet());
 
-        else if (bovinRepository.findByNumeroInscription(numeroInscription).orElseThrow(()-> new NotFoundException("BovinEntity not found")).getSexe()=='M')
-            return bovinRepository.findAllEnfantsPere(numeroInscription).stream()
-                    .collect(Collectors.toSet());
+        Specification<BovinEntity> specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numeroInscription"), numeroInscription)));
+
+        if(bovinRepository.findOne(specification).orElseThrow(()-> new NotFoundException("BovinEntity not found")).getSexe()=='F')
+            specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("mereNI"),numeroInscription)));
+
+        else if (bovinRepository.findOne(specification).orElseThrow(()-> new NotFoundException("BovinEntity not found")).getSexe()=='M')
+            specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("pereNI"),numeroInscription)));
+
         else
             return null;
+
+        return bovinRepository.findAll(specification).stream()
+                .collect(Collectors.toSet());
 
     }
 
@@ -126,10 +136,13 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public void createBovin(BovinInsertForm form) {
+
+        Specification<BovinEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numeroInscription"),form.numeroInscription())));
+
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        if(bovinRepository.existsByNumeroInscription(form.numeroInscription()))
+        if(bovinRepository.exists(spec))
             throw new AlreadyExistsException("Le numéro d'identification du BovinEntity existe déjà");
 
         BovinEntity entity = new BovinEntity();
@@ -162,10 +175,13 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public void updateBovin(Long id,BovinUpdateForm form) {
+
+        Specification<BovinEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numeroInscription"),form.numeroInscription())));
+
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        if(bovinRepository.existsByNumeroInscription(form.numeroInscription())&& bovinRepository.findByNumeroInscription(form.numeroInscription()).get().getId()!=id)
+        if(bovinRepository.exists(spec)&& bovinRepository.findOne(spec).get().getId()!=id)
             throw new AlreadyExistsException("BovinEntity déjà existant");
 
         if(femelleReproductionRepository.existsById(id)){
@@ -270,7 +286,7 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public void updateType(Long id, BovinUpdateTypeForm form) {
-       if("BovinEntity".equals(form.finalite())||"FemelleReproduction".equals(form.finalite())||"BovinEntityEngraissement".equals(form.finalite()))
+       if("Bovin".equals(form.finalite())||"FemelleReproduction".equals(form.finalite())||"BovinEngraissement".equals(form.finalite()))
            bovinRepository.changeType(id, form.finalite());
     }
 
@@ -284,7 +300,10 @@ public class BovinServiceImpl implements BovinService {
      */
     @Override
     public Set<BovinEntity> getAllTaureaux() {
-        return bovinRepository.findAllTaureau().stream()
+
+        Specification<BovinEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.and(criteriaBuilder.equal(root.get("sexe"),'M'),criteriaBuilder.isNotNull(root.get("nom")))));
+
+        return bovinRepository.findAll(spec).stream()
                 .collect(Collectors.toSet());
     }
 

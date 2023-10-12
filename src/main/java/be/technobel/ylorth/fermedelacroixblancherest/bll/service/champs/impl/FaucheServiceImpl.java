@@ -9,8 +9,12 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.FaucheUpda
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.CultureRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.FaucheRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.FaucheService;
+import jakarta.persistence.criteria.Path;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,18 +65,23 @@ public class FaucheServiceImpl implements FaucheService {
     public void insert(FaucheInsertForm form) {
         if(form!=null){
 
-            Optional<CultureEntity> cultureCorrespondante = cultureRepository.findAllByChamp(form.champId()).stream()
+            Specification<CultureEntity> specificationCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("champ").get("id"),form.champId())));
+
+            Optional<CultureEntity> cultureCorrespondante = cultureRepository.findAll(specificationCulture).stream()
                     .filter(culture -> culture.getDateMiseEnCulture().getYear()== form.annee())
                     .findFirst();
 
             FaucheEntity entity = new FaucheEntity();
-            if(!faucheRepository.existsByAnneeAndCultureId(form.annee(),cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId())){
+
+            Specification<FaucheEntity> specificationAnneeCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.and(criteriaBuilder.equal(root.get("annee"),form.annee()), criteriaBuilder.equal(root.get("culture").get("id"),cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()))));
+
+            if(!faucheRepository.exists(specificationAnneeCulture)){
                 entity.setCulture(cultureRepository.findById(cultureCorrespondante.get().getId()).orElseThrow(()->new NotFoundException("Culture not found")));
                 entity.setAnnee(form.annee());
                 entity.setFauche1(form.fauche());
                 entity.setFauche1rendement(form.faucheRendement());
             } else {
-                entity = faucheRepository.findByAnneeAndCulture(form.annee(),cultureCorrespondante.get().getId());
+                entity = faucheRepository.findOne(specificationAnneeCulture).orElseThrow(()->new NotFoundException("Culture not found"));
                 if(entity.getFauche2()==null){
                     entity.setFauche2(form.fauche());
                     entity.setFauche2rendement(form.faucheRendement());
@@ -130,8 +139,10 @@ public class FaucheServiceImpl implements FaucheService {
      */
     @Override
     public Set<FaucheEntity> getAll(String nomChamp) {
-        return faucheRepository.findAllByChamp(nomChamp).stream()
-                .collect(Collectors.toSet());
+
+        Specification<FaucheEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("culture").get("champ").get("lieu"), nomChamp)));
+
+        return new HashSet<>(faucheRepository.findAll(spec));
     }
 
     /**
@@ -145,8 +156,10 @@ public class FaucheServiceImpl implements FaucheService {
      */
     @Override
     public Set<FaucheEntity> getAll(int annee) {
-        return faucheRepository.findAllByAnnee(annee).stream()
-                .collect(Collectors.toSet());
+
+        Specification<FaucheEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("annee"), annee)));
+
+        return new HashSet<>(faucheRepository.findAll(spec));
     }
 
     /**
@@ -159,6 +172,6 @@ public class FaucheServiceImpl implements FaucheService {
      */
     @Override
     public Set<Integer> getAllAnnee() {
-        return faucheRepository.getAllAnnee();
+        return new HashSet<>(faucheRepository.getAllAnnee());
     }
 }

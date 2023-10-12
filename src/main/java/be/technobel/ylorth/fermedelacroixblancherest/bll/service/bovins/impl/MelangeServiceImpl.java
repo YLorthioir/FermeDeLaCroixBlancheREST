@@ -6,6 +6,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.MelangeEn
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.bovins.MelangeForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.MelangeRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.MelangeService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -65,7 +66,9 @@ public class MelangeServiceImpl implements MelangeService {
         if(form == null)
             throw new IllegalArgumentException("form ne peut être null");
 
-        if(melangeRepository.existsMelangeByNomMelange(form.nomMelange()))
+        Specification<MelangeEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomMelange"), form.nomMelange())));
+
+        if(melangeRepository.exists(spec))
             throw new AlreadyExistsException("Mélange existe déjà");
 
         MelangeEntity entity =  new MelangeEntity();
@@ -92,7 +95,9 @@ public class MelangeServiceImpl implements MelangeService {
         if(form == null)
             throw new IllegalArgumentException("form ne peut être null");
 
-        if(melangeRepository.existsMelangeByNomMelange(form.nomMelange())&& melangeRepository.findByNomMelange(form.nomMelange()).get().getId()!=id)
+        Specification<MelangeEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomMelange"), form.nomMelange())));
+
+        if(melangeRepository.exists(spec)&& melangeRepository.findOne(spec).get().getId()!=id)
             throw new AlreadyExistsException("Mélange déjà existant");
 
         MelangeEntity entity =  new MelangeEntity();

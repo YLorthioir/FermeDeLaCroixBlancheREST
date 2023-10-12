@@ -2,6 +2,7 @@ package be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins;
 
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.Set;
 
-public interface BovinRepository extends JpaRepository<BovinEntity,Long> {
+public interface BovinRepository extends JpaRepository<BovinEntity,Long>, JpaSpecificationExecutor<BovinEntity> {
 
-    Optional<BovinEntity> findByNumeroInscription(String numeroInscription);
+/*    Optional<BovinEntity> findByNumeroInscription(String numeroInscription);
     @Query("select b from Bovin b where b.mereNI= ?1")
     Set<BovinEntity> findAllEnfantsMere(String mere);
     @Query("select b from Bovin b where b.pereNI= ?1")
@@ -20,7 +21,7 @@ public interface BovinRepository extends JpaRepository<BovinEntity,Long> {
     @Query("select b from Bovin b where b.sexe='M' and b.nom!=null ")
     Set<BovinEntity> findAllTaureau();
 
-    boolean existsByNumeroInscription(String numeroInscription);
+    boolean existsByNumeroInscription(String numeroInscription);*/
 
     @Transactional
     @Modifying

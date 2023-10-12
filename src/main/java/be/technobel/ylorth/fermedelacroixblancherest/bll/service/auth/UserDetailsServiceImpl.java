@@ -1,6 +1,8 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.auth;
 
+import be.technobel.ylorth.fermedelacroixblancherest.dal.models.security.UserEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.auth.UserRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,7 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByLogin(username)
+
+        Specification<UserEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("login"),username)));
+
+        return userRepository.findOne(spec)
                 .orElseThrow( () -> new UsernameNotFoundException("couldn't find user with login " + username) );
     }
 

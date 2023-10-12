@@ -7,6 +7,8 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.LoginFor
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.RegisterForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.auth.UserRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.utils.config.security.JwtProvider;
+import org.apache.catalina.User;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -41,7 +43,10 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public void register(RegisterForm form) {
-        if(userRepository.existsByLogin(form.login()))
+
+        Specification<UserEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("login"), form.login())));
+
+        if(userRepository.exists(spec))
             throw new AlreadyExistsException("Le login existe déjà");
 
         UserEntity entity = new UserEntity();
@@ -63,10 +68,13 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public AuthResponse login(LoginForm form) {
+
+        Specification<UserEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("login"),form.login())));
+
         System.out.println("Service:"+ form);
         authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(form.login(),form.password()) );
 
-        UserEntity user = userRepository.findByLogin(form.login() )
+        UserEntity user = userRepository.findOne(spec)
                 .orElseThrow();
 
         String token = jwtProvider.generateToken(user.getUsername(), user.getRole() );

@@ -5,6 +5,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExists
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.RaceEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.RaceRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -44,7 +45,9 @@ public class RaceServiceImpl implements RaceService {
      */
     @Override
     public void insert(String nom) {
-        if(raceRepository.existsByNom(nom))
+        Specification<RaceEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom)));
+
+        if(raceRepository.exists(spec))
             throw new AlreadyExistsException("Race existe déjà");
 
         RaceEntity entity = new RaceEntity();
@@ -65,7 +68,10 @@ public class RaceServiceImpl implements RaceService {
      */
     @Override
     public void update(Long id, String nom) {
-        if(raceRepository.existsByNom(nom)&& raceRepository.findByNom(nom).get().getId()!=id)
+
+        Specification<RaceEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom)));
+
+        if(raceRepository.exists(spec) && raceRepository.findOne(spec).get().getId()!=id)
             throw new AlreadyExistsException("Race déjà existante");
 
         RaceEntity entity = raceRepository.findById(id).get();

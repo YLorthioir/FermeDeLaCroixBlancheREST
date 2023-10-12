@@ -12,8 +12,10 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.CultureFor
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.ChampRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.CultureRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.TypeDeGrainsRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -75,7 +77,10 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void insertChamp(ChampInsertForm form) {
-        if(champRepository.existsByLieu(form.lieu()))
+
+        Specification<ChampEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("lieu"), form.lieu())));
+
+        if(champRepository.exists(spec))
             throw new AlreadyExistsException("Champ déjà existant");
 
         if(form!=null){
@@ -191,8 +196,10 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public Set<CultureEntity> getHistorique(Long id) {
-        return cultureRepository.findAllByChamp(id).stream()
-                .collect(Collectors.toSet());
+
+        Specification<CultureEntity> specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("champ").get("id"),id)));
+
+        return new HashSet<>(cultureRepository.findAll(specification));
     }
 
     // Grains
@@ -227,7 +234,10 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void insertGrain(String nom) {
-        if(typeDeGrainsRepository.existsByNomGrain(nom))
+
+        Specification<TypeDeGrainEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomGrain"), nom)));
+
+        if(typeDeGrainsRepository.exists(spec))
             throw new AlreadyExistsException("Le grain existe déjà");
 
         TypeDeGrainEntity entity = new TypeDeGrainEntity();

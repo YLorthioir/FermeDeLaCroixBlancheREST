@@ -11,6 +11,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.AForm;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.TraitementForm;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.sante.VaccinForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.BovinRepository;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -61,23 +62,25 @@ public class SanteServiceImpl implements SanteService {
     public void insertInjection(Long idBovin, String nom) {
 
         Set<Vaccination> carnet = getCarnetVaccination(idBovin).stream()
-                .filter(vaccination -> vaccination.getNom().equals(nom))
+                .filter(vaccination -> vaccination.nom().equals(nom))
                 .collect(Collectors.toSet());
 
         LocalDate derniereDose = LocalDate.MIN;
 
         for (Vaccination vaccination : carnet) {
-            if(vaccination.getDateRappel().isAfter(derniereDose))
-                derniereDose=vaccination.getDateRappel();
+            if(vaccination.dateRappel().isAfter(derniereDose))
+                derniereDose=vaccination.dateRappel();
         }
 
-        if(vaccinRepository.findVaccinByNom(nom).isPresent() &&
-                vaccinRepository.findVaccinByNom(nom).get().isActif()&&
+        Specification<VaccinEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom));
+
+        if(vaccinRepository.findOne(specification).isPresent() &&
+                vaccinRepository.findOne(specification).get().isActif()&&
                 derniereDose.isBefore(LocalDate.now().plusDays(1)) &&
-                ((carnet.size() < vaccinRepository.findVaccinByNom(nom).get().getNbDose())|| carnet.isEmpty())){
+                ((carnet.size() < vaccinRepository.findOne(specification).get().getNbDose())|| carnet.isEmpty())){
             InjectionEntity entity= new InjectionEntity();
 
-            entity.setVaccin(vaccinRepository.findVaccinByNom(nom).get());
+            entity.setVaccin(vaccinRepository.findOne(specification).get());
             entity.setBovin(bovinRepository.findById(idBovin).orElseThrow(()->new NotFoundException("Bovin not found")));
             entity.setDateInjection(LocalDate.now());
 
@@ -102,17 +105,13 @@ public class SanteServiceImpl implements SanteService {
 
         Set<Vaccination> carnetVaccination = new HashSet<>();
 
-        Set<InjectionEntity> injections = injectionRepository.findAllByBovinId(idBovin);
+        Specification<InjectionEntity> specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("bovin").get("id"),idBovin)));
+
+        Set<InjectionEntity> injections = new HashSet<>(injectionRepository.findAll(specification));
         for (VaccinEntity v : vaccinRepository.findAll()) {
             Set<InjectionEntity> injectionsTriees = injections.stream()
                     .filter(injection -> injection.getVaccin()==v)
                     .collect(Collectors.toSet());
-
-            Vaccination vaccination = new Vaccination();
-            vaccination.setNom(v.getNom() + " (" + v.getDosage() + ")");
-            vaccination.setDoseMax(v.getNbDose());
-            vaccination.setDoseAdministrees(injectionsTriees.size());
-            vaccination.setActif(v.isActif());
 
             LocalDate dateDernierVaccin = LocalDate.MIN;
 
@@ -121,10 +120,24 @@ public class SanteServiceImpl implements SanteService {
                     dateDernierVaccin=injection.getDateInjection();
             }
 
-            if(injectionsTriees.isEmpty())
-                vaccination.setDateRappel(null);
-            else
-                vaccination.setDateRappel(dateDernierVaccin.plusDays(v.getDelai()));
+            Vaccination vaccination;
+
+            if(injectionsTriees.isEmpty()) {
+                vaccination = new Vaccination(
+                        v.getNom() + " (" + v.getDosage() + ")",
+                        injectionsTriees.size(),
+                        v.getNbDose(),
+                        null,
+                        v.isActif());
+
+            }else{
+                vaccination = new Vaccination(
+                        v.getNom() + " (" + v.getDosage() + ")",
+                        injectionsTriees.size(),
+                        v.getNbDose(),
+                        dateDernierVaccin.plusDays(v.getDelai()),
+                        v.isActif());
+            }
 
             carnetVaccination.add(vaccination);
         }
@@ -143,7 +156,10 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public VaccinEntity getVaccin(String nom) {
-        return vaccinRepository.findVaccinByNom(nom).orElseThrow(()->new NotFoundException("Vaccin not found"));
+
+        Specification<VaccinEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom));
+
+        return vaccinRepository.findOne(specification).orElseThrow(()->new NotFoundException("Vaccin not found"));
     }
 
     /**
@@ -157,7 +173,11 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void insertVaccin(VaccinForm form) {
-        if(vaccinRepository.existsByNom(form.nom()))
+
+        Specification<VaccinEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),form.nom()));
+
+
+        if(vaccinRepository.exists(specification))
             throw new AlreadyExistsException("Vaccin existe déjà");
 
         VaccinEntity entity = new VaccinEntity();
@@ -186,10 +206,13 @@ public class SanteServiceImpl implements SanteService {
     @Override
     public void updateVaccin(Long id, VaccinForm form) {
 
-        if(vaccinRepository.existsByNom(form.nom())&& vaccinRepository.findVaccinByNom(form.nom()).orElseThrow(()->new NotFoundException("Vaccin not found")).getId()!=id)
+        Specification<VaccinEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),form.nom()));
+
+
+        if(vaccinRepository.exists(specification)&& vaccinRepository.findOne(specification).orElseThrow(()->new NotFoundException("Vaccin not found")).getId()!=id)
             throw new AlreadyExistsException("Vaccin déjà existant");
 
-        VaccinEntity entity = vaccinRepository.findVaccinByNom(form.nom()).orElseThrow(()->new NotFoundException("Vaccin not found"));
+        VaccinEntity entity = vaccinRepository.findOne(specification).orElseThrow(()->new NotFoundException("Vaccin not found"));
 
         entity.setNom(form.nom());
         entity.setDosage(form.dosage());
@@ -240,11 +263,11 @@ public class SanteServiceImpl implements SanteService {
         for (BovinEntity bovin : bovins) {
 
             Vaccination carnet = getCarnetVaccination(bovin.getId()).stream()
-                    .filter(vaccination -> vaccination.getNom().startsWith(vaccin.getNom()))
+                    .filter(vaccination -> vaccination.nom().startsWith(vaccin.getNom()))
                     .findFirst().orElseThrow(()->new NotFoundException("Vacci not found"));
 
 
-            if (carnet.getDateRappel()==null || !carnet.getDateRappel().isAfter(LocalDate.now()))
+            if (carnet.dateRappel()==null || !carnet.dateRappel().isAfter(LocalDate.now()))
                 toVaccinate.add(bovin.getNumeroInscription());
 
         }
@@ -280,7 +303,10 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void insertMaladie(String nom) {
-        if(maladieRepository.existsByNom(nom))
+
+        Specification<MaladieEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom));
+
+        if(maladieRepository.exists(specification))
             throw new AlreadyExistsException("Maladie existe déjà");
 
         MaladieEntity entity = new MaladieEntity();
@@ -318,7 +344,11 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void updateMaladie(Long id, String nom) {
-        if(maladieRepository.existsByNom(nom) && maladieRepository.findByNom(nom).orElseThrow(()->new NotFoundException("Maladie not found")).getId()!=id)
+
+        Specification<MaladieEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom));
+
+
+        if(maladieRepository.exists(specification) && maladieRepository.findOne(specification).orElseThrow(()->new NotFoundException("Maladie not found")).getId()!=id)
             throw new AlreadyExistsException("Maladie déjà existante");
 
         if(!nom.isEmpty()){
@@ -343,8 +373,10 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public Set<AEntity> getAllA(Long idBovin) {
-        return aRepository.findAllByBovinId(idBovin).stream()
-                .collect(Collectors.toSet());
+
+        Specification<AEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("bovin").get("id"),idBovin));
+
+        return new HashSet<>(aRepository.findAll(specification));
     }
 
     /**
@@ -441,7 +473,10 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void insertTraitement(TraitementForm form) {
-        if(traitementRepository.existsByNomTraitement(form.nomTraitement()))
+
+        Specification<TraitementEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomTraitement"), form.nomTraitement()));
+
+        if(traitementRepository.exists(specification))
             throw new AlreadyExistsException("Traitement existe déjà");
 
         if(form!=null){
@@ -464,7 +499,10 @@ public class SanteServiceImpl implements SanteService {
      */
     @Override
     public void updateTraitement(Long id, TraitementForm form) {
-        if(traitementRepository.existsByNomTraitement(form.nomTraitement())&& traitementRepository.findByNomTraitement(form.nomTraitement()).orElseThrow(()->new NotFoundException("Traitement not found")).getId()!=id)
+
+        Specification<TraitementEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomTraitement"), form.nomTraitement()));
+
+        if(traitementRepository.exists(specification)&& traitementRepository.findOne(specification).orElseThrow(()->new NotFoundException("Traitement not found")).getId()!=id)
             throw new AlreadyExistsException("Traitement déjà existant");
 
         if(form!=null){

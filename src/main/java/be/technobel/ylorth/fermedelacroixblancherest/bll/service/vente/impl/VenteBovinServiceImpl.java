@@ -1,12 +1,15 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.vente.impl;
 
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEngraissementEntity;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.models.bovins.BovinEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.vente.VenteBovin;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.vente.VenteBovinEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.vente.VenteBovinForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.bovins.BovinEngraissementRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.vente.VenteBovinRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.vente.VenteBovinService;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -65,9 +68,12 @@ public class VenteBovinServiceImpl implements VenteBovinService {
     @Override
     public void insert(VenteBovinForm form) {
         if(form!= null){
+
+            Specification<BovinEngraissementEntity> specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numeroInscription"), form.numeroIdentification())));
+
             VenteBovinEntity entity = new VenteBovinEntity();
 
-            entity.setBovinEngraissement(bovinEngraissementRepository.findByNumeroInscription(form.numeroIdentification()).get());
+            entity.setBovinEngraissement(bovinEngraissementRepository.findOne(specification).orElseThrow(()-> new NotFoundException("Bovin not found")));
             entity.setDateDeVente(form.date());
             entity.setQuantite(form.qtt());
             entity.setPrixRevente(form.prixRevente());
@@ -89,9 +95,13 @@ public class VenteBovinServiceImpl implements VenteBovinService {
     @Override
     public void update(Long id, VenteBovinForm form) {
         if(form!= null){
+
+            Specification<BovinEngraissementEntity> specification = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("numeroInscription"), form.numeroIdentification())));
+
+
             VenteBovinEntity entity = venteBovinRepository.findById(id).orElseThrow(()-> new NotFoundException("VenteBovin not found"));
 
-            entity.setBovinEngraissement(bovinEngraissementRepository.findByNumeroInscription(form.numeroIdentification()).orElseThrow(()-> new NotFoundException("Bovin not found")));
+            entity.setBovinEngraissement(bovinEngraissementRepository.findOne(specification).orElseThrow(()-> new NotFoundException("Bovin not found")));
             entity.setDateDeVente(form.date());
             entity.setQuantite(form.qtt());
             entity.setPrixRevente(form.prixRevente());

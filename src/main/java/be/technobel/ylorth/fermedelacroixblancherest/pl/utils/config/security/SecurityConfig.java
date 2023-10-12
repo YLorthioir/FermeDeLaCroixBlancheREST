@@ -145,12 +145,12 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST,"/vente/fauche/add").hasAnyRole("ADMIN","GERANT")
                     .requestMatchers(HttpMethod.DELETE,"/vente/fauche/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
 
-
-                    .requestMatchers(HttpMethod.OPTIONS).permitAll()
                     .requestMatchers( request -> request.getRequestURI().length() > 500 ).denyAll()
 
-                    // Si pas permitAll, swagger ne fonctionne pas
+                    // swagger
                     .anyRequest().permitAll()
+
+                    //.anyRequest().denyAll()
 
         );
 
