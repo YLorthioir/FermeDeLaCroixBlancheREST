@@ -7,6 +7,6 @@ public record Vaccination (
     int doseAdministrees,
     int doseMax,
     LocalDate dateRappel,
-    boolean isActif
+    boolean actif
 ){
 }
