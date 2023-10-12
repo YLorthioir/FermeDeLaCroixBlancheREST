@@ -9,6 +9,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.MelangeS
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,8 +31,7 @@ public class MelangeServiceImpl implements MelangeService {
      */
     @Override
     public Set<MelangeEntity> getAll() {
-        return melangeRepository.findAll().stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(melangeRepository.findAll());
     }
 
     /**
