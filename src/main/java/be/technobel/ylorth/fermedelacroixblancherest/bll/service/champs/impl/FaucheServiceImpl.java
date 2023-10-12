@@ -9,12 +9,10 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.FaucheUpda
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.CultureRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.FaucheRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.champs.FaucheService;
-import jakarta.persistence.criteria.Path;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -172,6 +170,9 @@ public class FaucheServiceImpl implements FaucheService {
      */
     @Override
     public Set<Integer> getAllAnnee() {
-        return new HashSet<>(faucheRepository.getAllAnnee());
+
+        Specification<FaucheEntity> specification = ((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("annee"),root.get("annee")));
+
+        return faucheRepository.findAll(specification).stream().map(FaucheEntity::getAnnee).collect(Collectors.toSet());
     }
 }
