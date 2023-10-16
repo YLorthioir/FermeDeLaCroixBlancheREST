@@ -216,6 +216,10 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void updateGrain(Long id, String nom) {
+        Specification<TypeDeGrainEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomGrain"), nom)));
+        if(typeDeGrainsRepository.exists(spec))
+            throw new AlreadyExistsException("Le grain existe déjà");
+
         if(nom != null){
             TypeDeGrainEntity entity = typeDeGrainsRepository.findById(id).orElseThrow(()-> new NotFoundException("Grain not found"));
             entity.setNomGrain(nom);

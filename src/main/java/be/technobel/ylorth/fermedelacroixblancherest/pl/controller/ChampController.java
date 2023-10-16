@@ -66,7 +66,7 @@ public class ChampController {
 
     @PatchMapping("/grain/{id:[0-9]+}")
     public void update(@PathVariable Long id, @RequestBody @Valid TypeDeGrainForm form){
-        champService.updateGrain(id, form.nom());
+        champService.updateGrain(id, form.nomGrain());
     }
 
     @PostMapping("/grain/add")

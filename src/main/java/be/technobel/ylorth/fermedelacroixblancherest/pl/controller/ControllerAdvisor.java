@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -20,6 +21,24 @@ import java.util.Map;
 
 @ControllerAdvice
 public class ControllerAdvisor {
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Error> handleBadCredentialsException(BadCredentialsException ex, HttpServletRequest req){
+
+        Error errorDTO = new Error(
+                ex.getMessage(),
+                HttpStatus.UNAUTHORIZED,
+                LocalDateTime.now(),
+                req.getRequestURI());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType( MediaType.APPLICATION_JSON );
+
+        return ResponseEntity.status( HttpStatus.UNAUTHORIZED)
+                .headers( headers )
+                .body( errorDTO );
+
+    }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<Error> handleResourceNotFound(NotFoundException ex, HttpServletRequest req){

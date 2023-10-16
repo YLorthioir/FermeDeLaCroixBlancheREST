@@ -1,16 +1,18 @@
 package be.technobel.ylorth.fermedelacroixblancherest.bll.service.auth;
 
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
+import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.NotFoundException;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.AuthResponse;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.models.security.UserEntity;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.LoginForm;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.RegisterForm;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.auth.UserRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.pl.utils.config.security.JwtProvider;
-import org.apache.catalina.User;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -71,11 +73,14 @@ public class AuthServiceImpl implements AuthService {
 
         Specification<UserEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("login"),form.login())));
 
-        System.out.println("Service:"+ form);
-        authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(form.login(),form.password()) );
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(form.login(), form.password()));
+        }catch (AuthenticationException e) {
+            throw new BadCredentialsException("Login ou mot de passe incorrects");
+        }
 
         UserEntity user = userRepository.findOne(spec)
-                .orElseThrow();
+                .orElseThrow(() -> new NotFoundException("User not found"));
 
         String token = jwtProvider.generateToken(user.getUsername(), user.getRole() );
 

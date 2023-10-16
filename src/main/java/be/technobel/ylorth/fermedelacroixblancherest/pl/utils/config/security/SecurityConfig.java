@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +27,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
 
         http.csrf().disable();
+
+        http.cors();
 
         http.httpBasic().disable();
 
@@ -145,12 +148,14 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST,"/vente/fauche/add").hasAnyRole("ADMIN","GERANT")
                     .requestMatchers(HttpMethod.DELETE,"/vente/fauche/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
 
+                    .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+
                     .requestMatchers( request -> request.getRequestURI().length() > 500 ).denyAll()
 
                     // swagger
-                    .anyRequest().permitAll()
+                    //.anyRequest().permitAll()
 
-                    //.anyRequest().denyAll()
+                    .anyRequest().authenticated()
 
         );
 
