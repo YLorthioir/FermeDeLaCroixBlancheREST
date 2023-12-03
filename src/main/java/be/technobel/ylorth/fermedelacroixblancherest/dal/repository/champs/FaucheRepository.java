@@ -23,7 +23,9 @@ public interface FaucheRepository extends JpaRepository<FaucheEntity,Long>, JpaS
     Set<FaucheEntity> findAllByChamp(String nom);
 
 
- */
+
     @Query("select f.annee from Fauche f")
     Set<Integer> getAllAnnee();
+    
+ */
 }

@@ -7,5 +7,4 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.security.Register
 public interface AuthService {
     void register(RegisterForm form);
     AuthResponse login(LoginForm form);
-
 }

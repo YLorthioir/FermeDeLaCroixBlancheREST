@@ -10,13 +10,13 @@ import java.util.Arrays;
 
 @Configuration
 public class CorsConfig {
-
+    
     @Bean
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "*" /* Pour docker*/));
+        config.setAllowedOrigins(Arrays.asList("*" /* Pour docker*/));
 
         config.setAllowedHeaders(Arrays.asList("*"));
 
