@@ -1,6 +1,7 @@
 package be.technobel.ylorth.fermedelacroixblancherest.pl.utils.config.security;
 
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,11 +25,10 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
-@ConfigurationProperties("app.cors.config")
 public class SecurityConfig {
 
-    @Setter
-    private String host;
+    @Value("${app.cors.config.host}")
+    public String host;
     @Bean
     public PasswordEncoder encoder(){
         return new BCryptPasswordEncoder();

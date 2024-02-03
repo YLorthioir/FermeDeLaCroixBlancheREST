@@ -14,6 +14,8 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.Champ;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -117,8 +119,7 @@ public class BovinServiceImpl implements BovinService {
         else
             return null;
 
-        return bovinRepository.findAll(specification).stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(bovinRepository.findAll(specification));
 
     }
 
@@ -156,7 +157,7 @@ public class BovinServiceImpl implements BovinService {
         entity.setRace(raceRepository.findById(form.raceId())
                 .orElseThrow(() -> new NotFoundException("race not found")));
 
-        entity = bovinRepository.save(entity);
+        bovinRepository.save(entity);
     }
 
     /**
@@ -303,8 +304,7 @@ public class BovinServiceImpl implements BovinService {
 
         Specification<BovinEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.and(criteriaBuilder.equal(root.get("sexe"),'M'),criteriaBuilder.isNotNull(root.get("nom")))));
 
-        return bovinRepository.findAll(spec).stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(bovinRepository.findAll(spec));
     }
 
     /**
