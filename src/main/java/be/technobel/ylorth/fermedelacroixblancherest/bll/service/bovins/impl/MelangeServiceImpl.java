@@ -99,6 +99,9 @@ public class MelangeServiceImpl implements MelangeService {
 
         if(melangeRepository.exists(spec)&& melangeRepository.findOne(spec).get().getId()!=id)
             throw new AlreadyExistsException("Mélange déjà existant");
+        
+        if(!melangeRepository.existsById(id))
+            throw new NotFoundException("Mélange not found");
 
         MelangeEntity entity =  new MelangeEntity();
         entity.setNomMelange(form.nomMelange());

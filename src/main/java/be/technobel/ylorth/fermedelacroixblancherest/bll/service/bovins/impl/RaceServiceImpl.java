@@ -74,6 +74,9 @@ public class RaceServiceImpl implements RaceService {
         if(raceRepository.exists(spec) && raceRepository.findOne(spec).get().getId()!=id)
             throw new AlreadyExistsException("Race déjà existante");
 
+        if(!raceRepository.existsById(id))
+            throw new NotFoundException("Race not found");
+
         RaceEntity entity = raceRepository.findById(id).get();
         entity.setNom(nom);
         raceRepository.save(entity);

@@ -52,6 +52,11 @@ public class BovinServiceTest {
     @Mock
     private MelangeRepository melangeRepository;
     
+    /*
+        getAllNI():
+            - Bovin n'existent pas
+            - Bovin existent
+     */
     @Test
     public void testGetAllNI_WhenNoBovinEntitiesExist() {
         when(bovinRepository.findAll()).thenReturn(new ArrayList<>());
@@ -78,6 +83,13 @@ public class BovinServiceTest {
         assertTrue(result.contains("BE1234123413"));
     }
 
+    /*
+    getOne():
+        - Bovin trouvé mais pas d'enfants en césarienne
+        - Bovin trouvé avec enfants en césarienne
+        - Bovin trouvé mais pas d'enfants
+        - Bovin non trouvé
+    */
     @Test
     public void testGetOne_WhenBovinExistsWithNoCesarienneChildren() {
         BovinEntity bovinEntity = new BovinEntity();
@@ -115,7 +127,7 @@ public class BovinServiceTest {
         assertEquals("BE1234123412", result.numeroInscription());
         assertEquals(2, result.nbCesarienne());
     }
-    
+
     @Test
     public void testGetOne_WhenBovinNotFound() {
         when(bovinRepository.findOne(any(Specification.class))).thenReturn(Optional.empty());
@@ -125,6 +137,12 @@ public class BovinServiceTest {
         assertEquals("bovin not found", exception.getMessage());
     }
 
+    /*
+        getChildren():
+            - Bovin trouvé mais pas d'enfants
+            - Bovin trouvé avec enfants
+            - Bovin pas trouvé
+     */
     @Test
     public void testGetChildren_WhenBovinExistsButHasNoChildren() {
         BovinEntity bovinEntity = new BovinEntity();
@@ -166,6 +184,13 @@ public class BovinServiceTest {
         assertEquals("BovinEntity not found", exception.getMessage());
     }
 
+    /*
+        createBovin():
+            - OK
+            - Numéro identifications déjà existant
+            - Race non trouvée
+            - Formulaire null
+     */
     @Test
     public void testCreateBovin_OK() {
         BovinInsertForm form = new BovinInsertForm("BE1234123412", "M", LocalDate.now(), 200, false, 1L, "BE1234123413", "BE1234123414" );
@@ -210,6 +235,16 @@ public class BovinServiceTest {
         assertEquals("le formulaire ne peut être null", exception.getMessage());
     }
 
+    /*
+    updateBovin():
+        - Reproduction OK
+        - Engraissement OK
+        - Bovin OK
+        - Numéro identifications déjà existant
+        - Race non trouvée
+        - Champ non trouvé
+        - Formulaire null
+    */
     @Test
     public void testUpdateBovin_WhenFemelleReproductionExists() {
         BovinUpdateForm form = new BovinUpdateForm("BE1234123412", "M","NomDeTasty", LocalDate.now(), 200, false, -99L, "BE1234123412", "BE1234123412", 1L, true, LocalDate.now(), "", null, 0, 1000, 800, LocalDate.now(), 1L );
@@ -246,7 +281,7 @@ public class BovinServiceTest {
     }
 
     @Test
-    public void testUpdateBovin_WhenNoIssues() {
+    public void testUpdateBovin_Bovin() {
         BovinUpdateForm form = new BovinUpdateForm("BE1234123412", "M","NomDeTasty", LocalDate.now(), 200, false, -99L, "BE1234123412", "BE1234123412", 1L, true, LocalDate.now(), "", null, 0, 1000, 800, LocalDate.now(), 1L );
         ChampEntity champ = new ChampEntity();
         RaceEntity race = new RaceEntity();
@@ -264,7 +299,7 @@ public class BovinServiceTest {
 
     @Test
     public void testUpdateBovin_WhenBovinWithSameNIExists() {
-        BovinUpdateForm form = new BovinUpdateForm("BE1234123412", "M","NomDeTasty", LocalDate.now(), 200, false, -99L, "BE1234123412", "BE1234123412", 1L, true, LocalDate.now(), "", null, 0, 1000, 800, LocalDate.now(), 1L );
+        BovinUpdateForm form = new BovinUpdateForm("BE1234123412", "M","NomDeTasty", LocalDate.now(), 200, false, 1L, "BE1234123412", "BE1234123412", 1L, true, LocalDate.now(), "", null, 0, 1000, 800, LocalDate.now(), 1L );
 
         BovinEntity existingBovin = new BovinEntity();
         existingBovin.setId(2L);
@@ -278,12 +313,48 @@ public class BovinServiceTest {
     }
 
     @Test
+    public void testUpdateBovin_WhenRaceNotExists() {
+        BovinUpdateForm form = new BovinUpdateForm("BE1234123412", "M","NomDeTasty", LocalDate.now(), 200, false, -99L, "BE1234123412", "BE1234123412", 1L, true, LocalDate.now(), "", null, 0, 1000, 800, LocalDate.now(), 1L );
+        
+        BovinEntity existingBovin = new BovinEntity();
+        existingBovin.setId(2L);
+
+        when(bovinRepository.exists(any(Specification.class))).thenReturn(false);
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> bovinService.updateBovin(1L, form));
+
+        assertEquals("Race not found", exception.getMessage());
+    }
+
+    @Test
+    public void testUpdateBovin_WhenChampNotExists() {
+        BovinUpdateForm form = new BovinUpdateForm("BE1234123412", "M","NomDeTasty", LocalDate.now(), 200, false, 1L, "BE1234123412", "BE1234123412", -99L, true, LocalDate.now(), "", null, 0, 1000, 800, LocalDate.now(), 1L );
+        RaceEntity race = new RaceEntity();
+
+        BovinEntity existingBovin = new BovinEntity();
+        existingBovin.setId(2L);
+
+        when(bovinRepository.exists(any(Specification.class))).thenReturn(false);
+        when(raceRepository.findById(anyLong())).thenReturn(Optional.of(race));
+
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> bovinService.updateBovin(1L, form));
+
+        assertEquals("Champ not found", exception.getMessage());
+    }
+
+    @Test
     public void testUpdateBovin_WhenFormIsNull() {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> bovinService.updateBovin(1L, null));
 
         assertEquals("le formulaire ne peut être null", exception.getMessage());
     }
 
+    /*
+    getInfosReproduction():
+        - Bovin n'a pas eu de césarienne
+        - Bovin a eu des césariennes
+        - Bovin pas trouvé
+    */
     @Test
     public void testGetInfosReproduction_WhenBovinExistsWithNoCesarienneChildren() {
         FemelleReproductionEntity entity = new FemelleReproductionEntity();
@@ -341,6 +412,11 @@ public class BovinServiceTest {
         assertNull(result);
     }
 
+    /*
+    getInfosEngraissement():
+        - OK
+        - Bovin pas trouvé
+    */
     @Test
     public void testGetInfosEngraissement_WhenBovinExists() {
         BovinEngraissementEntity entity = new BovinEngraissementEntity();
@@ -372,6 +448,14 @@ public class BovinServiceTest {
         assertNull(result);
     }
 
+    /*
+    updateType():
+        - Bovin
+        - Bovin engraissement
+        - Bovin reproduction
+        - Finalité inconnue
+        - Finalité null
+    */
     @Test
     public void testUpdateType_WhenFinaliteIsBovin() {
         BovinUpdateTypeForm form = new BovinUpdateTypeForm("Bovin");
@@ -417,8 +501,13 @@ public class BovinServiceTest {
         verify(bovinRepository, times(0)).changeType(anyLong(), anyString());
     }
 
+    /*
+    getAllTaureaux():
+        - Taureau exists
+        - Taureau not found
+    */
     @Test
-    public void testGetAllTaureaux_WhenTaureauxExist() {
+    public void testGetAllTaureaux_WhenTaureauExist() {
         BovinEntity taureau1 = new BovinEntity();
         taureau1.setSexe('M');
         taureau1.setNom("Taureau1");
@@ -444,6 +533,11 @@ public class BovinServiceTest {
         assertTrue(result.isEmpty());
     }
 
+    /*
+    getAllEngraissement():
+        - Bovin engraissement existe
+        - Bovin engraissement not found
+    */
     @Test
     public void testGetAllEngraissement_WhenEngraissementExists() {
         BovinEngraissementEntity entity1 = new BovinEngraissementEntity();
