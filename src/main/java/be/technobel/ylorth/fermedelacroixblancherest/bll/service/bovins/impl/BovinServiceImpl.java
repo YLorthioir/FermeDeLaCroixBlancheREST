@@ -182,7 +182,7 @@ public class BovinServiceImpl implements BovinService {
         if(form == null)
             throw new IllegalArgumentException("le formulaire ne peut être null");
 
-        if(bovinRepository.exists(spec)&& bovinRepository.findOne(spec).get().getId()!=id)
+        if(bovinRepository.exists(spec) && bovinRepository.findOne(spec).orElseThrow().getId()!=id)
             throw new AlreadyExistsException("BovinEntity déjà existant");
 
         if(femelleReproductionRepository.existsById(id)){
@@ -236,7 +236,7 @@ public class BovinServiceImpl implements BovinService {
 
         if(femelleReproductionRepository.existsById(id)){
 
-            FemelleReproductionEntity entity = femelleReproductionRepository.findById(id).get();
+            FemelleReproductionEntity entity = femelleReproductionRepository.findById(id).orElseThrow();
 
             int nbCesariennes = 0;
 
@@ -267,7 +267,7 @@ public class BovinServiceImpl implements BovinService {
 
         if(bovinEngraissementRepository.existsById(id)){
 
-            BovinEngraissementEntity entity = bovinEngraissementRepository.findById(id).get();
+            BovinEngraissementEntity entity = bovinEngraissementRepository.findById(id).orElseThrow();
 
             return new InfosEngraissement(entity.getPoidsSurPattes(), entity.getPoidsCarcasse(), entity.getDateEngraissement(),Melange.fromBLL(entity.getMelange()));
         }

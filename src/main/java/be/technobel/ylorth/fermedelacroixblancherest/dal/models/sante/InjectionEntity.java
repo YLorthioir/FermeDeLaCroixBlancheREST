@@ -23,7 +23,7 @@ public class InjectionEntity {
     @Getter
     private BovinEntity bovin;
 
-    @OneToOne(orphanRemoval = true)
+    @ManyToOne
     @JoinColumn(name = "vaccin_id")
     @Getter
     private VaccinEntity vaccin;

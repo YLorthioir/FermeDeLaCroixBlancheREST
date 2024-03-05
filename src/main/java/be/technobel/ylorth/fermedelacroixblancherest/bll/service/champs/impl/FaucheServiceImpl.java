@@ -74,7 +74,7 @@ public class FaucheServiceImpl implements FaucheService {
             Specification<FaucheEntity> specificationAnneeCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.and(criteriaBuilder.equal(root.get("annee"),form.annee()), criteriaBuilder.equal(root.get("culture").get("id"),cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()))));
 
             if(!faucheRepository.exists(specificationAnneeCulture)){
-                entity.setCulture(cultureRepository.findById(cultureCorrespondante.get().getId()).orElseThrow(()->new NotFoundException("Culture not found")));
+                entity.setCulture(cultureRepository.findById(cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()).orElseThrow(()->new NotFoundException("Culture not found")));
                 entity.setAnnee(form.annee());
                 entity.setFauche1(form.fauche());
                 entity.setFauche1rendement(form.faucheRendement());

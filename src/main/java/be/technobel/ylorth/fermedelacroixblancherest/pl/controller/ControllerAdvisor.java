@@ -124,16 +124,16 @@ public class ControllerAdvisor {
             errorMap.put(field,message);
         });
 
-        String errorsList = "{";
+        StringBuilder errorsList = new StringBuilder("{");
 
         for (Map.Entry<String, String> stringStringEntry : errorMap.entrySet()) {
-            errorsList += stringStringEntry.getKey() + " - " + stringStringEntry.getValue() + ", ";
+            errorsList.append(stringStringEntry.getKey()).append(" - ").append(stringStringEntry.getValue()).append(", ");
         }
 
-        errorsList = errorsList.substring(0,errorsList.length()-2) + "}";
+        errorsList = new StringBuilder(errorsList.substring(0, errorsList.length() - 2) + "}");
 
         Error errorDTO = new Error(
-                errorsList,
+                errorsList.toString(),
                 HttpStatus.BAD_REQUEST,
                 LocalDateTime.now(),
                 req.getRequestURI());

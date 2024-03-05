@@ -105,6 +105,6 @@ public class VenteFaucheServiceImpl implements VenteFaucheService {
     @Override
     public void delete(Long id) {
         if(venteFaucheRepository.existsById(id))
-        venteFaucheRepository.deleteById(id);
+            venteFaucheRepository.deleteById(id);
     }
 }

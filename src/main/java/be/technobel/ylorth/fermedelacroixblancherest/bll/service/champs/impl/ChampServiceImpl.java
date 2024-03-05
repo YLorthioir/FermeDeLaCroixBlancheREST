@@ -138,7 +138,7 @@ public class ChampServiceImpl implements ChampService {
             entity.setQttFumier(form.qttFumier());
             entity.setAnalysePDF(form.referenceAnalyse());
 
-            entity= cultureRepository.save(entity);
+            cultureRepository.save(entity);
         }
     }
 
@@ -181,7 +181,7 @@ public class ChampServiceImpl implements ChampService {
             entity.setQttFumier(form.qttFumier());
             entity.setAnalysePDF(form.referenceAnalyse());
 
-            entity= cultureRepository.save(entity);
+            cultureRepository.save(entity);
         }
     }
 

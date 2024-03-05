@@ -71,13 +71,13 @@ public class RaceServiceImpl implements RaceService {
 
         Specification<RaceEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nom"),nom)));
 
-        if(raceRepository.exists(spec) && raceRepository.findOne(spec).get().getId()!=id)
+        if(raceRepository.exists(spec) && raceRepository.findOne(spec).orElseThrow().getId()!=id)
             throw new AlreadyExistsException("Race déjà existante");
 
         if(!raceRepository.existsById(id))
             throw new NotFoundException("Race not found");
 
-        RaceEntity entity = raceRepository.findById(id).get();
+        RaceEntity entity = raceRepository.findById(id).orElseThrow();
         entity.setNom(nom);
         raceRepository.save(entity);
     }

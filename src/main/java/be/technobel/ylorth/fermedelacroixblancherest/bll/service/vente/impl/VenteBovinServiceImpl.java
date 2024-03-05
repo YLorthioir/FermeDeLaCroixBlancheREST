@@ -119,7 +119,7 @@ public class VenteBovinServiceImpl implements VenteBovinService {
      */
     @Override
     public void delete(Long id) {
-        if(venteBovinRepository.existsById(id))
-        venteBovinRepository.deleteById(id);
+        if(venteBovinRepository.existsById(id)) 
+            venteBovinRepository.deleteById(id);
     }
 }

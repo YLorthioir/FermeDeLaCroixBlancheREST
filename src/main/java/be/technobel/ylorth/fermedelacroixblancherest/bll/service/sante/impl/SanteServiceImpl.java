@@ -125,7 +125,7 @@ public class SanteServiceImpl implements SanteService {
             if(injectionsTriees.isEmpty()) {
                 vaccination = new Vaccination(
                         v.getNom() + " (" + v.getDosage() + ")",
-                        injectionsTriees.size(),
+                        0,
                         v.getNbDose(),
                         null,
                         v.isActif());
