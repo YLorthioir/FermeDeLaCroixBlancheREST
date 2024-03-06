@@ -61,40 +61,41 @@ public class FaucheServiceImpl implements FaucheService {
      */
     @Override
     public void insert(FaucheInsertForm form) {
-        if(form!=null){
+        
+        if(form == null)
+            throw new IllegalArgumentException("form ne peut être null");
+        
+        Specification<CultureEntity> specificationCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("champ").get("id"),form.champId())));
 
-            Specification<CultureEntity> specificationCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("champ").get("id"),form.champId())));
+        Optional<CultureEntity> cultureCorrespondante = cultureRepository.findAll(specificationCulture).stream()
+                .filter(culture -> culture.getDateMiseEnCulture().getYear()== form.annee())
+                .findFirst();
 
-            Optional<CultureEntity> cultureCorrespondante = cultureRepository.findAll(specificationCulture).stream()
-                    .filter(culture -> culture.getDateMiseEnCulture().getYear()== form.annee())
-                    .findFirst();
+        FaucheEntity entity = new FaucheEntity();
 
-            FaucheEntity entity = new FaucheEntity();
+        Specification<FaucheEntity> specificationAnneeCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.and(criteriaBuilder.equal(root.get("annee"),form.annee()), criteriaBuilder.equal(root.get("culture").get("id"),cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()))));
 
-            Specification<FaucheEntity> specificationAnneeCulture = (((root, query, criteriaBuilder) -> criteriaBuilder.and(criteriaBuilder.equal(root.get("annee"),form.annee()), criteriaBuilder.equal(root.get("culture").get("id"),cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()))));
-
-            if(!faucheRepository.exists(specificationAnneeCulture)){
-                entity.setCulture(cultureRepository.findById(cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()).orElseThrow(()->new NotFoundException("Culture not found")));
-                entity.setAnnee(form.annee());
-                entity.setFauche1(form.fauche());
-                entity.setFauche1rendement(form.faucheRendement());
+        if(!faucheRepository.exists(specificationAnneeCulture)){
+            entity.setCulture(cultureRepository.findById(cultureCorrespondante.orElseThrow(()->new NotFoundException("Culture not found")).getId()).orElseThrow(()->new NotFoundException("Culture not found")));
+            entity.setAnnee(form.annee());
+            entity.setFauche1(form.fauche());
+            entity.setFauche1rendement(form.faucheRendement());
+        } else {
+            entity = faucheRepository.findOne(specificationAnneeCulture).orElseThrow(()->new NotFoundException("Culture not found"));
+            if(entity.getFauche2()==null){
+                entity.setFauche2(form.fauche());
+                entity.setFauche2rendement(form.faucheRendement());
+            } else if(entity.getFauche3()==null){
+                entity.setFauche3(form.fauche());
+                entity.setFauche3rendement(form.faucheRendement());
+            } else if(entity.getFauche4()==null){
+                entity.setFauche4(form.fauche());
+                entity.setFauche4rendement(form.faucheRendement());
             } else {
-                entity = faucheRepository.findOne(specificationAnneeCulture).orElseThrow(()->new NotFoundException("Culture not found"));
-                if(entity.getFauche2()==null){
-                    entity.setFauche2(form.fauche());
-                    entity.setFauche2rendement(form.faucheRendement());
-                } else if(entity.getFauche3()==null){
-                    entity.setFauche3(form.fauche());
-                    entity.setFauche3rendement(form.faucheRendement());
-                } else if(entity.getFauche4()==null){
-                    entity.setFauche4(form.fauche());
-                    entity.setFauche4rendement(form.faucheRendement());
-                } else {
-                    throw new FaucheInsertException("Nombre de fauches max atteintes");
-                }
+                throw new FaucheInsertException("Nombre de fauches max atteintes");
             }
-            faucheRepository.save(entity);
         }
+        faucheRepository.save(entity);
     }
 
     /**
@@ -110,20 +111,22 @@ public class FaucheServiceImpl implements FaucheService {
      */
     @Override
     public void update(Long id, FaucheUpdateForm form) {
-        if(form!=null){
-            FaucheEntity entity = faucheRepository.findById(id).orElseThrow(()->new NotFoundException("Fauche not found"));
-            entity.setCulture(cultureRepository.findById(form.cultureId()).orElseThrow(()->new NotFoundException("Culture not found")));
-            entity.setAnnee(form.annee());
-            entity.setFauche1(form.fauche1());
-            entity.setFauche1rendement(form.fauche1Rendement());
-            entity.setFauche2(form.fauche2());
-            entity.setFauche2rendement(form.fauche2Rendement());
-            entity.setFauche3(form.fauche3());
-            entity.setFauche3rendement(form.fauche3Rendement());
-            entity.setFauche4(form.fauche4());
-            entity.setFauche4rendement(form.fauche4Rendement());
-            faucheRepository.save(entity);
-        }
+        
+        if(form == null)
+            throw new IllegalArgumentException("form ne peut être null");
+        
+        FaucheEntity entity = faucheRepository.findById(id).orElseThrow(()->new NotFoundException("Fauche not found"));
+        entity.setCulture(cultureRepository.findById(form.cultureId()).orElseThrow(()->new NotFoundException("Culture not found")));
+        entity.setAnnee(form.annee());
+        entity.setFauche1(form.fauche1());
+        entity.setFauche1rendement(form.fauche1Rendement());
+        entity.setFauche2(form.fauche2());
+        entity.setFauche2rendement(form.fauche2Rendement());
+        entity.setFauche3(form.fauche3());
+        entity.setFauche3rendement(form.fauche3Rendement());
+        entity.setFauche4(form.fauche4());
+        entity.setFauche4rendement(form.fauche4Rendement());
+        faucheRepository.save(entity);
     }
 
     /**
