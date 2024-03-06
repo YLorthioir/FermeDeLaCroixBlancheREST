@@ -1,8 +1,6 @@
 package be.technobel.ylorth.fermedelacroixblancherest.pl.utils.config.security;
 
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -29,6 +27,7 @@ public class SecurityConfig {
 
     @Value("${app.cors.config.host}")
     public String host;
+    
     @Bean
     public PasswordEncoder encoder(){
         return new BCryptPasswordEncoder();
@@ -40,11 +39,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> corsConfiguration());
 
-        http.httpBasic().disable();
-
         http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeHttpRequests(
             registry -> registry

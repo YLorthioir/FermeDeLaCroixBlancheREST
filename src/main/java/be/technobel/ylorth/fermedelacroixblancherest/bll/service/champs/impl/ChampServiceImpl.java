@@ -12,6 +12,7 @@ import be.technobel.ylorth.fermedelacroixblancherest.pl.models.champs.CultureFor
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.ChampRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.CultureRepository;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.repository.champs.TypeDeGrainsRepository;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +47,7 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public Set<ChampEntity> getAll() {
-        return champRepository.findAll().stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(champRepository.findAll());
     }
 
     /**
@@ -78,18 +78,19 @@ public class ChampServiceImpl implements ChampService {
     @Override
     public void insertChamp(ChampInsertForm form) {
 
+        if(form == null)
+            throw new IllegalArgumentException("Form ne peut être null");
+
         Specification<ChampEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("lieu"), form.lieu())));
 
         if(champRepository.exists(spec))
             throw new AlreadyExistsException("Champ déjà existant");
-
-        if(form!=null){
-            ChampEntity entity = new ChampEntity();
-            entity.setLieu(form.lieu());
-            entity.setSuperficie(form.superficie());
-            champRepository.save(entity);
-        }
-
+        
+        ChampEntity entity = new ChampEntity();
+        entity.setLieu(form.lieu());
+        entity.setSuperficie(form.superficie());
+        champRepository.save(entity);
+        
     }
 
     /**
@@ -105,13 +106,24 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void updateChamp(Long id, ChampUpdateForm form) {
-        if(form!=null){
-            ChampEntity entity = champRepository.findById(id).orElseThrow(()-> new NotFoundException("Champ not found"));
-            entity.setLieu(form.lieu());
-            entity.setSuperficie(form.superficie());
-            entity.setDateDerniereChaux(form.dateDerniereChaux());
-            champRepository.save(entity);
-        }
+        if(form == null)
+            throw new IllegalArgumentException("Form ne peut être null");
+
+        Specification<ChampEntity> spec = ((root, query, criteriaBuilder) -> {
+            Predicate sameLieu = criteriaBuilder.equal(root.get("lieu"), form.lieu());
+            Predicate differentId = criteriaBuilder.notEqual(root.get("id"), id);
+            return criteriaBuilder.and(sameLieu, differentId);
+        });
+        
+        if(champRepository.exists(spec))
+            throw new AlreadyExistsException("Champ déjà existant");
+        
+        ChampEntity entity = champRepository.findById(id).orElseThrow(()-> new NotFoundException("Champ not found"));
+        entity.setLieu(form.lieu());
+        entity.setSuperficie(form.superficie());
+        entity.setDateDerniereChaux(form.dateDerniereChaux());
+        champRepository.save(entity);
+        
     }
 
     // Culture
@@ -127,19 +139,22 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void insertCulture(CultureForm form){
-        if(form!=null){
-            CultureEntity entity = new CultureEntity();
-            entity.setChamp(champRepository.findById(form.idChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
-            entity.setDateMiseEnCulture(form.dateMiseEnCulture());
-            entity.setEstTemporaire(form.temporaire());
-            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.grainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
-            entity.setDateDeFin(form.dateDeFin()!=null?form.dateDeFin():null);
-            entity.setDateEpandage(form.dateDernierEpandage()!=null?form.dateDernierEpandage():null);
-            entity.setQttFumier(form.qttFumier());
-            entity.setAnalysePDF(form.referenceAnalyse());
 
-            cultureRepository.save(entity);
-        }
+        if(form == null)
+            throw new IllegalArgumentException("Form ne peut être null");
+        
+        CultureEntity entity = new CultureEntity();
+        entity.setChamp(champRepository.findById(form.idChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
+        entity.setDateMiseEnCulture(form.dateMiseEnCulture());
+        entity.setEstTemporaire(form.temporaire());
+        entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.grainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
+        entity.setDateDeFin(form.dateDeFin()!=null?form.dateDeFin():null);
+        entity.setDateEpandage(form.dateDernierEpandage()!=null?form.dateDernierEpandage():null);
+        entity.setQttFumier(form.qttFumier());
+        entity.setAnalysePDF(form.referenceAnalyse());
+
+        cultureRepository.save(entity);
+        
     }
 
     /**
@@ -170,19 +185,22 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void updateCulture(Long id, CultureForm form) {
-        if(form!=null){
-            CultureEntity entity = cultureRepository.findById(id).orElseThrow(()-> new NotFoundException("Culture not found"));
-            entity.setChamp(champRepository.findById(form.idChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
-            entity.setDateMiseEnCulture(form.dateMiseEnCulture());
-            entity.setEstTemporaire(form.temporaire());
-            entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.grainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
-            entity.setDateDeFin(form.dateDeFin()!=null?form.dateDeFin():null);
-            entity.setDateEpandage(form.dateDernierEpandage()!=null?form.dateDernierEpandage():null);
-            entity.setQttFumier(form.qttFumier());
-            entity.setAnalysePDF(form.referenceAnalyse());
 
-            cultureRepository.save(entity);
-        }
+        if(form == null)
+            throw new IllegalArgumentException("Form ne peut être null");
+
+        CultureEntity entity = cultureRepository.findById(id).orElseThrow(()-> new NotFoundException("Culture not found"));
+        entity.setChamp(champRepository.findById(form.idChamp()).orElseThrow(()-> new NotFoundException("Champ not found")));
+        entity.setDateMiseEnCulture(form.dateMiseEnCulture());
+        entity.setEstTemporaire(form.temporaire());
+        entity.setTypeDeGrain(typeDeGrainsRepository.findById(form.grainId()).orElseThrow(()-> new NotFoundException("Grain not found")));
+        entity.setDateDeFin(form.dateDeFin()!=null?form.dateDeFin():null);
+        entity.setDateEpandage(form.dateDernierEpandage()!=null?form.dateDernierEpandage():null);
+        entity.setQttFumier(form.qttFumier());
+        entity.setAnalysePDF(form.referenceAnalyse());
+
+        cultureRepository.save(entity);
+        
     }
 
     /**
@@ -216,15 +234,23 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public void updateGrain(Long id, String nom) {
-        Specification<TypeDeGrainEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomGrain"), nom)));
-        if(typeDeGrainsRepository.exists(spec))
-            throw new AlreadyExistsException("Le grain existe déjà");
 
-        if(nom != null){
-            TypeDeGrainEntity entity = typeDeGrainsRepository.findById(id).orElseThrow(()-> new NotFoundException("Grain not found"));
-            entity.setNomGrain(nom);
-            typeDeGrainsRepository.save(entity);
-        }
+        if(nom == null)
+            throw new IllegalArgumentException("Nom ne peut être null");
+
+        Specification<TypeDeGrainEntity> spec = ((root, query, criteriaBuilder) -> {
+            Predicate sameNom = criteriaBuilder.equal(root.get("nomGrain"), nom);
+            Predicate differentId = criteriaBuilder.notEqual(root.get("id"), id);
+            return criteriaBuilder.and(sameNom, differentId);
+        });
+        
+        if(typeDeGrainsRepository.exists(spec))
+            throw new AlreadyExistsException("Grain déjà existant");
+        
+        TypeDeGrainEntity entity = typeDeGrainsRepository.findById(id).orElseThrow(()-> new NotFoundException("Grain not found"));
+        entity.setNomGrain(nom);
+        typeDeGrainsRepository.save(entity);
+    
     }
 
     /**
@@ -242,7 +268,7 @@ public class ChampServiceImpl implements ChampService {
         Specification<TypeDeGrainEntity> spec = (((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("nomGrain"), nom)));
 
         if(typeDeGrainsRepository.exists(spec))
-            throw new AlreadyExistsException("Le grain existe déjà");
+            throw new AlreadyExistsException("Grain déjà existant");
 
         TypeDeGrainEntity entity = new TypeDeGrainEntity();
         entity.setNomGrain(nom);
@@ -259,8 +285,7 @@ public class ChampServiceImpl implements ChampService {
      */
     @Override
     public Set<TypeDeGrainEntity> getAllGrains() {
-        return typeDeGrainsRepository.findAll().stream()
-                .collect(Collectors.toSet());
+        return new HashSet<>(typeDeGrainsRepository.findAll());
     }
 
     /**

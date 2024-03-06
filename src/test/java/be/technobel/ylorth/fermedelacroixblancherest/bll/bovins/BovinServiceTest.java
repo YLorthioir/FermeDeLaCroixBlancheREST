@@ -1,4 +1,4 @@
-package be.technobel.ylorth.fermedelacroixblancherest.bll;
+package be.technobel.ylorth.fermedelacroixblancherest.bll.bovins;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.bovins.impl.BovinServiceImpl;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;

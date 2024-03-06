@@ -1,4 +1,4 @@
-package be.technobel.ylorth.fermedelacroixblancherest.bll;
+package be.technobel.ylorth.fermedelacroixblancherest.bll.auth;
 
 import be.technobel.ylorth.fermedelacroixblancherest.bll.service.auth.AuthServiceImpl;
 import be.technobel.ylorth.fermedelacroixblancherest.dal.exception.AlreadyExistsException;
