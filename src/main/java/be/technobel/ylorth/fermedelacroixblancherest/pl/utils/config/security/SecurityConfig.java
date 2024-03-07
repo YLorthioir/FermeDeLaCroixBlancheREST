@@ -9,7 +9,6 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -153,6 +152,18 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.POST,"/vente/fauche/add").hasAnyRole("ADMIN","GERANT")
                     .requestMatchers(HttpMethod.DELETE,"/vente/fauche/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
 
+                    // Véhicules
+
+                    .requestMatchers(HttpMethod.GET,"/vehicule/all").authenticated()
+                    .requestMatchers(HttpMethod.GET,"/vehicule/{plaque}").authenticated()
+                    .requestMatchers(HttpMethod.PUT,"/vehicule/update").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.POST,"/vehicule/create").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.DELETE,"/vehicule/{plaque}").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.GET,"/{plaque}/intervention").authenticated()
+                    .requestMatchers(HttpMethod.PUT,"/vehicule/intervention/update/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.POST,"/vehicule/intervention/create").hasAnyRole("ADMIN","GERANT")
+                    .requestMatchers(HttpMethod.DELETE,"/vehicule/intervention/{id:[0-9]+}").hasAnyRole("ADMIN","GERANT")
+                    
                     .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
 
                     .requestMatchers( request -> request.getRequestURI().length() > 500 ).denyAll()
